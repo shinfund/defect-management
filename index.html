@@ -25,27 +25,28 @@
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;word-break:keep-all;-webkit-font-smoothing:antialiased}
 
 /* ── HEADER ── */
-.hdr-wrap{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow)}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;gap:10px}
+.hdr-wrap{position:sticky;top:0;z-index:100}
+.hdr{background:var(--sky800);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(12,68,124,.25)}
 .hdr-left{display:flex;align-items:center;gap:10px}
-.hdr-icon{width:36px;height:36px;background:var(--sky800);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hdr-icon{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .hdr-icon svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.hdr-title{font-size:17px;font-weight:900;color:var(--sky800);letter-spacing:-.3px}
-.hdr-sub{font-size:11px;color:var(--txt3);margin-top:1px}
-.hdr-right{display:flex;align-items:center;gap:8px}
-.sync-btn{display:flex;align-items:center;gap:5px;padding:7px 12px;border-radius:var(--r8);border:1px solid var(--sky100);background:var(--sky50);color:var(--sky600);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap}
-.sync-btn:hover{background:var(--sky100);border-color:var(--sky600)}
-.sync-btn svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.cfg-btn{width:34px;height:34px;border-radius:var(--r8);border:1px solid var(--border);background:var(--card);color:var(--txt2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
-.cfg-btn:hover{background:var(--bg);border-color:var(--sky100)}
-.cfg-btn svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.hdr-title{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,.8);margin-top:1px}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.hdr-btns{display:flex;gap:7px}
+.hdr-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:18px;padding:5px 13px;font-size:13px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;min-height:32px;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.hdr-btn:hover{background:rgba(255,255,255,.25)}
+.hdr-btn:disabled{opacity:.4;cursor:not-allowed}
+.hdr-btn svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinning{animation:spin .8s linear infinite;display:inline-block}
 
 /* ── TAB NAV ── */
-.top-nav{display:flex;gap:0;border-top:1px solid var(--border2);background:#fff;overflow-x:auto;scrollbar-width:none}
-.top-nav::-webkit-scrollbar{display:none}
-.tab-btn{flex:1;min-width:68px;padding:9px 6px;font-size:12px;font-weight:500;color:var(--txt3);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap;text-align:center}
-.tab-btn.on{color:var(--sky600);border-bottom-color:var(--sky600);font-weight:700}
-.tab-btn:hover:not(.on){color:var(--txt2);background:var(--bg)}
+.top-nav{background:var(--card);border-bottom:1.5px solid var(--border);display:flex;padding:0 6px;box-shadow:0 2px 8px rgba(55,138,221,.07)}
+.tab-btn{flex:1;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--txt2);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;padding:11px 4px;-webkit-tap-highlight-color:transparent;transition:color .15s;position:relative;white-space:nowrap}
+.tab-btn.on{color:var(--sky600)}
+.tab-btn.on::after{content:'';position:absolute;bottom:0;left:12%;right:12%;height:2.5px;background:var(--sky);border-radius:2px 2px 0 0}
+.tab-btn:hover:not(.on){color:var(--txt)}
 
 /* ── KPI BAR ── */
 .kpi-bar{display:flex;gap:8px;padding:10px 14px;background:#fff;border-bottom:1px solid var(--border2);overflow-x:auto;scrollbar-width:none}
@@ -115,21 +116,19 @@ tbody tr:last-child td{border-bottom:none}
 .status-poor{background:var(--amber50);color:var(--amber)}
 
 /* ── MODAL ── */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(26,37,53,.5);z-index:2000;align-items:center;justify-content:center;padding:16px}
-.modal-box{background:var(--card);border-radius:var(--r16);box-shadow:0 20px 60px rgba(0,0,0,.2);width:100%;max-width:480px;overflow:hidden}
-.modal-hd{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
-.modal-hd h3{font-size:15px;font-weight:700;color:var(--txt)}
-.modal-close{width:28px;height:28px;border-radius:var(--r6);border:none;background:var(--bg);color:var(--txt2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
-.modal-body{padding:20px}
-.form-row{margin-bottom:14px}
-.form-lbl{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:6px;display:block}
-.form-input{width:100%;padding:10px 12px;border-radius:var(--r8);border:1px solid var(--border);font-size:13px;font-family:inherit;color:var(--txt);outline:none;transition:border .15s}
-.form-input:focus{border-color:var(--sky600);box-shadow:0 0 0 3px rgba(55,138,221,.1)}
-.form-hint{font-size:11px;color:var(--txt3);margin-top:4px}
-.modal-ft{display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border);background:var(--bg)}
-.btn-cancel{flex:1;padding:10px;border-radius:var(--r8);border:1px solid var(--border);background:var(--card);color:var(--txt2);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.btn-save{flex:2;padding:10px;border-radius:var(--r8);border:none;background:var(--sky800);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
-.btn-save:hover{background:var(--sky600)}
+#cfgModal{display:none}
+#cfgModal.modal-open{display:block}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;display:flex;align-items:center;justify-content:center;padding:18px}
+.modal-box{background:var(--card);border-radius:var(--r20);padding:24px;width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:7px;color:var(--txt)}
+.modal-field{margin-bottom:14px}
+.modal-label{font-size:13px;font-weight:700;color:var(--txt2);margin-bottom:6px;display:block}
+.modal-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r8);padding:10px 12px;font-size:15px;font-family:inherit;color:var(--txt);outline:none;transition:border .18s}
+.modal-input:focus{border-color:var(--sky);background:#fff}
+.modal-hint{font-size:12px;color:var(--txt3);margin-top:4px}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.modal-save{background:var(--sky);border:none;color:#fff;border-radius:var(--r8);padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;min-height:40px}
+.modal-cancel{background:var(--bg);border:1.5px solid var(--border);color:var(--txt2);border-radius:var(--r8);padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;min-height:40px}
 
 /* ── DETAIL MODAL ── */
 .detail-modal-box{max-width:560px}
@@ -137,6 +136,20 @@ tbody tr:last-child td{border-bottom:none}
 .detail-row:last-child{border-bottom:none}
 .detail-key{font-size:12px;font-weight:700;color:var(--txt3);min-width:80px;flex-shrink:0;padding-top:1px}
 .detail-val{font-size:13px;color:var(--txt);line-height:1.6;flex:1}
+
+/* ── 사진 영역 ── */
+.photo-section{padding:10px 0;border-bottom:1px solid var(--border2)}
+.photo-section:last-child{border-bottom:none}
+.photo-label{font-size:12px;font-weight:700;color:var(--txt3);margin-bottom:6px}
+.photo-wrap{position:relative;background:var(--bg);border-radius:var(--r8);overflow:hidden;border:1px solid var(--border)}
+.photo-wrap a{display:block}
+.photo-img{width:100%;max-height:260px;object-fit:contain;display:block;cursor:zoom-in;transition:opacity .2s}
+.photo-img.loading{opacity:0}
+.photo-img.loaded{opacity:1}
+.photo-err{display:none;padding:20px;text-align:center;font-size:12px;color:var(--txt3)}
+.photo-err a{color:var(--sky600);font-weight:700}
+.photo-spinner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.photo-spinner::after{content:'';width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--sky600);border-radius:50%;animation:spin .7s linear infinite}
 
 /* ── EMPTY / STATUS ── */
 .empty{text-align:center;padding:48px 20px;color:var(--txt3)}
@@ -148,7 +161,7 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ── RESPONSIVE ── */
 @media(max-width:480px){
-  .hdr{padding:8px 12px}
+  .hdr{padding:11px 12px}
   .hdr-title{font-size:15px}
   .wrap{padding:10px}
   .kpi-card{min-width:60px;padding:6px 8px}
@@ -160,32 +173,33 @@ tbody tr:last-child td{border-bottom:none}
   .tab-btn{font-size:13px;padding:10px 16px}
   .wrap{padding:16px}
 }
+.last-update{font-size:11px;color:rgba(255,255,255,.75);text-align:right}
 </style>
 </head>
 <body>
 
 <!-- 설정 모달 -->
-<div class="modal-bg" id="cfgModal" onclick="if(event.target===this)closeCfgModal()">
-  <div class="modal-box">
-    <div class="modal-hd">
-      <h3>⚙ 설정</h3>
-      <button class="modal-close" onclick="closeCfgModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <label class="form-lbl">구글시트 ID</label>
-        <input class="form-input" id="cfgSheetId" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms">
-        <div class="form-hint">URL에서 /d/ 다음에 오는 긴 문자열을 입력하세요<br>또는 구글시트 URL 전체를 붙여넣으면 자동 추출됩니다</div>
+<div id="cfgModal">
+  <div class="modal-backdrop" onclick="closeCfgModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-title">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0F9D58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+        Google Sheets 연동 설정
       </div>
-      <div class="form-row">
-        <label class="form-lbl">시트명</label>
-        <input class="form-input" id="cfgSheetName" placeholder="Sheet1">
-        <div class="form-hint">기본값: Sheet1 (비우면 첫 번째 시트 사용)</div>
+      <div class="modal-field">
+        <label class="modal-label">Google Sheets ID</label>
+        <input id="cfgSheetId" class="modal-input" type="text" placeholder="https://docs.google.com/spreadsheets/d/..."/>
+        <div class="modal-hint">스프레드시트 URL 전체 붙여넣기 OK · <strong>링크 공유(뷰어)</strong> 설정 필요</div>
       </div>
-    </div>
-    <div class="modal-ft">
-      <button class="btn-cancel" onclick="closeCfgModal()">취소</button>
-      <button class="btn-save" onclick="saveCfg()">저장 후 로드</button>
+      <div class="modal-field">
+        <label class="modal-label">시트 이름 <span style="font-weight:400;color:var(--txt3)">(선택 — 비워두면 첫 번째 시트)</span></label>
+        <input id="cfgSheetName" class="modal-input" type="text" placeholder="하자보수DB"/>
+        <div class="modal-hint">탭 이름과 정확히 일치 (한글 OK)</div>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="closeCfgModal()">취소</button>
+        <button class="modal-save" onclick="saveCfg()">저장</button>
+      </div>
     </div>
   </div>
 </div>
@@ -210,17 +224,21 @@ tbody tr:last-child td{border-bottom:none}
       </div>
       <div>
         <div class="hdr-title">하자보수 현황</div>
-        <div class="hdr-sub" id="hdrSub">데이터를 불러오는 중...</div>
+        <div class="hdr-sub" id="hdrSub">Google Sheets 연동</div>
       </div>
     </div>
     <div class="hdr-right">
-      <button class="sync-btn" id="syncBtn" onclick="loadData()">
-        <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
-        <span id="syncLabel">새로고침</span>
-      </button>
-      <button class="cfg-btn" onclick="openCfgModal()" title="설정">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-      </button>
+      <div class="hdr-btns">
+        <button class="hdr-btn" onclick="openCfgModal()">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          설정
+        </button>
+        <button class="hdr-btn" id="syncBtn" onclick="loadData()">
+          <svg id="syncIcon" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+          <span id="syncLabel">새로고침</span>
+        </button>
+      </div>
+      <div class="last-update" id="lastUpdate"></div>
     </div>
   </div>
   <!-- 탭 -->
@@ -237,7 +255,7 @@ tbody tr:last-child td{border-bottom:none}
     <div class="kpi-card kpi-done"><div class="kpi-num" id="kpiDone">-</div><div class="kpi-lbl">완료</div></div>
     <div class="kpi-card kpi-poor"><div class="kpi-num" id="kpiPoor">-</div><div class="kpi-lbl">미흡</div></div>
   </div>
-  <div class="last-update" id="lastUpdate"></div>
+  <div class="last-update" id="lastUpdate2" style="padding:6px 14px 8px;text-align:right;font-size:11px;color:var(--txt3);background:#fff"></div>
 </div>
 
 <div class="wrap">
@@ -347,17 +365,23 @@ function loadDemo(){
   updateKPI();
   renderAll();
   updateHdrSub('데모 데이터 (2026년 1월) · 설정에서 시트 연동');
-  document.getElementById('lastUpdate').textContent = '데모 모드 — ⚙ 설정에서 구글시트 ID를 입력하면 실제 데이터로 전환됩니다';
-  document.getElementById('lastUpdate').style.color = 'var(--amber)';
+  var demoTxt = '데모 모드 — ⚙ 설정에서 Google Sheets ID를 입력하면 실제 데이터로 전환됩니다';
+  document.getElementById('lastUpdate').textContent = demoTxt;
+  document.getElementById('lastUpdate2').textContent = demoTxt;
+  document.getElementById('lastUpdate').style.color = 'rgba(255,255,255,.8)';
+  document.getElementById('lastUpdate2').style.color = 'var(--amber)';
 }
 
 /* ── CONFIG MODAL ── */
 function openCfgModal(){
   document.getElementById('cfgSheetId').value   = CFG.sheetId;
   document.getElementById('cfgSheetName').value = CFG.sheetName;
-  showModal('cfgModal');
+  document.getElementById('cfgModal').classList.add('modal-open');
 }
-function closeCfgModal(){ hideModal('cfgModal'); }
+function closeCfgModal(e){
+  if(e && e.target !== document.querySelector('#cfgModal .modal-backdrop')) return;
+  document.getElementById('cfgModal').classList.remove('modal-open');
+}
 function saveCfg(){
   var raw = document.getElementById('cfgSheetId').value.trim();
   var m = raw.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
@@ -368,7 +392,7 @@ function saveCfg(){
   CFG.sheetName = sn;
   localStorage.setItem('haja_sheetId',   sid);
   localStorage.setItem('haja_sheetName', sn);
-  closeCfgModal();
+  document.getElementById('cfgModal').classList.remove('modal-open');
   loadData();
 }
 
@@ -387,13 +411,18 @@ function loadData(){
       renderAll();
       setSync(false);
       var now = new Date();
-      document.getElementById('lastUpdate').textContent = '최종 업데이트: '+fmt(now.getMonth()+1)+'/'+fmt(now.getDate())+' '+fmt(now.getHours())+':'+fmt(now.getMinutes());
+      var upTxt = '최종 업데이트: '+fmt(now.getMonth()+1)+'/'+fmt(now.getDate())+' '+fmt(now.getHours())+':'+fmt(now.getMinutes());
+      document.getElementById('lastUpdate').textContent = upTxt;
+      document.getElementById('lastUpdate2').textContent = upTxt;
       updateHdrSub('총 '+ALL_DATA.length+'건 · 구글시트 연동');
     })
     .catch(function(e){
       setSync(false);
-      document.getElementById('lastUpdate').textContent = '로드 실패 — 시트 공유 설정(링크가 있는 모든 사용자)을 확인하세요';
+      var errMsg = '로드 실패 — 시트 공유 설정(링크가 있는 모든 사용자)을 확인하세요';
+      document.getElementById('lastUpdate').textContent = errMsg;
+      document.getElementById('lastUpdate2').textContent = errMsg;
       document.getElementById('lastUpdate').style.color = 'var(--coral)';
+      document.getElementById('lastUpdate2').style.color = 'var(--coral)';
       updateHdrSub('로드 실패');
       console.error(e);
     });
@@ -629,6 +658,35 @@ function renderTypePanel(){
   }).join('');
 }
 
+/* ── PHOTO URL 변환 ── */
+function toViewableUrl(url){
+  if(!url) return '';
+  url = url.trim();
+  // Google Drive: /file/d/ID/view  또는  open?id=ID
+  var m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if(m1) return 'https://drive.google.com/uc?export=view&id='+m1[1];
+  var m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if(m2) return 'https://drive.google.com/uc?export=view&id='+m2[1];
+  return url;
+}
+
+function makePhotoHtml(label, rawUrl){
+  if(!rawUrl || !rawUrl.trim()) return '';
+  var viewUrl = toViewableUrl(rawUrl);
+  var origUrl = rawUrl.trim();
+  return '<div class="photo-section">'
+    +'<div class="photo-label">'+label+'</div>'
+    +'<div class="photo-wrap">'
+    +'<a href="'+esc(origUrl)+'" target="_blank" rel="noopener">'
+    +'<img class="photo-img loading" src="'+esc(viewUrl)+'" alt="'+label+'"'
+    +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+    +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+    +'></a>'
+    +'<div class="photo-spinner"></div>'
+    +'<div class="photo-err">이미지를 불러올 수 없습니다<br><a href="'+esc(origUrl)+'" target="_blank">링크로 직접 열기 →</a></div>'
+    +'</div></div>';
+}
+
 /* ── DETAIL MODAL ── */
 function openDetail(idx){
   var r = ALL_DATA.find(function(d){ return d._idx===idx; });
@@ -650,17 +708,17 @@ function openDetail(idx){
     ['비고', r['비고']||'-'],
     ['출처', r['출처']||'-'],
   ];
-  if(r['하자사진_URL']||r['하자사진']){
-    var url = r['하자사진_URL']||r['하자사진'];
-    rows.push(['하자사진', url? '<a href="'+esc(url)+'" target="_blank" style="color:var(--sky600)">사진 보기 →</a>' : '-']);
-  }
-  if(r['조치사진_URL']||r['조치사진']){
-    var url2 = r['조치사진_URL']||r['조치사진'];
-    rows.push(['조치사진', url2? '<a href="'+esc(url2)+'" target="_blank" style="color:var(--sky600)">사진 보기 →</a>' : '-']);
-  }
-  document.getElementById('detailBody').innerHTML = rows.map(function(rv){
+  var infoHtml = rows.map(function(rv){
     return '<div class="detail-row"><div class="detail-key">'+rv[0]+'</div><div class="detail-val">'+rv[1]+'</div></div>';
   }).join('');
+
+  var photoHtml = '';
+  var p1 = r['하자사진_URL']||r['하자사진']||'';
+  var p2 = r['조치사진_URL']||r['조치사진']||'';
+  if(p1) photoHtml += makePhotoHtml('하자사진', p1);
+  if(p2) photoHtml += makePhotoHtml('조치사진', p2);
+
+  document.getElementById('detailBody').innerHTML = infoHtml + photoHtml;
   showModal('detailModal');
 }
 function closeDetail(){ hideModal('detailModal'); }
@@ -686,10 +744,18 @@ function hideModal(id){
 
 /* ── SYNC BUTTON ── */
 function setSync(loading){
-  var btn = document.getElementById('syncBtn');
-  var lbl = document.getElementById('syncLabel');
-  if(loading){ btn.disabled=true; lbl.textContent='로딩중...'; }
-  else { btn.disabled=false; lbl.textContent='새로고침'; }
+  var btn  = document.getElementById('syncBtn');
+  var icon = document.getElementById('syncIcon');
+  var lbl  = document.getElementById('syncLabel');
+  if(loading){
+    btn.disabled = true;
+    if(icon) icon.classList.add('spinning');
+    lbl.textContent = '로딩중...';
+  } else {
+    btn.disabled = false;
+    if(icon) icon.classList.remove('spinning');
+    lbl.textContent = '새로고침';
+  }
 }
 
 /* ── HELPERS ── */
