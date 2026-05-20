@@ -284,7 +284,7 @@ tbody tr:last-child td{border-bottom:none}
       </div>
       <div class="modal-field">
         <label class="modal-label">시트 이름 <span style="font-weight:400;color:var(--txt3)">(선택 — 비워두면 첫 번째 시트)</span></label>
-        <input id="cfgSheetName" class="modal-input" type="text" placeholder="하자내역"/>
+        <input id="cfgSheetName" class="modal-input" type="text" placeholder="하자보수DB"/>
         <div class="modal-hint">탭 이름과 정확히 일치 (한글 OK)</div>
       </div>
       <div class="modal-btns">
@@ -473,7 +473,7 @@ tbody tr:last-child td{border-bottom:none}
 var ALL_DATA = [];
 var FILTER = { status:'ALL', tunnel:'ALL', manager:'ALL' };
 var TAB_FILTER = { tunnel:'ALL', type:'ALL', company:'ALL' };
-var CFG = { sheetId:'', sheetName:'하자내역' };
+var CFG = { sheetId:'', sheetName:'' };
 
 /* ── 데모 데이터 (2026년 1월 발생 하자, 편집·확인용) ── */
 var DEMO_DATA = [
@@ -498,7 +498,7 @@ var DEMO_DATA = [
 /* ── INIT ── */
 (function init(){
   var sid = localStorage.getItem('haja_sheetId') || '';
-  var sn  = localStorage.getItem('haja_sheetName') || '하자내역';
+  var sn  = localStorage.getItem('haja_sheetName') || '';
   CFG.sheetId   = sid;
   CFG.sheetName = sn;
   if(sid){ loadData(); }
@@ -513,7 +513,7 @@ function loadDemo(){
   updateKPI();
   renderAll();
   document.getElementById('lastUpdate').textContent = '';
-  // 초기 탭이 요약(0)이므로 KPI 바 숨김
+  // KPI 바 초기 상태는 switchTab(0)에서 처리됨
   var kpiBar = document.getElementById('kpiBar');
   if(kpiBar) kpiBar.style.display = 'none';
 }
@@ -527,18 +527,20 @@ function openCfgModal(){
 function closeCfgModal(e){
   if(e && e.target !== document.querySelector('#cfgModal .modal-backdrop')) return;
   document.getElementById('cfgModal').classList.remove('modal-open');
+  document.body.style.overflow='';
 }
 function saveCfg(){
   var raw = document.getElementById('cfgSheetId').value.trim();
   var m = raw.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
   var sid = m ? m[1] : raw;
-  var sn  = document.getElementById('cfgSheetName').value.trim() || '하자내역';
+  var sn  = document.getElementById('cfgSheetName').value.trim();
   if(!sid){ alert('구글시트 ID를 입력해주세요.'); return; }
   CFG.sheetId   = sid;
   CFG.sheetName = sn;
   localStorage.setItem('haja_sheetId',   sid);
   localStorage.setItem('haja_sheetName', sn);
   document.getElementById('cfgModal').classList.remove('modal-open');
+  document.body.style.overflow='';
   loadData();
 }
 
@@ -546,11 +548,15 @@ function saveCfg(){
 function loadData(){
   if(!CFG.sheetId){ openCfgModal(); return; }
   setSync(true);
-  var url = 'https://docs.google.com/spreadsheets/d/'+CFG.sheetId+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(CFG.sheetName);
+  var url = 'https://docs.google.com/spreadsheets/d/'+CFG.sheetId+'/gviz/tq?tqx=out:json'
+    + (CFG.sheetName ? '&sheet='+encodeURIComponent(CFG.sheetName) : '');
   fetch(url)
     .then(function(r){ return r.text(); })
     .then(function(txt){
       var json = JSON.parse(txt.replace(/^[^(]+\(|\);?\s*$/g,''));
+      if(!json || !json.table){
+        throw new Error('gviz 응답에 table 데이터가 없습니다. 시트 이름 또는 공유 설정을 확인하세요.');
+      }
       ALL_DATA = parseGviz(json);
       buildTunnelFilter();
       buildManagerFilter();
@@ -558,7 +564,6 @@ function loadData(){
       updateKPI();
       renderAll();
       setSync(false);
-      // 현재 탭이 요약(0)이면 KPI 바 숨김
       var kpiBar = document.getElementById('kpiBar');
       if(kpiBar) kpiBar.style.display = CURRENT_TAB === 0 ? 'none' : '';
       var now = new Date();
@@ -568,32 +573,13 @@ function loadData(){
     })
     .catch(function(e){
       setSync(false);
-      var msg = '로드 실패 — ' + (e && e.message ? e.message : String(e));
-      document.getElementById('lastUpdate').textContent = msg;
+      document.getElementById('lastUpdate').textContent = '로드 실패: '+(e.message||'');
       document.getElementById('lastUpdate').style.color = 'var(--coral)';
-      console.error('[loadData 오류]', e);
-      // 오류 메시지를 요약 패널에도 표시
-      var p0 = document.getElementById('p0');
-      if(p0){
-        var existing = p0.querySelector('.load-err-msg');
-        if(!existing){
-          var div = document.createElement('div');
-          div.className = 'load-err-msg';
-          div.style.cssText = 'background:var(--coral50);border:1px solid var(--coral100);border-radius:var(--r8);padding:14px 18px;margin-bottom:14px;color:var(--coral800);font-size:13px;line-height:1.7';
-          div.innerHTML = '<strong>구글시트 연동 실패</strong><br>'
-            + '아래 사항을 확인해 주세요:<br>'
-            + '① 시트 공유가 <strong>링크가 있는 모든 사용자 → 뷰어</strong>로 설정되어 있는지<br>'
-            + '② 설정의 시트 이름이 실제 탭 이름과 <strong>정확히 일치</strong>하는지 (예: 하자내역)<br>'
-            + '③ 시트 ID가 올바른지<br>'
-            + '<span style="color:var(--coral);font-size:12px">오류: ' + (e && e.message ? e.message : String(e)) + '</span>';
-          p0.insertBefore(div, p0.firstChild);
-        }
-      }
+      console.error(e);
     });
 }
 
 function parseGviz(json){
-  if(!json || !json.table) return [];
   var cols = json.table.cols.map(function(c){ return c.label; });
   return (json.table.rows||[]).map(function(r,i){
     var obj = { _idx: i+1 };
@@ -602,7 +588,16 @@ function parseGviz(json){
       var val = '';
       if(cell){
         if(cell.f) val = cell.f;
-        else if(cell.v !== null && cell.v !== undefined) val = String(cell.v);
+        else if(cell.v !== null && cell.v !== undefined){
+          var sv = String(cell.v);
+          // gviz Date(yyyy,m,d) 형식 → yyyy-MM-dd 변환
+          var dm = sv.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);
+          if(dm){
+            val = dm[1]+'-'+fmt(parseInt(dm[2])+1)+'-'+fmt(parseInt(dm[3]));
+          } else {
+            val = sv;
+          }
+        }
       }
       obj[lbl] = val.trim();
     });
@@ -628,10 +623,13 @@ function buildManagerFilter(){
     var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
     if(opt && opt.dataset && opt.dataset.val) selectManager(opt.dataset.val, opt);
   });
-  document.addEventListener('click', function(e){
-    var wrap = document.getElementById('managerDdWrap');
-    if(wrap && !wrap.contains(e.target)) closeManagerDd();
-  });
+  if(!buildManagerFilter._bound){
+    buildManagerFilter._bound = true;
+    document.addEventListener('click', function(e){
+      var wrap = document.getElementById('managerDdWrap');
+      if(wrap && !wrap.contains(e.target)) closeManagerDd();
+    });
+  }
 }
 
 function toggleManagerDd(){
@@ -700,11 +698,13 @@ function buildTunnelFilter(){
     var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
     if(opt && opt.dataset && opt.dataset.val) selectTunnel(opt.dataset.val, opt);
   });
-  // 외부 클릭 시 닫기
-  document.addEventListener('click', function(e){
-    var wrap = document.getElementById('tunnelDdWrap');
-    if(wrap && !wrap.contains(e.target)) closeTunnelDd();
-  });
+  if(!buildTunnelFilter._bound){
+    buildTunnelFilter._bound = true;
+    document.addEventListener('click', function(e){
+      var wrap = document.getElementById('tunnelDdWrap');
+      if(wrap && !wrap.contains(e.target)) closeTunnelDd();
+    });
+  }
 }
 
 function toggleTunnelDd(){
@@ -871,7 +871,7 @@ function renderList(){
   }
   tbody.innerHTML = rows.map(function(r,i){
     var s = r['조치여부'];
-    var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+    var badge = statusBadge(s);
     var slbl  = s==='완료'?'완료':s==='진행중'?'진행중':s||'-';
     return '<tr onclick="openDetail('+r._idx+')">'
       +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
@@ -1103,7 +1103,7 @@ function renderTunnelPanel(){
     var rate = Math.round(done/rows.length*100);
     var body = rows.map(function(r){
       var s=r['조치여부'];
-      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+      var badge=statusBadge(s);
       return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap">'+esc(r['공종'])+'</td>'
@@ -1150,7 +1150,7 @@ function renderCompanyPanel(){
     var rate = Math.round(done/rows.length*100);
     var body = rows.map(function(r){
       var s=r['조치여부'];
-      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+      var badge=statusBadge(s);
       return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
@@ -1202,7 +1202,7 @@ function renderTypePanel(){
     var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
     var body = rows.map(function(r){
       var s=r['조치여부'];
-      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+      var badge=statusBadge(s);
       return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
@@ -1229,6 +1229,8 @@ function renderTypePanel(){
 
 /* ── PHOTO URL 변환 ── */
 // Apps Script 이미지 프록시 (구글 드라이브 → GitHub Pages 사진 표시용)
+// ⚠️ 보안: GitHub Pages가 공개 저장소라면 이 URL이 외부에 노출됩니다.
+// Apps Script 측에서 Referer 헤더 또는 doGet() 내 허용 도메인 검사를 추가하세요.
 var PHOTO_PROXY = 'https://script.google.com/macros/s/AKfycbxW68Wd6kmUx-K482Dyc4cEr8LAwL4vdx38zhEe3HL1lujehjr3dJKJuggckGKpQAYrcg/exec';
 
 function extractDriveId(url){
@@ -1285,8 +1287,8 @@ function makePhotoHtml(label, rawUrl){
       +'<div class="photo-spinner"></div>'
       +'<div class="photo-err" style="display:none">미리보기 불가<br><a href="'+esc(viewUrl)+'" target="_blank">🔗 Drive에서 직접 열기</a></div>'
       +'</div>';
-    // DOM 삽입 후 실행되도록 큐에 등록
-    setTimeout(function(){ loadProxyPhoto(uid, proxyUrl, viewUrl, label); }, 50);
+    // DOM 삽입 후 실행되도록 rAF 사용 (setTimeout 50ms 레이스 컨디션 방지)
+    setTimeout(function(){ requestAnimationFrame(function(){ loadProxyPhoto(uid, proxyUrl, viewUrl, label); }); }, 0);
   } else {
     inner = '<div class="photo-wrap">'
       +'<a href="'+esc(origUrl)+'" target="_blank" rel="noopener">'
@@ -1309,7 +1311,7 @@ function openDetail(idx){
   var r = ALL_DATA.find(function(d){ return d._idx===idx; });
   if(!r) return;
   var s = r['조치여부'];
-  var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+  var badge = statusBadge(s);
   document.getElementById('detailTitle').innerHTML = esc(r['터널명'])+' · '+esc(r['공종']);
   var rows = [
     ['날짜', r['날짜']],
@@ -1341,6 +1343,7 @@ function openDetail(idx){
 function closeDetail(e){
   if(e && e.target !== document.querySelector('#detailModal .modal-backdrop')) return;
   document.getElementById('detailModal').classList.remove('modal-open');
+  document.body.style.overflow='';
 }
 
 /* ── TAB ── */
@@ -1354,17 +1357,6 @@ function switchTab(n,el){
   var kpiBar = document.getElementById('kpiBar');
   if(kpiBar) kpiBar.style.display = n === 0 ? 'none' : '';
   updateKPI(n);
-}
-
-/* ── MODAL HELPERS ── */
-function showModal(id){
-  var m = document.getElementById(id);
-  m.style.cssText='display:flex;position:fixed;inset:0;background:rgba(26,37,53,.5);z-index:2000;align-items:center;justify-content:center;padding:16px';
-  document.body.style.overflow='hidden';
-}
-function hideModal(id){
-  document.getElementById(id).style.cssText='display:none';
-  document.body.style.overflow='';
 }
 
 /* ── SYNC BUTTON ── */
@@ -1384,6 +1376,14 @@ function setSync(loading){
 }
 
 /* ── HELPERS ── */
+// 조치여부 → badge 클래스 (allowlist 검사 포함)
+function statusBadge(s){
+  if(s==='완료')   return 'badge-done';
+  if(s==='진행중') return 'badge-prog';
+  if(s==='미흡')   return 'badge-poor';
+  return 'badge-poor';
+}
+
 function groupBy(arr, key){
   var obj={};
   arr.forEach(function(r){ var k=r[key]||'(미지정)'; if(!obj[k]) obj[k]=[]; obj[k].push(r); });
