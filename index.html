@@ -666,6 +666,9 @@ function renderTypePanel(){
 }
 
 /* ── PHOTO URL 변환 ── */
+// Apps Script 이미지 프록시 (구글 드라이브 → GitHub Pages 사진 표시용)
+var PHOTO_PROXY = 'https://script.google.com/macros/s/AKfycbzwj1Bbr0a1Br9MF-EHmAMr3LsEjKy76h8KvpHzN0ZEHIZjC1B966wfzyq4P7Nf9u3rHw/exec';
+
 function extractDriveId(url){
   if(!url) return '';
   url = url.trim();
@@ -683,8 +686,8 @@ function makePhotoHtml(label, rawUrl){
 
   var inner = '';
   if(driveId){
-    // Google Drive → 썸네일 API (sz=w1000 으로 큰 사이즈 요청)
-    var thumbUrl = 'https://drive.google.com/thumbnail?id='+driveId+'&sz=w1000';
+    // Apps Script 프록시 경유 → GitHub Pages에서도 사진 표시 가능
+    var thumbUrl = PHOTO_PROXY + '?id=' + driveId;
     var viewUrl  = 'https://drive.google.com/file/d/'+driveId+'/view';
     inner = '<div class="photo-wrap">'
       +'<a href="'+esc(viewUrl)+'" target="_blank" rel="noopener">'
