@@ -667,7 +667,7 @@ function renderTypePanel(){
 
 /* ── PHOTO URL 변환 ── */
 // Apps Script 이미지 프록시 (구글 드라이브 → GitHub Pages 사진 표시용)
-var PHOTO_PROXY = 'https://script.google.com/macros/s/AKfycbzwj1Bbr0a1Br9MF-EHmAMr3LsEjKy76h8KvpHzN0ZEHIZjC1B966wfzyq4P7Nf9u3rHw/exec';
+var PHOTO_PROXY = 'https://script.google.com/macros/s/AKfycbxW68Wd6kmUx-K482Dyc4cEr8LAwL4vdx38zhEe3HL1lujehjr3dJKJuggckGKpQAYrcg/exec';
 
 function extractDriveId(url){
   if(!url) return '';
@@ -679,6 +679,27 @@ function extractDriveId(url){
   return '';
 }
 
+// 프록시 fetch → img 주입 (innerHTML script 미실행 문제 우회)
+function loadProxyPhoto(uid, proxyUrl, viewUrl, label){
+  var wrap = document.getElementById(uid);
+  if(!wrap) return;
+  fetch(proxyUrl)
+    .then(function(r){ return r.text(); })
+    .then(function(d){
+      var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
+      if(!d || d.indexOf('data:') < 0){
+        var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block'; return;
+      }
+      var a = document.createElement('a'); a.href=viewUrl; a.target='_blank'; a.rel='noopener';
+      var img = document.createElement('img'); img.className='photo-img loaded'; img.src=d; img.alt=label;
+      a.appendChild(img); wrap.insertBefore(a, wrap.firstChild);
+    })
+    .catch(function(){
+      var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
+      var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block';
+    });
+}
+
 function makePhotoHtml(label, rawUrl){
   if(!rawUrl || !rawUrl.trim()) return '';
   var origUrl = rawUrl.trim();
@@ -686,18 +707,16 @@ function makePhotoHtml(label, rawUrl){
 
   var inner = '';
   if(driveId){
-    // Apps Script 프록시 경유 → GitHub Pages에서도 사진 표시 가능
-    var thumbUrl = PHOTO_PROXY + '?id=' + driveId;
+    var proxyUrl = PHOTO_PROXY + '?id=' + driveId;
     var viewUrl  = 'https://drive.google.com/file/d/'+driveId+'/view';
-    inner = '<div class="photo-wrap">'
-      +'<a href="'+esc(viewUrl)+'" target="_blank" rel="noopener">'
-      +'<img class="photo-img loading" src="'+esc(thumbUrl)+'" alt="'+label+'"'
-      +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
-      +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
-      +'></a>'
+    var uid = 'pi'+Math.random().toString(36).slice(2,10);
+    // placeholder 생성 후 setTimeout으로 fetch 실행 (DOM 삽입 후)
+    inner = '<div class="photo-wrap" id="'+uid+'">'
       +'<div class="photo-spinner"></div>'
-      +'<div class="photo-err">미리보기 불가 — 파일 공유 설정을 확인하세요<br><a href="'+esc(viewUrl)+'" target="_blank">🔗 Drive에서 직접 열기</a></div>'
+      +'<div class="photo-err" style="display:none">미리보기 불가<br><a href="'+esc(viewUrl)+'" target="_blank">🔗 Drive에서 직접 열기</a></div>'
       +'</div>';
+    // DOM 삽입 후 실행되도록 큐에 등록
+    setTimeout(function(){ loadProxyPhoto(uid, proxyUrl, viewUrl, label); }, 50);
   } else {
     inner = '<div class="photo-wrap">'
       +'<a href="'+esc(origUrl)+'" target="_blank" rel="noopener">'
