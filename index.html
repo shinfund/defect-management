@@ -204,10 +204,9 @@ tbody tr:last-child td{border-bottom:none}
   .sc{padding:12px}
   .sc-hd{flex-wrap:wrap;gap:6px}
 
-  /* 테이블 - 모바일에서 담당자·전화번호 숨김 */
-  .col-contact{display:none}
-  .col-remark{display:none}
-  table{min-width:480px}
+  /* 테이블 */
+  .col-manager{display:table-cell}
+  table{min-width:360px}
   td{padding:7px 8px;font-size:12px}
   th{padding:7px 8px;font-size:11px}
   .td-content{-webkit-line-clamp:4}
@@ -234,6 +233,7 @@ tbody tr:last-child td{border-bottom:none}
   .wrap{padding:14px}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
+  .col-manager{display:table-cell}
 }
 
 /* PC (961px ~) */
@@ -242,6 +242,7 @@ tbody tr:last-child td{border-bottom:none}
   .wrap{padding:18px}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
+  .col-manager{display:table-cell}
   table{width:100%;min-width:1100px}
 }
 
@@ -341,6 +342,7 @@ tbody tr:last-child td{border-bottom:none}
     <button class="tab-btn" onclick="switchTab(2,this)">터널별</button>
     <button class="tab-btn" onclick="switchTab(3,this)">공종별</button>
     <button class="tab-btn" onclick="switchTab(4,this)">업체별</button>
+    <button class="tab-btn" onclick="switchTab(5,this)">업체목록</button>
   </div>
   <!-- KPI -->
   <div class="kpi-bar" id="kpiBar">
@@ -465,6 +467,31 @@ tbody tr:last-child td{border-bottom:none}
     <div class="filter-count" id="companyTabCount"></div>
   </div>
   <div id="companyPanels"></div>
+</div>
+
+<!-- 패널5: 업체목록 -->
+<div class="panel" id="p5">
+  <div class="filter-row" style="margin-bottom:14px">
+    <input class="search-box" id="vendorSearchBox" placeholder="🔍 업체명, 담당자 검색..." oninput="renderVendorList()">
+    <div class="filter-count" id="vendorCount"></div>
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table id="vendorTable">
+        <thead><tr>
+          <th style="min-width:90px">업체명</th>
+          <th style="min-width:70px">담당자</th>
+          <th style="min-width:100px">전화번호</th>
+          <th style="min-width:80px">터널명</th>
+          <th style="min-width:48px;text-align:center">전체</th>
+          <th style="min-width:48px;text-align:center">완료</th>
+          <th style="min-width:48px;text-align:center">진행중</th>
+          <th style="min-width:200px">최근 처리내용</th>
+        </tr></thead>
+        <tbody id="vendorBody"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 </div><!-- /wrap -->
@@ -827,6 +854,22 @@ function updateKPI(tabNum){
     document.getElementById('kpiProg').textContent  = unprocC;
     document.getElementById('kpiDone').textContent  = avgRateC+'%';
     document.getElementById('kpiPoor').textContent  = poor;
+
+  } else if(tabNum === 5){
+    // 업체목록
+    var vCompanies = groupBy(d,'업체명');
+    var vCount = Object.keys(vCompanies).filter(function(k){ return k !== '(미지정)'; }).length;
+    setKpiLabels('업체 수','미처리 합계','평균 완료율','미흡');
+    var vUnproc = d.filter(function(r){ return r['조치여부']==='진행중'||r['조치여부']==='미흡'; }).length;
+    var vRates = Object.keys(vCompanies).map(function(c){
+      var r=vCompanies[c], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
+      return Math.round(dn/r.length*100);
+    });
+    var vAvg = vRates.length>0?Math.round(vRates.reduce(function(a,b){return a+b;},0)/vRates.length):0;
+    document.getElementById('kpiTotal').textContent = vCount+'개';
+    document.getElementById('kpiProg').textContent  = vUnproc;
+    document.getElementById('kpiDone').textContent  = vAvg+'%';
+    document.getElementById('kpiPoor').textContent  = poor;
   }
 }
 
@@ -860,6 +903,7 @@ function renderAll(){
   renderTunnelPanel();
   renderTypePanel();
   renderCompanyPanel();
+  renderVendorList();
 }
 
 /* ── LIST ── */
@@ -894,7 +938,7 @@ function renderList(){
       +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
       +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
       +'<td class="col-remark" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['비고']||'-')+'</td>'
-      +'<td class="col-contact" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['업무담당']||'-')+'</td>'
+      +'<td class="col-manager" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['업무담당']||'-')+'</td>'
       +'</tr>';
   }).join('');
   if(CURRENT_TAB===1) updateKpiForList();
@@ -1092,6 +1136,91 @@ function updateTabCounts(){
     var cData = TAB_FILTER.company==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['업체명']===TAB_FILTER.company;});
     cc.textContent = '총 '+cData.length+'건';
   }
+}
+
+/* ── VENDOR LIST ── */
+function renderVendorList(){
+  var q = (document.getElementById('vendorSearchBox') ? document.getElementById('vendorSearchBox').value : '').trim().toLowerCase();
+  var companies = groupBy(ALL_DATA, '업체명');
+  var sorted = Object.keys(companies)
+    .filter(function(k){ return k && k !== '(미지정)'; })
+    .sort();
+
+  // 검색 필터
+  if(q){
+    sorted = sorted.filter(function(cp){
+      var rows = companies[cp];
+      var contact = rows[0]['업체담당자']||'';
+      return cp.toLowerCase().includes(q) || contact.toLowerCase().includes(q);
+    });
+  }
+
+  document.getElementById('vendorCount').textContent = '총 '+sorted.length+'개 업체';
+  var tbody = document.getElementById('vendorBody');
+  if(!tbody) return;
+
+  if(!sorted.length){
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = sorted.map(function(cp){
+    var rows = companies[cp];
+    var total = rows.length;
+    var done  = rows.filter(function(r){ return r['조치여부']==='완료'; }).length;
+    var prog  = rows.filter(function(r){ return r['조치여부']==='진행중'; }).length;
+
+    // 담당자·전화번호: 행마다 다를 수 있으므로 고유값 수집
+    var contacts = [];
+    var tels = [];
+    var tunnels = [];
+    rows.forEach(function(r){
+      if(r['업체담당자'] && !contacts.includes(r['업체담당자'])) contacts.push(r['업체담당자']);
+      if(r['전화번호']   && !tels.includes(r['전화번호']))       tels.push(r['전화번호']);
+      if(r['터널명']     && !tunnels.includes(r['터널명']))      tunnels.push(r['터널명']);
+    });
+
+    // 최근 처리내용: 조치일 기준 가장 최근 완료 행
+    var doneRows = rows.filter(function(r){ return r['조치여부']==='완료' && r['조치일']; });
+    doneRows.sort(function(a,b){
+      return (b['조치일']||'') > (a['조치일']||'') ? 1 : -1;
+    });
+    var latestContent = doneRows.length ? doneRows[0]['하자내용'] : (rows[0]['하자내용']||'-');
+
+    // 진행중 강조
+    var progHtml = prog > 0
+      ? '<span style="color:var(--coral);font-weight:700">'+prog+'</span>'
+      : '<span style="color:var(--txt3)">0</span>';
+
+    return '<tr onclick="filterCompanyTab(\''+esc(cp)+'\')" style="cursor:pointer">'
+      +'<td style="font-weight:700;color:var(--txt)">'+esc(cp)+'</td>'
+      +'<td class="td-nowrap">'+esc(contacts.join(', ')||'-')+'</td>'
+      +'<td class="td-nowrap">'+esc(tels.join(', ')||'-')+'</td>'
+      +'<td class="td-nowrap" style="color:var(--txt2)">'+esc(tunnels.join(', ')||'-')+'</td>'
+      +'<td style="text-align:center;font-weight:700;color:var(--sky800)">'+total+'</td>'
+      +'<td style="text-align:center;font-weight:700;color:var(--teal600)">'+done+'</td>'
+      +'<td style="text-align:center">'+progHtml+'</td>'
+      +'<td style="white-space:normal;line-height:1.5;color:var(--txt2);font-size:12px">'+esc(latestContent)+'</td>'
+      +'</tr>';
+  }).join('');
+}
+
+// 업체목록 행 클릭 → 업체별 탭으로 이동
+function filterCompanyTab(cp){
+  // 업체별 탭(4)으로 전환 후 해당 업체 필터
+  var btn = document.querySelectorAll('.tab-btn')[4];
+  switchTab(4, btn);
+  TAB_FILTER.company = cp;
+  renderCompanyPanel();
+  updateTabCounts();
+  // 드롭다운 라벨 업데이트
+  var label = document.getElementById('companyTabDdLabel');
+  if(label) label.textContent = cp;
+  var ddBtn = document.getElementById('companyTabDdBtn');
+  if(ddBtn){ ddBtn.style.background='var(--sky800)'; ddBtn.style.color='#fff'; ddBtn.style.borderColor='var(--sky800)'; }
+  document.querySelectorAll('#companyTabDdMenu .dd-opt').forEach(function(o){
+    o.classList.toggle('sel', o.dataset.val === cp);
+  });
 }
 
 /* ── TUNNEL PANEL ── */
