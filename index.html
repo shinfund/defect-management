@@ -688,12 +688,17 @@ function loadProxyPhoto(uid, proxyUrl, viewUrl, label){
     .then(function(r){ return r.text(); })
     .then(function(d){
       var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
-      if(!d || d.indexOf('data:') !== 0){
+      // Apps Script가 JSON {"dataUrl":"data:..."} 형식으로 반환하는 경우 파싱
+      var dataUrl = d;
+      if(d && d.indexOf('{') === 0){
+        try { var obj = JSON.parse(d); dataUrl = obj.dataUrl || ''; } catch(e){}
+      }
+      if(!dataUrl || dataUrl.indexOf('data:') !== 0){
         var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block'; return;
       }
       var a = document.createElement('a'); a.href=viewUrl; a.target='_blank'; a.rel='noopener';
       var img = document.createElement('img'); img.className='photo-img loaded';
-      img.src = d; img.alt = label;
+      img.src = dataUrl; img.alt = label;
       a.appendChild(img); wrap.insertBefore(a, wrap.firstChild);
     })
     .catch(function(err){
