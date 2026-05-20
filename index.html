@@ -602,7 +602,10 @@ function parseGviz(json){
       obj[lbl] = val.trim();
     });
     return obj;
-  }).filter(function(r){ return r['하자내용'] && r['하자내용'].length > 0; });
+  }).filter(function(r){
+    // 빈 행 제거 + 헤더행이 데이터로 읽힌 경우 제거
+    return r['하자내용'] && r['하자내용'].length > 0 && r['하자내용'] !== '하자내용';
+  });
 }
 
 function fmt(n){ return n<10?'0'+n:String(n); }
