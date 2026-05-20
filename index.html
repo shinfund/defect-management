@@ -568,13 +568,32 @@ function loadData(){
     })
     .catch(function(e){
       setSync(false);
-      document.getElementById('lastUpdate').textContent = '로드 실패';
+      var msg = '로드 실패 — ' + (e && e.message ? e.message : String(e));
+      document.getElementById('lastUpdate').textContent = msg;
       document.getElementById('lastUpdate').style.color = 'var(--coral)';
-      console.error(e);
+      console.error('[loadData 오류]', e);
+      // 오류 메시지를 요약 패널에도 표시
+      var p0 = document.getElementById('p0');
+      if(p0){
+        var existing = p0.querySelector('.load-err-msg');
+        if(!existing){
+          var div = document.createElement('div');
+          div.className = 'load-err-msg';
+          div.style.cssText = 'background:var(--coral50);border:1px solid var(--coral100);border-radius:var(--r8);padding:14px 18px;margin-bottom:14px;color:var(--coral800);font-size:13px;line-height:1.7';
+          div.innerHTML = '<strong>구글시트 연동 실패</strong><br>'
+            + '아래 사항을 확인해 주세요:<br>'
+            + '① 시트 공유가 <strong>링크가 있는 모든 사용자 → 뷰어</strong>로 설정되어 있는지<br>'
+            + '② 설정의 시트 이름이 실제 탭 이름과 <strong>정확히 일치</strong>하는지 (예: 하자내역)<br>'
+            + '③ 시트 ID가 올바른지<br>'
+            + '<span style="color:var(--coral);font-size:12px">오류: ' + (e && e.message ? e.message : String(e)) + '</span>';
+          p0.insertBefore(div, p0.firstChild);
+        }
+      }
     });
 }
 
 function parseGviz(json){
+  if(!json || !json.table) return [];
   var cols = json.table.cols.map(function(c){ return c.label; });
   return (json.table.rows||[]).map(function(r,i){
     var obj = { _idx: i+1 };
