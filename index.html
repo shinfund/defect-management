@@ -32,7 +32,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt)
 .hdr-icon svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .hdr-title{font-size:17px;font-weight:700;color:#fff;letter-spacing:-.02em}
 .hdr-sub{font-size:12px;color:rgba(255,255,255,.8);margin-top:1px}
-.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .hdr-btns{display:flex;gap:7px}
 .hdr-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:18px;padding:5px 13px;font-size:13px;font-family:inherit;cursor:pointer;display:flex;align-items:center;gap:5px;min-height:32px;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background .15s}
 .hdr-btn:hover{background:rgba(255,255,255,.25)}
@@ -53,44 +53,55 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt)
 .kpi-bar::-webkit-scrollbar{display:none}
 .kpi-card{flex:1;min-width:72px;background:var(--bg);border-radius:var(--r8);padding:8px 10px;text-align:center}
 .kpi-num{font-size:20px;font-weight:900;line-height:1.1}
-.kpi-lbl{font-size:10px;color:var(--txt3);margin-top:2px;font-weight:500}
+.kpi-lbl{font-size:12px;color:var(--txt2);margin-top:2px;font-weight:600}
 .kpi-total .kpi-num{color:var(--sky800)}
 .kpi-progress .kpi-num{color:var(--coral)}
 .kpi-done .kpi-num{color:var(--teal600)}
 .kpi-poor .kpi-num{color:var(--amber)}
 
 /* ── MAIN WRAP ── */
-.wrap{max-width:960px;margin:0 auto;padding:14px}
+.wrap{max-width:1280px;margin:0 auto;padding:14px}
 .panel{display:none}
 .panel.on{display:block}
 
 /* ── FILTER BAR ── */
-.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
-.filter-group{display:flex;gap:4px;flex-wrap:wrap}
-.f-chip{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--txt2);transition:all .12s;white-space:nowrap;font-family:inherit}
+.filter-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;align-items:center}
+.filter-group{display:flex;gap:6px;flex-wrap:wrap}
+.f-chip{padding:5px 10px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--card);color:var(--txt2);transition:all .12s;white-space:nowrap;font-family:inherit}
 .f-chip.on{background:var(--sky800);color:#fff;border-color:var(--sky800)}
 .f-chip.c-teal.on{background:var(--teal600);border-color:var(--teal600)}
 .f-chip.c-coral.on{background:var(--coral);border-color:var(--coral)}
 .f-chip.c-amber.on{background:var(--amber);border-color:var(--amber)}
 .search-box{flex:1;min-width:160px;padding:6px 10px;border-radius:var(--r8);border:1px solid var(--border);font-size:13px;font-family:inherit;color:var(--txt);background:var(--card);outline:none}
 .search-box:focus{border-color:var(--sky100);box-shadow:0 0 0 3px rgba(55,138,221,.1)}
-.filter-count{font-size:12px;color:var(--txt3);white-space:nowrap;padding:4px 0}
+.filter-count{font-size:13px;color:var(--txt2);font-weight:600;white-space:nowrap;padding:4px 0}
 
 /* ── TABLE ── */
 .tbl-wrap{background:var(--card);border-radius:var(--r12);border:1px solid var(--border);overflow:hidden;box-shadow:var(--shadow)}
 .tbl-scroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:680px}
+table{width:100%;border-collapse:collapse}
 thead tr{background:var(--bg);border-bottom:2px solid var(--border)}
-th{padding:9px 12px;font-size:11px;font-weight:700;color:var(--txt2);text-align:left;white-space:nowrap}
-td{padding:9px 12px;font-size:12px;color:var(--txt2);border-bottom:1px solid var(--border2);vertical-align:top;max-width:280px}
+th{padding:9px 12px;font-size:12px;font-weight:700;color:var(--txt);text-align:left;white-space:nowrap}
+td{padding:10px 12px;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border2);vertical-align:middle}
 tbody tr{cursor:pointer;transition:background .1s}
 tbody tr:hover{background:var(--sky50)}
 tbody tr:last-child td{border-bottom:none}
-.td-content{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px;display:block}
+.td-content{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;color:var(--txt);line-height:1.55;word-break:keep-all}
 .td-nowrap{white-space:nowrap}
+.col-expand{width:100%;min-width:320px}
+.col-remark{width:140px;min-width:140px;max-width:140px}
+.col-date{width:52px;white-space:nowrap}
+.col-tunnel{width:52px;white-space:nowrap}
+.col-type{width:44px;white-space:nowrap}
+.col-loc{width:80px;white-space:nowrap}
+.col-status{width:64px;white-space:nowrap}
+.col-date2{width:48px;white-space:nowrap}
+.col-company{width:88px;white-space:nowrap}
+.col-contact{width:76px;white-space:nowrap}
+.col-manager{width:72px;white-space:nowrap}
 
 /* ── STATUS BADGE ── */
-.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
 .badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 .badge-done{background:var(--teal50);color:var(--teal600)}
 .badge-prog{background:var(--coral50);color:var(--coral)}
@@ -102,15 +113,15 @@ tbody tr:last-child td{border-bottom:none}
 .sc-hd h3{font-size:13px;font-weight:700;color:var(--txt)}
 .dash-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.bar-label{font-size:12px;color:var(--txt2);min-width:64px;flex-shrink:0}
+.bar-label{font-size:13px;color:var(--txt2);min-width:64px;flex-shrink:0;font-weight:500}
 .bar-track{flex:1;height:18px;background:var(--bg);border-radius:20px;overflow:hidden}
 .bar-fill{height:100%;border-radius:20px;transition:width .4s ease}
-.bar-val{font-size:12px;font-weight:700;color:var(--txt);min-width:28px;text-align:right;flex-shrink:0}
-.bar-sub{font-size:10px;color:var(--txt3);min-width:36px;text-align:right;flex-shrink:0}
+.bar-val{font-size:13px;font-weight:700;color:var(--txt);min-width:28px;text-align:right;flex-shrink:0}
+.bar-sub{font-size:12px;font-weight:700;color:var(--teal600);min-width:36px;text-align:right;flex-shrink:0}
 .status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .status-card{padding:12px;border-radius:var(--r8);text-align:center}
 .status-card .num{font-size:24px;font-weight:900;line-height:1}
-.status-card .lbl{font-size:11px;margin-top:4px}
+.status-card .lbl{font-size:12px;margin-top:4px;font-weight:600}
 .status-done{background:var(--teal50);color:var(--teal600)}
 .status-prog{background:var(--coral50);color:var(--coral)}
 .status-poor{background:var(--amber50);color:var(--amber)}
@@ -139,7 +150,7 @@ tbody tr:last-child td{border-bottom:none}
 .detail-modal-close{width:28px;height:28px;border-radius:var(--r6);border:none;background:var(--bg);color:var(--txt2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .detail-row{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2)}
 .detail-row:last-child{border-bottom:none}
-.detail-key{font-size:12px;font-weight:700;color:var(--txt3);min-width:80px;flex-shrink:0;padding-top:1px}
+.detail-key{font-size:13px;font-weight:700;color:var(--txt2);min-width:80px;flex-shrink:0;padding-top:1px}
 .detail-val{font-size:13px;color:var(--txt);line-height:1.6;flex:1}
 
 /* ── 사진 영역 ── */
@@ -161,24 +172,99 @@ tbody tr:last-child td{border-bottom:none}
 .empty svg{width:40px;height:40px;stroke:var(--gray100);margin-bottom:10px}
 .empty p{font-size:13px}
 .load-hint{font-size:12px;color:var(--txt3);text-align:center;padding:10px 0 4px}
-.last-update{font-size:11px;color:var(--txt3);text-align:right;padding:6px 14px 8px}
+.last-update{font-size:12px;color:var(--txt3);text-align:right;padding:6px 14px 8px}
 .err-msg{font-size:12px;color:var(--coral);text-align:center;padding:8px 14px}
 
 /* ── RESPONSIVE ── */
-@media(max-width:480px){
-  .hdr{padding:11px 12px}
+
+/* 모바일 공통 (~ 640px) */
+@media(max-width:640px){
+  /* 헤더 */
+  .hdr{padding:10px 12px}
   .hdr-title{font-size:15px}
-  .wrap{padding:10px}
-  .kpi-card{min-width:60px;padding:6px 8px}
+  .hdr-sub{font-size:11px}
+  .hdr-icon{width:32px;height:32px}
+  .hdr-btn{padding:4px 10px;font-size:12px;min-height:28px}
+
+  /* 탭 - 글자 줄이고 균등 분할 */
+  .tab-btn{font-size:11px;padding:10px 2px;letter-spacing:-.03em}
+
+  /* KPI */
+  .kpi-bar{padding:8px 10px;gap:6px}
+  .kpi-card{min-width:56px;padding:6px 6px}
   .kpi-num{font-size:18px}
+  .kpi-lbl{font-size:11px}
+
+  /* 본문 */
+  .wrap{padding:10px}
+
+  /* 대시보드 */
   .dash-grid{grid-template-columns:1fr}
   .status-grid{grid-template-columns:repeat(3,1fr)}
+  .sc{padding:12px}
+  .sc-hd{flex-wrap:wrap;gap:6px}
+
+  /* 테이블 - 모바일에서 담당자·전화번호 숨김 */
+  .col-contact{display:none}
+  .col-remark{display:none}
+  table{min-width:480px}
+  td{padding:7px 8px;font-size:12px}
+  th{padding:7px 8px;font-size:11px}
+  .td-content{-webkit-line-clamp:4}
+
+  /* 필터 */
+  .f-chip{font-size:11px;padding:4px 8px}
+  .search-box{font-size:12px}
+
+  /* 모달 */
+  .modal-box{padding:18px;border-radius:var(--r16)}
+  .detail-modal-box{max-height:90vh}
 }
-@media(min-width:769px){
-  .tab-btn{font-size:13px;padding:10px 16px}
-  .wrap{padding:16px}
+
+/* 소형 모바일 (~ 380px) */
+@media(max-width:380px){
+  .tab-btn{font-size:10px}
+  .hdr-title{font-size:14px}
+  .kpi-num{font-size:16px}
 }
-.last-update{font-size:11px;color:rgba(255,255,255,.75);text-align:right}
+
+/* 태블릿 (641px ~ 960px) */
+@media(min-width:641px) and (max-width:960px){
+  .tab-btn{font-size:12px;padding:11px 6px}
+  .wrap{padding:14px}
+  .col-contact{display:table-cell}
+  .col-remark{display:table-cell}
+}
+
+/* PC (961px ~) */
+@media(min-width:961px){
+  .tab-btn{font-size:13px;padding:11px 16px}
+  .wrap{padding:18px}
+  .col-contact{display:table-cell}
+  .col-remark{display:table-cell}
+  table{width:100%;min-width:1100px}
+}
+
+@media(max-width:640px){
+  .modal-backdrop{padding:0;align-items:flex-end}
+  .detail-modal-box{max-width:100%;width:100%;border-radius:var(--r20) var(--r20) 0 0;max-height:92vh}
+  .modal-box{border-radius:var(--r16) var(--r16) 0 0;max-width:100%}
+}
+
+/* ── TUNNEL DROPDOWN ── */
+.dd-wrap{position:relative;display:inline-block}
+.dd-btn{background:var(--sky50);border:1.5px solid var(--sky100);color:var(--sky800);border-radius:20px;padding:5px 28px 5px 10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;min-height:30px;white-space:nowrap;display:flex;align-items:center;gap:5px;-webkit-tap-highlight-color:transparent;user-select:none;position:relative;transition:border-color .15s}
+.dd-btn:hover{border-color:var(--sky)}
+.dd-btn::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--sky600)}
+.dd-btn.active{background:var(--sky800);color:#fff;border-color:var(--sky800)}
+.dd-btn.active::after{color:#fff}
+.dd-menu{position:absolute;top:calc(100% + 6px);left:0;background:var(--card);border:1px solid var(--border);border-radius:var(--r12);box-shadow:0 8px 24px rgba(55,138,221,.15);z-index:500;min-width:130px;display:none;overflow:hidden}
+.dd-menu.open{display:block}
+.dd-opt{padding:9px 14px;font-size:13px;font-weight:600;color:var(--txt2);cursor:pointer;-webkit-tap-highlight-color:transparent;border-bottom:1px solid var(--border2);white-space:nowrap}
+.dd-opt:last-child{border-bottom:none}
+.dd-opt:hover{background:var(--sky50)}
+.dd-opt.sel{background:var(--sky800);color:#fff;font-weight:700}
+
 </style>
 </head>
 <body>
@@ -250,19 +336,20 @@ tbody tr:last-child td{border-bottom:none}
   </div>
   <!-- 탭 -->
   <div class="top-nav">
-    <button class="tab-btn on" onclick="switchTab(0,this)">대시보드</button>
-    <button class="tab-btn" onclick="switchTab(1,this)">목록</button>
+    <button class="tab-btn on" onclick="switchTab(0,this)">요약</button>
+    <button class="tab-btn" onclick="switchTab(1,this)">하자내역</button>
     <button class="tab-btn" onclick="switchTab(2,this)">터널별</button>
     <button class="tab-btn" onclick="switchTab(3,this)">공종별</button>
+    <button class="tab-btn" onclick="switchTab(4,this)">업체별</button>
   </div>
   <!-- KPI -->
-  <div class="kpi-bar">
-    <div class="kpi-card kpi-total"><div class="kpi-num" id="kpiTotal">-</div><div class="kpi-lbl">전체</div></div>
-    <div class="kpi-card kpi-progress"><div class="kpi-num" id="kpiProg">-</div><div class="kpi-lbl">진행중</div></div>
-    <div class="kpi-card kpi-done"><div class="kpi-num" id="kpiDone">-</div><div class="kpi-lbl">완료</div></div>
-    <div class="kpi-card kpi-poor"><div class="kpi-num" id="kpiPoor">-</div><div class="kpi-lbl">미흡</div></div>
+  <div class="kpi-bar" id="kpiBar">
+    <div class="kpi-card kpi-total"><div class="kpi-num" id="kpiTotal">-</div><div class="kpi-lbl" id="kpiLbl0">전체</div></div>
+    <div class="kpi-card kpi-progress"><div class="kpi-num" id="kpiProg">-</div><div class="kpi-lbl" id="kpiLbl1">진행중</div></div>
+    <div class="kpi-card kpi-done"><div class="kpi-num" id="kpiDone">-</div><div class="kpi-lbl" id="kpiLbl2">완료</div></div>
+    <div class="kpi-card kpi-poor"><div class="kpi-num" id="kpiPoor">-</div><div class="kpi-lbl" id="kpiLbl3">미흡</div></div>
   </div>
-  <div class="last-update" id="lastUpdate2" style="padding:6px 14px 8px;text-align:right;font-size:11px;color:var(--txt3);background:#fff"></div>
+
 </div>
 
 <div class="wrap">
@@ -291,6 +378,10 @@ tbody tr:last-child td{border-bottom:none}
     <div class="sc-hd"><h3>공종별 현황</h3></div>
     <div id="typeChart"></div>
   </div>
+  <div class="sc">
+    <div class="sc-hd"><h3>업체별 현황</h3></div>
+    <div id="companyChart"></div>
+  </div>
 </div>
 
 <!-- 패널1: 목록 -->
@@ -302,17 +393,28 @@ tbody tr:last-child td{border-bottom:none}
       <button class="f-chip c-teal" data-val="완료" onclick="setFilter('status','완료',this)">완료</button>
       <button class="f-chip c-amber" data-val="미흡" onclick="setFilter('status','미흡',this)">미흡</button>
     </div>
-    <input class="search-box" id="searchBox" placeholder="🔍 하자내용, 터널명, 위치 검색..." oninput="renderList()">
-  </div>
-  <div class="filter-row">
-    <div class="filter-group" id="tunnelFilter"></div>
+    <div class="dd-wrap" id="tunnelDdWrap">
+      <button class="dd-btn" id="tunnelDdBtn" onclick="toggleTunnelDd()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        <span id="tunnelDdLabel">터널 전체</span>
+      </button>
+      <div class="dd-menu" id="tunnelDdMenu"></div>
+    </div>
+    <div class="dd-wrap" id="managerDdWrap">
+      <button class="dd-btn" id="managerDdBtn" onclick="toggleManagerDd()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span id="managerDdLabel">업무담당 전체</span>
+      </button>
+      <div class="dd-menu" id="managerDdMenu"></div>
+    </div>
+    <input class="search-box" id="searchBox" placeholder="🔍 하자내용, 위치 검색..." oninput="renderList()">
   </div>
   <div class="filter-count" id="filterCount"></div>
   <div class="tbl-wrap">
     <div class="tbl-scroll">
       <table>
         <thead><tr>
-          <th>No.</th><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th>하자내용</th><th>상태</th><th>조치일</th><th>업체</th>
+          <th class="col-date">날짜</th><th class="col-tunnel">터널</th><th class="col-type">공종</th><th class="col-loc">위치</th><th class="col-expand">하자내용</th><th class="col-status">상태</th><th class="col-date2">조치일</th><th class="col-company">업체</th><th class="col-contact">담당자</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">업무담당</th>
         </tr></thead>
         <tbody id="listBody"></tbody>
       </table>
@@ -322,38 +424,75 @@ tbody tr:last-child td{border-bottom:none}
 
 <!-- 패널2: 터널별 -->
 <div class="panel" id="p2">
+  <div class="filter-row" style="margin-bottom:14px">
+    <div class="dd-wrap" id="tunnelTabDdWrap">
+      <button class="dd-btn" id="tunnelTabDdBtn" onclick="toggleTabDd('tunnel')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        <span id="tunnelTabDdLabel">터널 전체</span>
+      </button>
+      <div class="dd-menu" id="tunnelTabDdMenu"></div>
+    </div>
+    <div class="filter-count" id="tunnelTabCount"></div>
+  </div>
   <div id="tunnelPanels"></div>
 </div>
 
 <!-- 패널3: 공종별 -->
 <div class="panel" id="p3">
+  <div class="filter-row" style="margin-bottom:14px">
+    <div class="dd-wrap" id="typeTabDdWrap">
+      <button class="dd-btn" id="typeTabDdBtn" onclick="toggleTabDd('type')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <span id="typeTabDdLabel">공종 전체</span>
+      </button>
+      <div class="dd-menu" id="typeTabDdMenu"></div>
+    </div>
+    <div class="filter-count" id="typeTabCount"></div>
+  </div>
   <div id="typePanels"></div>
+</div>
+
+<!-- 패널4: 업체별 -->
+<div class="panel" id="p4">
+  <div class="filter-row" style="margin-bottom:14px">
+    <div class="dd-wrap" id="companyTabDdWrap">
+      <button class="dd-btn" id="companyTabDdBtn" onclick="toggleTabDd('company')">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span id="companyTabDdLabel">업체 전체</span>
+      </button>
+      <div class="dd-menu" id="companyTabDdMenu"></div>
+    </div>
+    <div class="filter-count" id="companyTabCount"></div>
+  </div>
+  <div id="companyPanels"></div>
 </div>
 
 </div><!-- /wrap -->
 
 <script>
 var ALL_DATA = [];
-var FILTER = { status:'ALL', tunnel:'ALL' };
+var FILTER = { status:'ALL', tunnel:'ALL', manager:'ALL' };
+var TAB_FILTER = { tunnel:'ALL', type:'ALL', company:'ALL' };
 var CFG = { sheetId:'', sheetName:'Sheet1' };
 
 /* ── 데모 데이터 (2026년 1월 발생 하자, 편집·확인용) ── */
 var DEMO_DATA = [
-  {_idx:1, ID:'23', 날짜:'2026-01-06', 공종:'설비', 터널명:'흥해', 위치:'관리동', 하자내용:'히팅케이블 가동시간 표출 불량 (포항방향)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'서진엔지니어링', 업체담당자:'성용성 부장', 전화번호:'010-2715-6672', 비고:'', 출처:'흥해터널'},
-  {_idx:2, ID:'24', 날짜:'2026-01-13', 공종:'소방', 터널명:'흥해', 위치:'관리동', 하자내용:'전자식 압력스위치 점검용 볼밸브 누락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-20', 조치사진_URL:'', 업체명:'서진엔지니어링', 업체담당자:'성용성 부장', 전화번호:'010-2715-6672', 비고:'', 출처:'흥해터널'},
-  {_idx:3, ID:'25', 날짜:'2026-01-13', 공종:'건축', 터널명:'흥해', 위치:'관리동', 하자내용:'현관입구 유리 파손', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'태갑종건(주)', 업체담당자:'조시현 소장', 전화번호:'010-2879-6910', 비고:'', 출처:'흥해터널'},
-  {_idx:4, ID:'26', 날짜:'2026-01-23', 공종:'전기', 터널명:'흥해', 위치:'관리동', 하자내용:'UPS#1 밧데리 BMS 내부저항 이상 경보 (5번~8번 밧데리)', 하자사진_URL:'', 조치여부:'진행중', 조치일:'', 조치사진_URL:'', 업체명:'아이에프텍', 업체담당자:'맹대섭 이사', 전화번호:'010-3266-4392', 비고:'자체보수', 출처:'흥해터널'},
-  {_idx:5, ID:'77', 날짜:'2026-01-05', 공종:'건축', 터널명:'청하', 위치:'부전기실', 하자내용:'출입구 셔터 조작스위치 마감 미흡', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'태양건설', 업체담당자:'박봉수 소장', 전화번호:'010-4517-9368', 비고:'', 출처:'청하터널'},
-  {_idx:6, ID:'78', 날짜:'2026-01-06', 공종:'전기', 터널명:'청하', 위치:'부전기실', 하자내용:'201/LV MCCB 전원 투입 영상고조파필터기기 내부 단락으로 인한 손상', 하자사진_URL:'', 조치여부:'미흡', 조치일:'', 조치사진_URL:'', 업체명:'프라임솔루션', 업체담당자:'황대영 이사', 전화번호:'010-5241-1061', 비고:'A/S진행중', 출처:'청하터널'},
-  {_idx:7, ID:'79', 날짜:'2026-01-12', 공종:'설비', 터널명:'청하', 위치:'본선회차로', 하자내용:'터널 입구(영덕) 회차로 X게이트 파손', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-14', 조치사진_URL:'', 업체명:'이화', 업체담당자:'이재환 과장', 전화번호:'010-7220-4848', 비고:'', 출처:'청하터널'},
-  {_idx:8, ID:'80', 날짜:'2026-01-14', 공종:'설비', 터널명:'청하', 위치:'본선', 하자내용:'포항방향(주행) 차단막 상부 기어박스 본체 뒷면 커버문짝 탈락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'HP시스템', 업체담당자:'박은경 부사장', 전화번호:'010-2082-9932', 비고:'', 출처:'청하터널'},
-  {_idx:9, ID:'81', 날짜:'2026-01-15', 공종:'전기', 터널명:'청하', 위치:'주전기실', 하자내용:'112/LV 제트팬판넬 JFD-203 푸시버튼 GL 미점등', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'일렉콤', 업체담당자:'정석희 이사', 전화번호:'010-2847-6858', 비고:'', 출처:'청하터널'},
-  {_idx:10, ID:'82', 날짜:'2026-01-16', 공종:'전기', 터널명:'청하', 위치:'주전기실', 하자내용:'112/LV 제트팬판넬 전자접촉기(MC65a) 교체요청', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'일렉콤', 업체담당자:'정석희 이사', 전화번호:'010-2847-6858', 비고:'', 출처:'청하터널'},
-  {_idx:11, ID:'109', 날짜:'2026-01-01', 공종:'전기', 터널명:'남정5', 위치:'발전기 히터', 하자내용:'발전기 히팅후 차단기 Trip됨 — 히팅전류 35A, 차단기용량 20A, 50A 증설예정', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-28', 조치사진_URL:'', 업체명:'하이맥스', 업체담당자:'홍대건 과장', 전화번호:'010-9522-3588', 비고:'', 출처:'남정5터널'},
-  {_idx:12, ID:'110', 날짜:'2026-01-21', 공종:'건축', 터널명:'남정5', 위치:'지하공동구', 하자내용:'공동구 집수정 토사물 적체', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-04-02', 조치사진_URL:'', 업체명:'현대산업', 업체담당자:'이민우 과장', 전화번호:'010-8880-0475', 비고:'', 출처:'남정5터널'},
-  {_idx:13, ID:'111', 날짜:'2026-01-22', 공종:'전기', 터널명:'남정5', 위치:'시선유도등', 하자내용:'시선유도등용(영덕방향) ZCT 결선불량', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-28', 조치사진_URL:'', 업체명:'하이맥스', 업체담당자:'홍대건 과장', 전화번호:'010-9522-3588', 비고:'', 출처:'남정5터널'},
-  {_idx:14, ID:'133', 날짜:'2026-01-01', 공종:'전기', 터널명:'남정4', 위치:'옥외전기실', 하자내용:'UPS PCB기판 불량', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-08', 조치사진_URL:'', 업체명:'성신전기공업', 업체담당자:'이성규 과장', 전화번호:'010-4730-0240', 비고:'', 출처:'점검팀'},
-  {_idx:15, ID:'134', 날짜:'2026-01-14', 공종:'전기', 터널명:'청하', 위치:'포항방향', 하자내용:'터널진입차단설비 뒷면 카버 탈락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'에이치피시스템', 업체담당자:'박은경 대표', 전화번호:'010-2082-9932', 비고:'', 출처:'점검팀'},
+  {_idx:1, 날짜:'2026-01-06', 공종:'설비', 터널명:'흥해', 위치:'관리동', 하자내용:'히팅케이블 가동시간 표출 불량 (포항방향)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'서진엔지니어링', 업체담당자:'성용성 부장', 전화번호:'010-2715-6672', 비고:'', 업무담당:'흥해터널'},
+  {_idx:2, 날짜:'2026-01-13', 공종:'소방', 터널명:'흥해', 위치:'관리동', 하자내용:'전자식 압력스위치 점검용 볼밸브 누락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-20', 조치사진_URL:'', 업체명:'서진엔지니어링', 업체담당자:'성용성 부장', 전화번호:'010-2715-6672', 비고:'', 업무담당:'흥해터널'},
+  {_idx:3, 날짜:'2026-01-13', 공종:'건축', 터널명:'흥해', 위치:'관리동', 하자내용:'현관입구 유리 파손', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'태갑종합건축', 업체담당자:'조시현 소장', 전화번호:'010-2879-6910', 비고:'', 업무담당:'흥해터널'},
+  {_idx:4, 날짜:'2026-01-23', 공종:'전기', 터널명:'흥해', 위치:'관리동', 하자내용:'UPS#1 밧데리 BMS 내부저항 이상 경보 (5번 ~ 8번 밧데리 내부저항 이상 표출)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-23', 조치사진_URL:'', 업체명:'', 업체담당자:'', 전화번호:'', 비고:'자체보수', 업무담당:'흥해터널'},
+  {_idx:5, 날짜:'2026-01-05', 공종:'건축', 터널명:'청하', 위치:'부전기실', 하자내용:'출입구 셔터 조작스위치 마감 미흡', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'㈜태양건설', 업체담당자:'박봉수 소장', 전화번호:'010-4517-9368', 비고:'', 업무담당:'청하터널'},
+  {_idx:6, 날짜:'2026-01-06', 공종:'전기', 터널명:'청하', 위치:'부전기실', 하자내용:'201/LV  MCCB 전원 투입 영상고조파필터기기 내부 단락 으로 인한 손상 (0129 A/S차 수거, 0226 기기설치, 0310 A/S팀 방문 전원투입, 0311 이상소음발생 전원 끔 0325고조파필터 기기 교체2ea)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-03-25', 조치사진_URL:'', 업체명:'프라임솔루션', 업체담당자:'황대영 이사', 전화번호:'010-5241-1061', 비고:'0325 영상고조파필터 기기 새재품 으로 교체', 업무담당:'청하터널'},
+  {_idx:7, 날짜:'2026-01-12', 공종:'설비', 터널명:'청하', 위치:'본선회차로', 하자내용:'터널 입구(영덕) 회차로 X게이트 파손', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-14', 조치사진_URL:'', 업체명:'㈜이화', 업체담당자:'이재환 과장', 전화번호:'010-7220-4848', 비고:'', 업무담당:'청하터널'},
+  {_idx:8, 날짜:'2026-01-14', 공종:'설비', 터널명:'청하', 위치:'본선', 하자내용:'포항방향(주행) 차단막 상부 기어박스 본체 뒷면 커버문짝 탈락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'HP시스템', 업체담당자:'박은경 부사장', 전화번호:'010-2082-9932', 비고:'', 업무담당:'청하터널'},
+  {_idx:9, 날짜:'2026-01-15', 공종:'전기', 터널명:'청하', 위치:'주전기실', 하자내용:'112/LV 제트팬판넬 JFD-203 푸시버튼 GL 미점등', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'일렉콤', 업체담당자:'정석희 이사', 전화번호:'010-2847-6858', 비고:'', 업무담당:'청하터널'},
+  {_idx:10, 날짜:'2026-01-16', 공종:'전기', 터널명:'청하', 위치:'주전기실', 하자내용:'112/LV 제트팬판넬 전자접촉기(MC65a) 교체요청', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'일렉콤', 업체담당자:'정석희 이사', 전화번호:'010-2847-6858', 비고:'', 업무담당:'청하터널'},
+  {_idx:11, 날짜:'2026-01-22', 공종:'환기', 터널명:'청하', 위치:'터널', 하자내용:'포항방향 VICO #102 불량', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-02-24', 조치사진_URL:'', 업체명:'파코코리아', 업체담당자:'김종원 차장', 전화번호:'010-4543-3736', 비고:'', 업무담당:'청하터널'},
+  {_idx:12, 날짜:'2026-01-01', 공종:'전기', 터널명:'남정5', 위치:'발전기  히터', 하자내용:'발전기 히팅후 차단기 Trip됨 히팅전류 35A, 차단기용량 20A 차단기 용량 50A 증설예정', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-28', 조치사진_URL:'', 업체명:'하이맥스', 업체담당자:'홍대건 과장', 전화번호:'010-9522-3588', 비고:'', 업무담당:'남정5터널'},
+  {_idx:13, 날짜:'2026-01-21', 공종:'건축', 터널명:'남정5', 위치:'지하공동구', 하자내용:'공동구 집수정 토사물 적체', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-04-02', 조치사진_URL:'', 업체명:'현대산업', 업체담당자:'이민우 과장', 전화번호:'010-8880-0475', 비고:'', 업무담당:'남정5터널'},
+  {_idx:14, 날짜:'2026-01-22', 공종:'전기', 터널명:'남정5', 위치:'시선유도등', 하자내용:'시선유도등용(영덕방향) ZCT 결선불량', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-28', 조치사진_URL:'', 업체명:'하이맥스', 업체담당자:'홍대건 과장', 전화번호:'010-9522-3588', 비고:'', 업무담당:'남정5터널'},
+  {_idx:15, 날짜:'2026-01-01', 공종:'전기', 터널명:'남정4', 위치:'옥외 전기실', 하자내용:'UPS PCB기판 불랭', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-08', 조치사진_URL:'', 업체명:'성신전기공업', 업체담당자:'이성규과장', 전화번호:'010-4730-0240', 비고:'', 업무담당:'점검팀'},
+  {_idx:16, 날짜:'2026-01-14', 공종:'전기', 터널명:'청하', 위치:'포항방향', 하자내용:'터널진입차단설비 뒷면 카버 탈락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'HP시스템', 업체담당자:'박은경 대표', 전화번호:'010-2082-9932', 비고:'', 업무담당:'점검팀'}
 ];
 
 /* ── INIT ── */
@@ -369,14 +508,14 @@ var DEMO_DATA = [
 function loadDemo(){
   ALL_DATA = DEMO_DATA;
   buildTunnelFilter();
+  buildManagerFilter();
+  buildTabDropdowns();
   updateKPI();
   renderAll();
-  updateHdrSub('데모 데이터 (2026년 1월) · 설정에서 시트 연동');
-  var demoTxt = '데모 모드 — ⚙ 설정에서 Google Sheets ID를 입력하면 실제 데이터로 전환됩니다';
-  document.getElementById('lastUpdate').textContent = demoTxt;
-  document.getElementById('lastUpdate2').textContent = demoTxt;
-  document.getElementById('lastUpdate').style.color = 'rgba(255,255,255,.8)';
-  document.getElementById('lastUpdate2').style.color = 'var(--amber)';
+  document.getElementById('lastUpdate').textContent = '';
+  // 초기 탭이 요약(0)이므로 KPI 바 숨김
+  var kpiBar = document.getElementById('kpiBar');
+  if(kpiBar) kpiBar.style.display = 'none';
 }
 
 /* ── CONFIG MODAL ── */
@@ -414,23 +553,23 @@ function loadData(){
       var json = JSON.parse(txt.replace(/^[^(]+\(|\);?\s*$/g,''));
       ALL_DATA = parseGviz(json);
       buildTunnelFilter();
+      buildManagerFilter();
+      buildTabDropdowns();
       updateKPI();
       renderAll();
       setSync(false);
+      // 현재 탭이 요약(0)이면 KPI 바 숨김
+      var kpiBar = document.getElementById('kpiBar');
+      if(kpiBar) kpiBar.style.display = CURRENT_TAB === 0 ? 'none' : '';
       var now = new Date();
-      var upTxt = '최종 업데이트: '+fmt(now.getMonth()+1)+'/'+fmt(now.getDate())+' '+fmt(now.getHours())+':'+fmt(now.getMinutes());
+      var upTxt = '마지막 업데이트: '+fmt(now.getMonth()+1)+'. '+fmt(now.getDate())+'. '+fmt(now.getHours())+':'+fmt(now.getMinutes());
       document.getElementById('lastUpdate').textContent = upTxt;
-      document.getElementById('lastUpdate2').textContent = upTxt;
-      updateHdrSub('총 '+ALL_DATA.length+'건 · 구글시트 연동');
+      document.getElementById('lastUpdate').style.color = 'rgba(255,255,255,.75)';
     })
     .catch(function(e){
       setSync(false);
-      var errMsg = '로드 실패 — 시트 공유 설정(링크가 있는 모든 사용자)을 확인하세요';
-      document.getElementById('lastUpdate').textContent = errMsg;
-      document.getElementById('lastUpdate2').textContent = errMsg;
+      document.getElementById('lastUpdate').textContent = '로드 실패';
       document.getElementById('lastUpdate').style.color = 'var(--coral)';
-      document.getElementById('lastUpdate2').style.color = 'var(--coral)';
-      updateHdrSub('로드 실패');
       console.error(e);
     });
 }
@@ -454,11 +593,59 @@ function parseGviz(json){
 
 function fmt(n){ return n<10?'0'+n:String(n); }
 
+/* ── BUILD MANAGER DROPDOWN ── */
+function buildManagerFilter(){
+  var managers = [];
+  ALL_DATA.forEach(function(r){ if(r['업무담당'] && !managers.includes(r['업무담당'])) managers.push(r['업무담당']); });
+  managers.sort();
+  var menu = document.getElementById('managerDdMenu');
+  if(!menu) return;
+  var opts = [{ val:'ALL', label:'업무담당 전체' }];
+  managers.forEach(function(m){ opts.push({ val:m, label:m }); });
+  menu.innerHTML = opts.map(function(o){
+    return '<div class="dd-opt'+(o.val==='ALL'?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+  }).join('');
+  menu.addEventListener('click', function(e){
+    var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+    if(opt && opt.dataset && opt.dataset.val) selectManager(opt.dataset.val, opt);
+  });
+  document.addEventListener('click', function(e){
+    var wrap = document.getElementById('managerDdWrap');
+    if(wrap && !wrap.contains(e.target)) closeManagerDd();
+  });
+}
+
+function toggleManagerDd(){
+  var menu = document.getElementById('managerDdMenu');
+  var btn  = document.getElementById('managerDdBtn');
+  if(!menu||!btn) return;
+  if(menu.classList.contains('open')){ closeManagerDd(); }
+  else { menu.classList.add('open'); btn.classList.add('active'); }
+}
+
+function closeManagerDd(){
+  var menu = document.getElementById('managerDdMenu'); if(menu) menu.classList.remove('open');
+  var btn  = document.getElementById('managerDdBtn');  if(btn)  btn.classList.remove('active');
+}
+
+function selectManager(val, el){
+  document.querySelectorAll('#managerDdMenu .dd-opt').forEach(function(o){ o.classList.remove('sel'); });
+  if(el) el.classList.add('sel');
+  document.getElementById('managerDdLabel').textContent = val==='ALL' ? '업무담당 전체' : val;
+  var btn = document.getElementById('managerDdBtn');
+  if(btn){
+    if(val==='ALL'){ btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
+    else { btn.style.background='var(--sky800)'; btn.style.color='#fff'; btn.style.borderColor='var(--sky800)'; }
+  }
+  FILTER.manager = val;
+  closeManagerDd();
+  renderList();
+}
+
 /* ── FILTER ── */
 function setFilter(key, val, el){
   FILTER[key] = val;
-  var grpId = key==='status'?'statusFilter':'tunnelFilter';
-  var btns = document.getElementById(grpId).querySelectorAll('.f-chip');
+  var btns = document.getElementById('statusFilter').querySelectorAll('.f-chip');
   btns.forEach(function(b){ b.classList.remove('on'); });
   el.classList.add('on');
   renderList();
@@ -469,54 +656,174 @@ function filtered(){
   return ALL_DATA.filter(function(r){
     var stMatch = FILTER.status==='ALL' || r['조치여부']===FILTER.status;
     var tnMatch = FILTER.tunnel==='ALL' || r['터널명']===FILTER.tunnel;
+    var mgMatch = FILTER.manager==='ALL' || r['업무담당']===FILTER.manager;
     var qMatch  = !q || (r['하자내용']||'').toLowerCase().includes(q)
                      || (r['터널명']||'').toLowerCase().includes(q)
                      || (r['위치']||'').toLowerCase().includes(q)
-                     || (r['공종']||'').toLowerCase().includes(q);
-    return stMatch && tnMatch && qMatch;
+                     || (r['공종']||'').toLowerCase().includes(q)
+                     || (r['업무담당']||'').toLowerCase().includes(q);
+    return stMatch && tnMatch && mgMatch && qMatch;
   });
 }
 
-/* ── BUILD TUNNEL FILTER CHIPS ── */
+/* ── BUILD TUNNEL DROPDOWN ── */
 function buildTunnelFilter(){
   var tunnels = [];
   ALL_DATA.forEach(function(r){ if(r['터널명'] && !tunnels.includes(r['터널명'])) tunnels.push(r['터널명']); });
   tunnels.sort();
-  var el = document.getElementById('tunnelFilter');
-  el.innerHTML = '<button class="f-chip on" data-val="ALL" onclick="setFilter(\'tunnel\',\'ALL\',this)">전체</button>';
-  tunnels.forEach(function(t){
-    var b = document.createElement('button');
-    b.className='f-chip'; b.dataset.val=t;
-    b.textContent=t;
-    b.onclick = function(){ setFilter('tunnel',t,this); };
-    el.appendChild(b);
+  var menu = document.getElementById('tunnelDdMenu');
+  var opts = [{ val:'ALL', label:'터널 전체' }];
+  tunnels.forEach(function(t){ opts.push({ val:t, label:t }); });
+  menu.innerHTML = opts.map(function(o){
+    return '<div class="dd-opt'+(o.val==='ALL'?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+  }).join('');
+  menu.addEventListener('click', function(e){
+    var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+    if(opt && opt.dataset && opt.dataset.val) selectTunnel(opt.dataset.val, opt);
+  });
+  // 외부 클릭 시 닫기
+  document.addEventListener('click', function(e){
+    var wrap = document.getElementById('tunnelDdWrap');
+    if(wrap && !wrap.contains(e.target)) closeTunnelDd();
   });
 }
 
+function toggleTunnelDd(){
+  var menu = document.getElementById('tunnelDdMenu');
+  var btn  = document.getElementById('tunnelDdBtn');
+  var isOpen = menu.classList.contains('open');
+  if(isOpen){ closeTunnelDd(); }
+  else { menu.classList.add('open'); btn.classList.add('active'); }
+}
+
+function closeTunnelDd(){
+  document.getElementById('tunnelDdMenu').classList.remove('open');
+  document.getElementById('tunnelDdBtn').classList.remove('active');
+}
+
+function selectTunnel(val, el){
+  // sel 클래스 이동
+  document.querySelectorAll('#tunnelDdMenu .dd-opt').forEach(function(o){ o.classList.remove('sel'); });
+  el.classList.add('sel');
+  // 버튼 라벨 업데이트
+  document.getElementById('tunnelDdLabel').textContent = val==='ALL' ? '터널 전체' : val;
+  // btn 활성 표시 (전체가 아닐 때 강조)
+  var btn = document.getElementById('tunnelDdBtn');
+  if(val==='ALL'){ btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
+  else { btn.style.background='var(--sky800)'; btn.style.color='#fff'; btn.style.borderColor='var(--sky800)'; }
+  FILTER.tunnel = val;
+  closeTunnelDd();
+  renderList();
+}
+
 /* ── KPI ── */
-function updateKPI(){
-  var d=ALL_DATA, done=0, prog=0, poor=0;
+var CURRENT_TAB = 0;
+
+function updateKPI(tabNum){
+  if(tabNum === undefined) tabNum = CURRENT_TAB;
+  var d = ALL_DATA;
+  var done=0, prog=0, poor=0;
   d.forEach(function(r){
     var s=r['조치여부'];
-    if(s==='완료') done++;
-    else if(s==='진행중') prog++;
-    else if(s==='미흡') poor++;
+    if(s==='완료') done++; else if(s==='진행중') prog++; else if(s==='미흡') poor++;
   });
-  document.getElementById('kpiTotal').textContent = d.length;
-  document.getElementById('kpiProg').textContent  = prog;
-  document.getElementById('kpiDone').textContent  = done;
-  document.getElementById('kpiPoor').textContent  = poor;
-  document.getElementById('ds-done').textContent  = done;
-  document.getElementById('ds-prog').textContent  = prog;
-  document.getElementById('ds-poor').textContent  = poor;
+
+  // 요약 대시보드 카드는 항상 전체 기준
+  document.getElementById('ds-done').textContent = done;
+  document.getElementById('ds-prog').textContent = prog;
+  document.getElementById('ds-poor').textContent = poor;
   var rate = d.length>0?Math.round(done/d.length*100):0;
   document.getElementById('rateWrap').innerHTML =
     '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">'
     +'<span style="font-size:32px;font-weight:900;color:var(--teal600)">'+rate+'%</span>'
-    +'<span style="font-size:12px;color:var(--txt3)">하자 완료율</span></div>'
+    +'<span style="font-size:13px;font-weight:600;color:var(--txt2)">하자 완료율</span></div>'
     +'<div class="bar-track" style="height:12px">'
     +'<div class="bar-fill" style="width:'+rate+'%;background:var(--teal600)"></div></div>';
+
+  if(tabNum === 0){
+    // 요약: 전체 기준
+    setKpiLabels('전체','진행중','완료','미흡');
+    document.getElementById('kpiTotal').textContent = d.length;
+    document.getElementById('kpiProg').textContent  = prog;
+    document.getElementById('kpiDone').textContent  = done;
+    document.getElementById('kpiPoor').textContent  = poor;
+
+  } else if(tabNum === 1){
+    // 하자내역: 현재 필터 결과 기준
+    updateKpiForList();
+
+  } else if(tabNum === 2){
+    // 터널별
+    var tunnels = groupBy(d,'터널명');
+    var tCount = Object.keys(tunnels).length;
+    var tRates = Object.keys(tunnels).map(function(t){
+      var r=tunnels[t], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
+      return Math.round(dn/r.length*100);
+    });
+    var avgRate = tCount>0?Math.round(tRates.reduce(function(a,b){return a+b;},0)/tCount):0;
+    var unprocT = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+    setKpiLabels('터널 수','미처리 합계','평균 완료율','미흡');
+    document.getElementById('kpiTotal').textContent = tCount+'개';
+    document.getElementById('kpiProg').textContent  = unprocT;
+    document.getElementById('kpiDone').textContent  = avgRate+'%';
+    document.getElementById('kpiPoor').textContent  = poor;
+
+  } else if(tabNum === 3){
+    // 공종별
+    var types = groupBy(d,'공종');
+    var tyCount = Object.keys(types).length;
+    var tyRates = Object.keys(types).map(function(t){
+      var r=types[t], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
+      return Math.round(dn/r.length*100);
+    });
+    var avgRateTy = tyCount>0?Math.round(tyRates.reduce(function(a,b){return a+b;},0)/tyCount):0;
+    var unprocTy = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+    setKpiLabels('공종 수','미처리 합계','평균 완료율','미흡');
+    document.getElementById('kpiTotal').textContent = tyCount+'개';
+    document.getElementById('kpiProg').textContent  = unprocTy;
+    document.getElementById('kpiDone').textContent  = avgRateTy+'%';
+    document.getElementById('kpiPoor').textContent  = poor;
+
+  } else if(tabNum === 4){
+    // 업체별
+    var companies = groupBy(d,'업체명');
+    var cCount = Object.keys(companies).length;
+    var cRates = Object.keys(companies).map(function(c){
+      var r=companies[c], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
+      return Math.round(dn/r.length*100);
+    });
+    var avgRateC = cCount>0?Math.round(cRates.reduce(function(a,b){return a+b;},0)/cCount):0;
+    var unprocC = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+    setKpiLabels('업체 수','미처리 합계','평균 완료율','미흡');
+    document.getElementById('kpiTotal').textContent = cCount+'개';
+    document.getElementById('kpiProg').textContent  = unprocC;
+    document.getElementById('kpiDone').textContent  = avgRateC+'%';
+    document.getElementById('kpiPoor').textContent  = poor;
+  }
 }
+
+function setKpiLabels(l0,l1,l2,l3){
+  document.getElementById('kpiLbl0').textContent = l0;
+  document.getElementById('kpiLbl1').textContent = l1;
+  document.getElementById('kpiLbl2').textContent = l2;
+  document.getElementById('kpiLbl3').textContent = l3;
+}
+
+function updateKpiForList(){
+  // 하자내역 탭: 필터 결과 기준
+  var rows = filtered();
+  var done=0,prog=0,poor=0;
+  rows.forEach(function(r){
+    var s=r['조치여부'];
+    if(s==='완료') done++; else if(s==='진행중') prog++; else if(s==='미흡') poor++;
+  });
+  setKpiLabels('필터 결과','진행중','완료','미흡');
+  document.getElementById('kpiTotal').textContent = rows.length;
+  document.getElementById('kpiProg').textContent  = prog;
+  document.getElementById('kpiDone').textContent  = done;
+  document.getElementById('kpiPoor').textContent  = poor;
+}
+
 
 /* ── RENDER ALL ── */
 function renderAll(){
@@ -524,15 +831,23 @@ function renderAll(){
   renderDashboard();
   renderTunnelPanel();
   renderTypePanel();
+  renderCompanyPanel();
 }
 
 /* ── LIST ── */
 function renderList(){
   var rows = filtered();
+  // 날짜 오름차순 정렬
+  rows.sort(function(a, b){
+    var da = (a['날짜']||'').replace(/[.\/]/g,'-');
+    var db = (b['날짜']||'').replace(/[.\/]/g,'-');
+    return da < db ? -1 : da > db ? 1 : 0;
+  });
   document.getElementById('filterCount').textContent = '총 '+rows.length+'건';
   var tbody = document.getElementById('listBody');
   if(!rows.length){
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
+    if(CURRENT_TAB===1) updateKpiForList();
     return;
   }
   tbody.innerHTML = rows.map(function(r,i){
@@ -540,7 +855,6 @@ function renderList(){
     var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
     var slbl  = s==='완료'?'완료':s==='진행중'?'진행중':s||'-';
     return '<tr onclick="openDetail('+r._idx+')">'
-      +'<td class="td-nowrap" style="color:var(--txt3)">'+r._idx+'</td>'
       +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
       +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
       +'<td class="td-nowrap">'+esc(r['공종'])+'</td>'
@@ -549,8 +863,13 @@ function renderList(){
       +'<td><span class="badge '+badge+'">'+slbl+'</span></td>'
       +'<td class="td-nowrap">'+shortDate(r['조치일'])+'</td>'
       +'<td class="td-nowrap">'+esc(r['업체명'])+'</td>'
+      +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
+      +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
+      +'<td class="col-remark" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['비고']||'-')+'</td>'
+      +'<td class="col-contact" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['업무담당']||'-')+'</td>'
       +'</tr>';
   }).join('');
+  if(CURRENT_TAB===1) updateKpiForList();
 }
 
 function shortDate(d){
@@ -562,15 +881,16 @@ function shortDate(d){
 
 /* ── DASHBOARD CHARTS ── */
 function renderDashboard(){
-  var tunnels = groupBy(ALL_DATA,'터널명');
-  var types   = groupBy(ALL_DATA,'공종');
+  var tunnels  = groupBy(ALL_DATA,'터널명');
+  var types    = groupBy(ALL_DATA,'공종');
+  var companies= groupBy(ALL_DATA,'업체명');
+
+  // 터널별
   var tc = document.getElementById('tunnelChart');
   var tmax = Math.max.apply(null, Object.values(tunnels).map(function(a){return a.length;}));
   tc.innerHTML = Object.keys(tunnels).sort().map(function(t){
     var rows = tunnels[t];
     var done = rows.filter(function(r){return r['조치여부']==='완료';}).length;
-    var prog = rows.filter(function(r){return r['조치여부']==='진행중';}).length;
-    var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
     var pct  = Math.round(rows.length/tmax*100);
     var rate = Math.round(done/rows.length*100);
     return '<div class="bar-row">'
@@ -581,6 +901,7 @@ function renderDashboard(){
       +'</div>';
   }).join('');
 
+  // 공종별
   var ec = document.getElementById('typeChart');
   var emax = Math.max.apply(null, Object.values(types).map(function(a){return a.length;}));
   var colors = ['var(--sky600)','var(--teal600)','var(--coral)','var(--amber)','var(--purple)','var(--green)'];
@@ -594,14 +915,169 @@ function renderDashboard(){
       +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'
       +'<div class="bar-val">'+rows.length+'</div></div>';
   }).join('');
+
+  // 업체별
+  var cc = document.getElementById('companyChart');
+  var csorted = Object.keys(companies).sort(function(a,b){return companies[b].length-companies[a].length;});
+  var cmax = companies[csorted[0]] ? companies[csorted[0]].length : 1;
+  var ci2 = 0;
+  cc.innerHTML = csorted.map(function(cp){
+    var rows = companies[cp];
+    var done = rows.filter(function(r){return r['조치여부']==='완료';}).length;
+    var prog = rows.filter(function(r){return r['조치여부']==='진행중';}).length;
+    var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
+    var pct  = Math.round(rows.length/cmax*100);
+    var rate = Math.round(done/rows.length*100);
+    var col  = colors[ci2++ % colors.length];
+    // 미처리(진행중+미흡) 뱃지
+    var unproc = prog + poor;
+    var unprocHtml = unproc > 0
+      ? '<span style="font-size:10px;font-weight:700;color:var(--coral);background:var(--coral50);border-radius:10px;padding:1px 6px;margin-left:4px">미처리 '+unproc+'</span>'
+      : '';
+    return '<div class="bar-row">'
+      +'<div class="bar-label" style="min-width:80px;max-width:80px;overflow:hidden;text-overflow:ellipsis" title="'+esc(cp)+'">'+esc(cp)+'</div>'
+      +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'
+      +'<div class="bar-val">'+rows.length+'</div>'
+      +'<div class="bar-sub" style="color:var(--teal600);min-width:36px">'+rate+'%</div>'
+      +unprocHtml
+      +'</div>';
+  }).join('');
+}
+
+/* ── TAB DROPDOWN (터널별·공종별 탭 공용) ── */
+function buildTabDropdowns(){
+  // 터널별 드롭다운
+  var tunnels = [];
+  ALL_DATA.forEach(function(r){ if(r['터널명'] && !tunnels.includes(r['터널명'])) tunnels.push(r['터널명']); });
+  tunnels.sort();
+  var tmenu = document.getElementById('tunnelTabDdMenu');
+  if(tmenu){
+    tmenu.innerHTML = '';
+    var topts = [{val:'ALL',label:'터널 전체'}].concat(tunnels.map(function(t){return{val:t,label:t};}));
+    tmenu.innerHTML = topts.map(function(o){
+      return '<div class="dd-opt'+(TAB_FILTER.tunnel===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+    }).join('');
+    tmenu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(opt && opt.dataset && opt.dataset.val) selectTabDd('tunnel', opt.dataset.val, opt);
+    });
+  }
+  // 공종별 드롭다운
+  var types = [];
+  ALL_DATA.forEach(function(r){ if(r['공종'] && !types.includes(r['공종'])) types.push(r['공종']); });
+  types.sort();
+  var emenu = document.getElementById('typeTabDdMenu');
+  if(emenu){
+    emenu.innerHTML = '';
+    var eopts = [{val:'ALL',label:'공종 전체'}].concat(types.map(function(t){return{val:t,label:t};}));
+    emenu.innerHTML = eopts.map(function(o){
+      return '<div class="dd-opt'+(TAB_FILTER.type===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+    }).join('');
+    emenu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(opt && opt.dataset && opt.dataset.val) selectTabDd('type', opt.dataset.val, opt);
+    });
+  }
+  // 업체별 드롭다운
+  var companies = [];
+  ALL_DATA.forEach(function(r){ if(r['업체명'] && !companies.includes(r['업체명'])) companies.push(r['업체명']); });
+  companies.sort();
+  var cmenu = document.getElementById('companyTabDdMenu');
+  if(cmenu){
+    cmenu.innerHTML = '';
+    var copts = [{val:'ALL',label:'업체 전체'}].concat(companies.map(function(c){return{val:c,label:c};}));
+    cmenu.innerHTML = copts.map(function(o){
+      return '<div class="dd-opt'+(TAB_FILTER.company===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+    }).join('');
+    cmenu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(opt && opt.dataset && opt.dataset.val) selectTabDd('company', opt.dataset.val, opt);
+    });
+  }
+  // 외부 클릭 닫기 (중복 등록 방지: 한 번만)
+  if(!buildTabDropdowns._bound){
+    buildTabDropdowns._bound = true;
+    document.addEventListener('click', function(e){
+      var pairs = [['tunnelTabDdMenu','tunnelTabDdBtn'],['typeTabDdMenu','typeTabDdBtn'],['companyTabDdMenu','companyTabDdBtn']];
+      pairs.forEach(function(p){
+        var wrap = document.getElementById(p[0].replace('DdMenu','DdWrap'));
+        if(wrap && !wrap.contains(e.target)) closeTabDd(p[0], p[1]);
+      });
+    });
+  }
+  // 카운트 라벨 초기화
+  updateTabCounts();
+}
+
+function toggleTabDd(kind){
+  var menuId = kind==='tunnel'?'tunnelTabDdMenu':kind==='type'?'typeTabDdMenu':'companyTabDdMenu';
+  var btnId  = kind==='tunnel'?'tunnelTabDdBtn':kind==='type'?'typeTabDdBtn':'companyTabDdBtn';
+  var menu = document.getElementById(menuId);
+  var btn  = document.getElementById(btnId);
+  if(!menu||!btn) return;
+  if(menu.classList.contains('open')){ closeTabDd(menuId,btnId); }
+  else { menu.classList.add('open'); btn.classList.add('active'); }
+}
+
+function closeTabDd(menuId, btnId){
+  var menu = document.getElementById(menuId); if(menu) menu.classList.remove('open');
+  var btn  = document.getElementById(btnId);  if(btn)  btn.classList.remove('active');
+}
+
+function selectTabDd(kind, val, el){
+  var menuId  = kind==='tunnel'?'tunnelTabDdMenu':kind==='type'?'typeTabDdMenu':'companyTabDdMenu';
+  var btnId   = kind==='tunnel'?'tunnelTabDdBtn':kind==='type'?'typeTabDdBtn':'companyTabDdBtn';
+  var labelId = kind==='tunnel'?'tunnelTabDdLabel':kind==='type'?'typeTabDdLabel':'companyTabDdLabel';
+  var defLabel= kind==='tunnel'?'터널 전체':kind==='type'?'공종 전체':'업체 전체';
+  document.querySelectorAll('#'+menuId+' .dd-opt').forEach(function(o){ o.classList.remove('sel'); });
+  if(el) el.classList.add('sel');
+  document.getElementById(labelId).textContent = val==='ALL' ? defLabel : val;
+  var btn = document.getElementById(btnId);
+  if(btn){
+    if(val==='ALL'){ btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
+    else { btn.style.background='var(--sky800)'; btn.style.color='#fff'; btn.style.borderColor='var(--sky800)'; }
+  }
+  TAB_FILTER[kind] = val;
+  closeTabDd(menuId, btnId);
+  if(kind==='tunnel'){ renderTunnelPanel(); }
+  else if(kind==='type'){ renderTypePanel(); }
+  else               { renderCompanyPanel(); }
+  updateTabCounts();
+}
+
+function updateTabCounts(){
+  var tc = document.getElementById('tunnelTabCount');
+  var ec = document.getElementById('typeTabCount');
+  var cc = document.getElementById('companyTabCount');
+  if(tc){
+    var tData = TAB_FILTER.tunnel==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['터널명']===TAB_FILTER.tunnel;});
+    tc.textContent = '총 '+tData.length+'건';
+  }
+  if(ec){
+    var eData = TAB_FILTER.type==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['공종']===TAB_FILTER.type;});
+    ec.textContent = '총 '+eData.length+'건';
+  }
+  if(cc){
+    var cData = TAB_FILTER.company==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['업체명']===TAB_FILTER.company;});
+    cc.textContent = '총 '+cData.length+'건';
+  }
 }
 
 /* ── TUNNEL PANEL ── */
 function renderTunnelPanel(){
-  var tunnels = groupBy(ALL_DATA,'터널명');
+  var allTunnels = groupBy(ALL_DATA,'터널명');
   var el = document.getElementById('tunnelPanels');
-  el.innerHTML = Object.keys(tunnels).sort().map(function(t){
-    var rows = tunnels[t];
+  var keys = Object.keys(allTunnels).sort();
+  // 드롭다운 선택 필터
+  if(TAB_FILTER.tunnel !== 'ALL'){
+    keys = keys.filter(function(k){ return k === TAB_FILTER.tunnel; });
+  }
+  if(!keys.length){
+    el.innerHTML = '<div class="empty"><p>표시할 데이터가 없습니다</p></div>';
+    return;
+  }
+  el.innerHTML = keys.map(function(t){
+    var rows = allTunnels[t];
     var done = rows.filter(function(r){return r['조치여부']==='완료';}).length;
     var prog = rows.filter(function(r){return r['조치여부']==='진행중';}).length;
     var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
@@ -613,12 +1089,15 @@ function renderTunnelPanel(){
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap">'+esc(r['공종'])+'</td>'
         +'<td class="td-nowrap">'+esc(r['위치'])+'</td>'
-        +'<td><span class="td-content" style="max-width:200px">'+esc(r['하자내용'])+'</span></td>'
+        +'<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>'
         +'<td><span class="badge '+badge+'">'+esc(s||'-')+'</span></td>'
+        +'<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>'
+        +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
+        +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
         +'</tr>';
     }).join('');
     return '<div class="sc" style="margin-bottom:14px">'
-      +'<div class="sc-hd"><h3>'+esc(t)+'</h3>'
+      +'<div class="sc-hd"><h3>'+esc(t)+'<span style="display:inline-block;width:16px"></span><span style="font-size:13px;font-weight:500;color:var(--txt2)">'+rows.length+'건</span></h3>'
       +'<div style="display:flex;gap:8px;align-items:center">'
       +'<span class="badge badge-done">완료 '+done+'</span>'
       +'<span class="badge badge-prog">진행중 '+prog+'</span>'
@@ -626,18 +1105,79 @@ function renderTunnelPanel(){
       +'<span style="font-size:12px;font-weight:700;color:var(--teal600)">'+rate+'%</span>'
       +'</div></div>'
       +'<div class="tbl-wrap"><div class="tbl-scroll">'
-      +'<table><thead><tr><th>날짜</th><th>공종</th><th>위치</th><th>하자내용</th><th>상태</th></tr></thead>'
+      +'<table><thead><tr><th>날짜</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th><th>업체</th><th class="col-contact">담당자</th><th class="col-contact">전화번호</th></tr></thead>'
+      +'<tbody>'+body+'</tbody></table></div></div></div>';
+  }).join('');
+}
+
+/* ── COMPANY PANEL ── */
+function renderCompanyPanel(){
+  var companies = groupBy(ALL_DATA,'업체명');
+  var el = document.getElementById('companyPanels');
+  var sorted = Object.keys(companies).sort(function(a,b){ return companies[b].length-companies[a].length; });
+  // 드롭다운 선택 필터
+  if(TAB_FILTER.company !== 'ALL'){
+    sorted = sorted.filter(function(k){ return k === TAB_FILTER.company; });
+  }
+  if(!sorted.length){
+    el.innerHTML = '<div class="empty"><p>표시할 데이터가 없습니다</p></div>';
+    return;
+  }
+  el.innerHTML = sorted.map(function(cp){
+    var rows = companies[cp];
+    var done = rows.filter(function(r){ return r['조치여부']==='완료'; }).length;
+    var prog = rows.filter(function(r){ return r['조치여부']==='진행중'; }).length;
+    var poor = rows.filter(function(r){ return r['조치여부']==='미흡'; }).length;
+    var rate = Math.round(done/rows.length*100);
+    var body = rows.map(function(r){
+      var s=r['조치여부'];
+      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+      return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
+        +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
+        +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
+        +'<td class="td-nowrap">'+esc(r['공종'])+'</td>'
+        +'<td class="td-nowrap">'+esc(r['위치'])+'</td>'
+        +'<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>'
+        +'<td><span class="badge '+badge+'">'+esc(s||'-')+'</span></td>'
+        +'</tr>';
+    }).join('');
+    var contact = rows[0]['업체담당자']||'';
+    var tel = rows[0]['전화번호']||'';
+    var subHtml = (contact||tel)
+      ? '<div style="font-size:13px;color:var(--txt2);margin-top:3px">'+esc(contact)+(tel?' &nbsp;&middot;&nbsp; '+esc(tel):'')+'</div>'
+      : '';
+    return '<div class="sc" style="margin-bottom:14px">'
+      +'<div class="sc-hd"><div>'
+      +'<h3>'+esc(cp)+'<span style="display:inline-block;width:16px"></span>'
+      +'<span style="font-size:13px;font-weight:500;color:var(--txt2)">'+rows.length+'건</span></h3>'
+      +subHtml+'</div>'
+      +'<div style="display:flex;gap:8px;align-items:center">'
+      +'<span class="badge badge-done">완료 '+done+'</span>'
+      +'<span class="badge badge-prog">진행중 '+prog+'</span>'
+      +(poor>0?'<span class="badge badge-poor">미흡 '+poor+'</span>':'')
+      +'<span style="font-size:12px;font-weight:700;color:var(--teal600)">'+rate+'%</span>'
+      +'</div></div>'
+      +'<div class="tbl-wrap"><div class="tbl-scroll">'
+      +'<table><thead><tr><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th></tr></thead>'
       +'<tbody>'+body+'</tbody></table></div></div></div>';
   }).join('');
 }
 
 /* ── TYPE PANEL ── */
 function renderTypePanel(){
-  var types = groupBy(ALL_DATA,'공종');
+  var allTypes = groupBy(ALL_DATA,'공종');
   var el = document.getElementById('typePanels');
-  var sorted = Object.keys(types).sort(function(a,b){return types[b].length-types[a].length;});
+  var sorted = Object.keys(allTypes).sort(function(a,b){return allTypes[b].length-allTypes[a].length;});
+  // 드롭다운 선택 필터
+  if(TAB_FILTER.type !== 'ALL'){
+    sorted = sorted.filter(function(k){ return k === TAB_FILTER.type; });
+  }
+  if(!sorted.length){
+    el.innerHTML = '<div class="empty"><p>표시할 데이터가 없습니다</p></div>';
+    return;
+  }
   el.innerHTML = sorted.map(function(tp){
-    var rows = types[tp];
+    var rows = allTypes[tp];
     var done = rows.filter(function(r){return r['조치여부']==='완료';}).length;
     var prog = rows.filter(function(r){return r['조치여부']==='진행중';}).length;
     var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
@@ -648,19 +1188,22 @@ function renderTypePanel(){
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
         +'<td class="td-nowrap">'+esc(r['위치'])+'</td>'
-        +'<td><span class="td-content" style="max-width:200px">'+esc(r['하자내용'])+'</span></td>'
+        +'<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>'
         +'<td><span class="badge '+badge+'">'+esc(s||'-')+'</span></td>'
+        +'<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>'
+        +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
+        +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
         +'</tr>';
     }).join('');
     return '<div class="sc" style="margin-bottom:14px">'
-      +'<div class="sc-hd"><h3>'+esc(tp)+'</h3>'
+      +'<div class="sc-hd"><h3>'+esc(tp)+'<span style="display:inline-block;width:16px"></span><span style="font-size:13px;font-weight:500;color:var(--txt2)">'+rows.length+'건</span></h3>'
       +'<div style="display:flex;gap:8px;align-items:center">'
       +'<span class="badge badge-done">완료 '+done+'</span>'
       +'<span class="badge badge-prog">진행중 '+prog+'</span>'
       +(poor>0?'<span class="badge badge-poor">미흡 '+poor+'</span>':'')
       +'</div></div>'
       +'<div class="tbl-wrap"><div class="tbl-scroll">'
-      +'<table><thead><tr><th>날짜</th><th>터널</th><th>위치</th><th>하자내용</th><th>상태</th></tr></thead>'
+      +'<table><thead><tr><th>날짜</th><th>터널</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th><th>업체</th><th class="col-contact">담당자</th><th class="col-contact">전화번호</th></tr></thead>'
       +'<tbody>'+body+'</tbody></table></div></div></div>';
   }).join('');
 }
@@ -761,7 +1304,7 @@ function openDetail(idx){
     ['담당자', r['업체담당자']||'-'],
     ['전화번호', r['전화번호']||'-'],
     ['비고', r['비고']||'-'],
-    ['출처', r['출처']||'-'],
+    ['업무담당', r['업무담당']||'-'],
   ];
   var infoHtml = rows.map(function(rv){
     return '<div class="detail-row"><div class="detail-key">'+rv[0]+'</div><div class="detail-val">'+rv[1]+'</div></div>';
@@ -783,10 +1326,15 @@ function closeDetail(e){
 
 /* ── TAB ── */
 function switchTab(n,el){
+  CURRENT_TAB = n;
   document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('on'); });
   document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('on'); });
   document.getElementById('p'+n).classList.add('on');
   el.classList.add('on');
+  // 요약 탭(0)에서는 KPI 바 숨김 (처리 상태 현황 카드와 중복)
+  var kpiBar = document.getElementById('kpiBar');
+  if(kpiBar) kpiBar.style.display = n === 0 ? 'none' : '';
+  updateKPI(n);
 }
 
 /* ── MODAL HELPERS ── */
@@ -817,7 +1365,6 @@ function setSync(loading){
 }
 
 /* ── HELPERS ── */
-function updateHdrSub(txt){ document.getElementById('hdrSub').textContent=txt; }
 function groupBy(arr, key){
   var obj={};
   arr.forEach(function(r){ var k=r[key]||'(미지정)'; if(!obj[k]) obj[k]=[]; obj[k].push(r); });
