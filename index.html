@@ -284,7 +284,7 @@ tbody tr:last-child td{border-bottom:none}
       </div>
       <div class="modal-field">
         <label class="modal-label">시트 이름 <span style="font-weight:400;color:var(--txt3)">(선택 — 비워두면 첫 번째 시트)</span></label>
-        <input id="cfgSheetName" class="modal-input" type="text" placeholder="하자보수DB"/>
+        <input id="cfgSheetName" class="modal-input" type="text" placeholder="하자내역"/>
         <div class="modal-hint">탭 이름과 정확히 일치 (한글 OK)</div>
       </div>
       <div class="modal-btns">
@@ -473,7 +473,7 @@ tbody tr:last-child td{border-bottom:none}
 var ALL_DATA = [];
 var FILTER = { status:'ALL', tunnel:'ALL', manager:'ALL' };
 var TAB_FILTER = { tunnel:'ALL', type:'ALL', company:'ALL' };
-var CFG = { sheetId:'', sheetName:'Sheet1' };
+var CFG = { sheetId:'', sheetName:'하자내역' };
 
 /* ── 데모 데이터 (2026년 1월 발생 하자, 편집·확인용) ── */
 var DEMO_DATA = [
@@ -498,7 +498,7 @@ var DEMO_DATA = [
 /* ── INIT ── */
 (function init(){
   var sid = localStorage.getItem('haja_sheetId') || '';
-  var sn  = localStorage.getItem('haja_sheetName') || 'Sheet1';
+  var sn  = localStorage.getItem('haja_sheetName') || '하자내역';
   CFG.sheetId   = sid;
   CFG.sheetName = sn;
   if(sid){ loadData(); }
@@ -532,7 +532,7 @@ function saveCfg(){
   var raw = document.getElementById('cfgSheetId').value.trim();
   var m = raw.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
   var sid = m ? m[1] : raw;
-  var sn  = document.getElementById('cfgSheetName').value.trim() || 'Sheet1';
+  var sn  = document.getElementById('cfgSheetName').value.trim() || '하자내역';
   if(!sid){ alert('구글시트 ID를 입력해주세요.'); return; }
   CFG.sheetId   = sid;
   CFG.sheetName = sn;
