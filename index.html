@@ -679,22 +679,25 @@ function extractDriveId(url){
   return '';
 }
 
-// 프록시 fetch → img 주입 (innerHTML script 미실행 문제 우회)
+// 프록시 fetch → base64 data URL → img 주입
 function loadProxyPhoto(uid, proxyUrl, viewUrl, label){
   var wrap = document.getElementById(uid);
   if(!wrap) return;
-  fetch(proxyUrl)
+
+  fetch(proxyUrl, {redirect: 'follow', mode: 'cors'})
     .then(function(r){ return r.text(); })
     .then(function(d){
       var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
-      if(!d || d.indexOf('data:') < 0){
+      if(!d || d.indexOf('data:') !== 0){
         var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block'; return;
       }
       var a = document.createElement('a'); a.href=viewUrl; a.target='_blank'; a.rel='noopener';
-      var img = document.createElement('img'); img.className='photo-img loaded'; img.src=d; img.alt=label;
+      var img = document.createElement('img'); img.className='photo-img loaded';
+      img.src = d; img.alt = label;
       a.appendChild(img); wrap.insertBefore(a, wrap.firstChild);
     })
-    .catch(function(){
+    .catch(function(err){
+      console.error('photo load error:', err);
       var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
       var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block';
     });
