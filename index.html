@@ -19,7 +19,6 @@
   --txt:#1A2535; --txt2:#3D4F68; --txt3:#6B7E99;
   --r6:6px; --r8:8px; --r12:12px; --r14:14px; --r16:16px; --r20:20px;
   --shadow:0 2px 12px rgba(55,138,221,.08);
-  --shadow-hover:0 6px 24px rgba(55,138,221,.15);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;word-break:keep-all;-webkit-font-smoothing:antialiased}
@@ -141,9 +140,6 @@ tbody tr:last-child td{border-bottom:none}
 .modal-save{background:var(--sky);border:none;color:#fff;border-radius:var(--r8);padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;min-height:40px}
 .modal-cancel{background:var(--bg);border:1.5px solid var(--border);color:var(--txt2);border-radius:var(--r8);padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;min-height:40px}
 
-
-
-
 /* ── DETAIL MODAL ── */
 #detailModal{display:none}
 #detailModal.modal-open{display:block}
@@ -172,24 +168,27 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ── EMPTY / STATUS ── */
 .empty{text-align:center;padding:48px 20px;color:var(--txt3)}
-.empty svg{width:40px;height:40px;stroke:var(--gray100);margin-bottom:10px}
 .empty p{font-size:13px}
-.last-update{font-size:12px;color:var(--txt3);text-align:right;padding:6px 14px 8px}
-.err-msg{font-size:12px;color:var(--coral);text-align:center;padding:8px 14px}
+.last-update{font-size:12px;color:rgba(255,255,255,.75);text-align:right;padding:3px 16px 6px;background:var(--sky800)}
 
 /* ── RESPONSIVE ── */
 
 /* 모바일 공통 (~ 640px) */
 @media(max-width:640px){
   /* 헤더 */
-  .hdr{padding:10px 12px}
-  .hdr-title{font-size:15px}
-  .hdr-sub{font-size:11px}
-  .hdr-icon{width:32px;height:32px}
-  .hdr-btn{padding:4px 10px;font-size:12px;min-height:28px}
+  .hdr{padding:9px 12px;min-height:unset}
+  .hdr-title{font-size:14px;white-space:nowrap}
+  .hdr-sub{font-size:10px}
+  .hdr-icon{width:30px;height:30px;flex-shrink:0}
+  .hdr-icon svg{width:16px;height:16px}
+  .hdr-right{flex-direction:row;align-items:center;gap:6px;flex-shrink:0}
+  .hdr-btns{gap:5px}
+  .hdr-btn{padding:4px 9px;font-size:11px;min-height:26px;gap:3px}
+  .hdr-btn svg{width:11px;height:11px}
+  .last-update{font-size:10px;padding:2px 12px 4px}
 
-  /* 탭 - 글자 줄이고 균등 분할 */
-  .tab-btn{font-size:11px;padding:10px 2px;letter-spacing:-.03em}
+  /* 탭 - 균등 분할 */
+  .tab-btn{font-size:13px;padding:11px 2px;letter-spacing:-.02em}
 
   /* KPI */
   .kpi-bar{padding:8px 10px;gap:6px}
@@ -225,7 +224,7 @@ tbody tr:last-child td{border-bottom:none}
 
 /* 소형 모바일 (~ 380px) */
 @media(max-width:380px){
-  .tab-btn{font-size:10px}
+  .tab-btn{font-size:12px}
   .hdr-title{font-size:14px}
   .kpi-num{font-size:16px}
 }
@@ -245,6 +244,9 @@ tbody tr:last-child td{border-bottom:none}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
   table{width:100%;min-width:1100px}
+  .hdr-right{flex-direction:column;align-items:flex-end;gap:4px}
+  .hdr-btn{padding:5px 13px;font-size:13px;min-height:32px}
+  .last-update{font-size:12px;padding:3px 16px 6px}
 }
 
 @media(max-width:640px){
@@ -319,7 +321,7 @@ tbody tr:last-child td{border-bottom:none}
       </div>
       <div>
         <div class="hdr-title">하자보수 현황</div>
-        <div class="hdr-sub" id="hdrSub">Notion 실시간 연동</div>
+        <div class="hdr-sub">Notion 실시간 연동</div>
       </div>
     </div>
     <div class="hdr-right">
@@ -333,16 +335,17 @@ tbody tr:last-child td{border-bottom:none}
           <span id="syncLabel">새로고침</span>
         </button>
       </div>
-      <div class="last-update" id="lastUpdate"></div>
     </div>
   </div>
+  <div class="last-update" id="lastUpdate"></div>
   <!-- 탭 -->
   <div class="top-nav">
     <button class="tab-btn on" onclick="switchTab(0,this)">요약</button>
     <button class="tab-btn" onclick="switchTab(1,this)">하자내역</button>
-    <button class="tab-btn" onclick="switchTab(2,this)">터널별</button>
-    <button class="tab-btn" onclick="switchTab(3,this)">공종별</button>
-    <button class="tab-btn" onclick="switchTab(4,this)">업체별</button>
+    <button class="tab-btn" onclick="switchTab(2,this)">미처리</button>
+    <button class="tab-btn" onclick="switchTab(3,this)">터널별</button>
+    <button class="tab-btn" onclick="switchTab(4,this)">공종별</button>
+    <button class="tab-btn" onclick="switchTab(5,this)">업체별</button>
   </div>
   <!-- KPI -->
   <div class="kpi-bar" id="kpiBar">
@@ -405,7 +408,7 @@ tbody tr:last-child td{border-bottom:none}
     <div class="dd-wrap" id="managerDdWrap">
       <button class="dd-btn" id="managerDdBtn" onclick="toggleManagerDd()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span id="managerDdLabel">업무담당 전체</span>
+        <span id="managerDdLabel">관리 전체</span>
       </button>
       <div class="dd-menu" id="managerDdMenu"></div>
     </div>
@@ -422,8 +425,38 @@ tbody tr:last-child td{border-bottom:none}
   </div>
 </div>
 
-<!-- 패널2: 터널별 -->
+<!-- 패널2: 미처리 -->
 <div class="panel" id="p2">
+  <div class="filter-row" style="margin-bottom:14px">
+    <div class="filter-group" id="unprocStatusFilter">
+      <button class="f-chip c-coral on" data-val="ALL" onclick="setUnprocFilter('ALL',this)">전체 미처리</button>
+      <button class="f-chip c-coral" data-val="진행중" onclick="setUnprocFilter('진행중',this)">진행중</button>
+      <button class="f-chip c-amber" data-val="미흡" onclick="setUnprocFilter('미흡',this)">미흡</button>
+    </div>
+    <div class="filter-count" id="unprocCount"></div>
+  </div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th class="col-status">상태</th>
+          <th class="col-date">날짜</th>
+          <th class="col-tunnel">터널</th>
+          <th class="col-type">공종</th>
+          <th class="col-loc">위치</th>
+          <th class="col-expand">하자내용</th>
+          <th class="col-company">업체</th>
+          <th class="col-contact">업체담당</th>
+          <th class="col-contact">전화번호</th>
+        </tr></thead>
+        <tbody id="unprocBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 패널3: 터널별 -->
+<div class="panel" id="p3">
   <div class="filter-row" style="margin-bottom:14px">
     <div class="dd-wrap" id="tunnelTabDdWrap">
       <button class="dd-btn" id="tunnelTabDdBtn" onclick="toggleTabDd('tunnel')">
@@ -437,8 +470,8 @@ tbody tr:last-child td{border-bottom:none}
   <div id="tunnelPanels"></div>
 </div>
 
-<!-- 패널3: 공종별 -->
-<div class="panel" id="p3">
+<!-- 패널4: 공종별 -->
+<div class="panel" id="p4">
   <div class="filter-row" style="margin-bottom:14px">
     <div class="dd-wrap" id="typeTabDdWrap">
       <button class="dd-btn" id="typeTabDdBtn" onclick="toggleTabDd('type')">
@@ -452,8 +485,8 @@ tbody tr:last-child td{border-bottom:none}
   <div id="typePanels"></div>
 </div>
 
-<!-- 패널4: 업체별 -->
-<div class="panel" id="p4">
+<!-- 패널5: 업체별 -->
+<div class="panel" id="p5">
   <div class="filter-row" style="margin-bottom:14px">
     <div class="dd-wrap" id="companyTabDdWrap">
       <button class="dd-btn" id="companyTabDdBtn" onclick="toggleTabDd('company')">
@@ -481,30 +514,30 @@ var COL_DEFS = [
   { key:'터널명',      label:'터널',     width:'col-tunnel',  fixed:false },
   { key:'공종',        label:'공종',     width:'col-type',    fixed:false },
   { key:'위치',        label:'위치',     width:'col-loc',     fixed:false },
-  { key:'업무담당',    label:'담당자',   width:'col-manager', fixed:false },
+  { key:'업무담당',    label:'관리',     width:'col-manager', fixed:false },
   { key:'하자내용',    label:'하자내용', width:'col-expand',  fixed:true  },
-  { key:'하자사진_URL',label:'하자사진', width:'col-photo',   fixed:false },
+  { key:'하자사진_URL',label:'하자사진', width:'col-remark',   fixed:false },
   { key:'조치일',      label:'조치일',   width:'col-date2',   fixed:false },
-  { key:'조치사진_URL',label:'조치사진', width:'col-photo',   fixed:false },
+  { key:'조치사진_URL',label:'조치사진', width:'col-remark',   fixed:false },
   { key:'업체명',      label:'업체',     width:'col-company', fixed:false },
   { key:'업체담당자',  label:'업체담당', width:'col-contact', fixed:false },
   { key:'전화번호',    label:'전화번호', width:'col-contact', fixed:false },
   { key:'비고',        label:'비고',     width:'col-remark',  fixed:false }
 ];
 
-// 열 표시 여부 (사진 열은 기본 숨김)
-var COL_VISIBLE = {};
-COL_DEFS.forEach(function(c){ COL_VISIBLE[c.key] = true; });
-COL_VISIBLE['하자사진_URL'] = false;
-COL_VISIBLE['조치사진_URL'] = false;
-
 // probe로 감지된 실제 노션 속성명 매핑 { 내부key: 실제Notion속성명 }
 var NOTION_PROP_MAP = {};
 
 // 열 정의 조회 헬퍼
 function getColDef(key){ return COL_DEFS.find(function(c){return c.key===key;})||null; }
-// 현재 표시 열 순서 (visible=true인 것만)
-function getVisibleCols(){ return COL_DEFS.map(function(c){return c.key;}).filter(function(k){ return COL_VISIBLE[k]; }); }
+// 표시 열 순서 (사진 URL 열 제외)
+function getVisibleCols(){
+  return COL_DEFS.map(function(c){return c.key;}).filter(function(k){
+    return k !== '하자사진_URL' && k !== '조치사진_URL';
+  });
+}
+
+var MAX_PAGES = 20; // 노션 페이지네이션 최대 페이지 수 (100건/페이지 × 20 = 2,000건)
 
 // ── 설정 (localStorage) ──
 var CFG = (function(){
@@ -593,8 +626,9 @@ function loadDemo(){
   buildTabDropdowns();
   updateKPI();
   renderAll();
+  rebuildListHeader();
   var lu=document.getElementById('lastUpdate');
-  if(lu){ lu.textContent='데모 데이터 (노션 하자보수DB 2025년 11~12월 실제) · 설정에서 Notion DB 연결하세요'; lu.style.color='rgba(255,255,255,.6)'; }
+  if(lu){ lu.textContent=''; }
   // 초기 탭이 요약(0)이므로 KPI 바 숨김
   var kpiBar = document.getElementById('kpiBar');
   if(kpiBar) kpiBar.style.display = 'none';
@@ -720,10 +754,10 @@ function parseNotionPage(page, idx){
   result['조치여부']   = getField('조치여부',   ['조치여부','상태','status'])||'진행중';
   result['조치일']     = getField('조치일',     ['조치일','완료일','act_date']);
   result['업체명']     = getField('업체명',     ['업체명','업체','company']);
+  result['업무담당']   = getField('업무담당',   ['관리','업무담당','manager']);
   result['업체담당자'] = getField('업체담당자', ['업체담당자','업체담당','contact']);
   result['전화번호']   = getField('전화번호',   ['전화번호','phone','연락처']);
   result['비고']       = getField('비고',       ['비고','remark','memo','메모']);
-  result['업무담당']   = getField('업무담당',   ['업무담당','담당','manager']);
 
   // 사진: file 타입 → 첫 번째 파일 URL 추출
   function getFileUrl(internalKey, kwFallback){
@@ -794,7 +828,7 @@ function loadData(){
           var allPages = data.results||[];
           var cursor = data.next_cursor, hasMore = data.has_more, pageCount = 0;
           function fetchNext(cur, more){
-            if(!cur||!more||pageCount++>=20) return Promise.resolve();
+            if(!cur||!more||pageCount++>=MAX_PAGES) return Promise.resolve();
             return fetchNotion(CFG.workerUrl, CFG.dbId, Object.assign({},body,{start_cursor:cur}))
               .then(function(d2){
                 allPages = allPages.concat(d2.results||[]);
@@ -820,7 +854,6 @@ function loadData(){
     })
     .catch(function(e){
       setSync(false);
-      if(!ALL_DATA.length){ ALL_DATA=DEMO_DATA; buildTunnelFilter(); buildManagerFilter(); buildTabDropdowns(); updateKPI(); renderAll(); rebuildListHeader(); }
       var msg='⚠ '+e.message;
       if(e.message.indexOf('400')>=0)       msg='⚠ HTTP 400 — Worker URL 또는 DB ID를 확인하세요';
       else if(e.message.indexOf('401')>=0||e.message.indexOf('403')>=0) msg='⚠ 인증 오류 — Notion API 키를 확인하세요';
@@ -842,7 +875,7 @@ function buildNotionPropMap(props){
     { key:'터널명',      kws:['터널명','터널','tunnel'],  types:['select','multi_select','title','rich_text'] },
     { key:'공종',        kws:['공종','type','공사'],      types:['select','multi_select','rich_text'] },
     { key:'위치',        kws:['위치','location','loc'],  types:['rich_text','text','title'] },
-    { key:'업무담당',    kws:['업무담당','담당자','담당','manager'], types:['select','rich_text','title'] },
+    { key:'업무담당',    kws:['관리','업무담당','manager'],    types:['select','rich_text','title'] },
     { key:'업체담당자',  kws:['업체담당자','업체담당','contact'], types:['rich_text','text','title'] },
     { key:'하자내용',    kws:['하자내용','내용','content','하자'], types:['title','rich_text'] },
     { key:'조치여부',    kws:['조치여부','상태','status'], types:['select','checkbox'] },
@@ -855,12 +888,14 @@ function buildNotionPropMap(props){
   ];
 
   matchers.forEach(function(m){
+    // 이미 다른 내부 key에 매핑된 notionKey는 재사용 안 함
+    function alreadyUsed(nk){ return Object.values(NOTION_PROP_MAP).indexOf(nk)>=0; }
     // 1차: 키워드 + 타입 동시 매칭 (정확도 높음)
     for(var ki=0; ki<m.kws.length; ki++){
       var kw = m.kws[ki].toLowerCase();
       for(var ni=0; ni<keys.length; ni++){
         var nk = keys[ni];
-        if(nk.toLowerCase().includes(kw) && m.types.indexOf(props[nk].type)>=0){
+        if(nk.toLowerCase().includes(kw) && m.types.indexOf(props[nk].type)>=0 && !alreadyUsed(nk)){
           if(!NOTION_PROP_MAP[m.key]){ NOTION_PROP_MAP[m.key]=nk; return; }
         }
       }
@@ -870,7 +905,7 @@ function buildNotionPropMap(props){
       var kw2=m.kws[ki2].toLowerCase();
       for(var ni2=0; ni2<keys.length; ni2++){
         var nk2=keys[ni2];
-        if(nk2.toLowerCase().includes(kw2)){
+        if(nk2.toLowerCase().includes(kw2) && !alreadyUsed(nk2)){
           if(!NOTION_PROP_MAP[m.key]){ NOTION_PROP_MAP[m.key]=nk2; return; }
         }
       }
@@ -890,7 +925,6 @@ function buildNotionPropMap(props){
       var alreadyInDefs = COL_DEFS.some(function(c){ return c.key===tempKey; });
       if(!alreadyInDefs){
         COL_DEFS.push({key:tempKey,label:nk,width:'col-remark',fixed:false});
-        COL_VISIBLE[tempKey]=false; // 기본 숨김
         NOTION_PROP_MAP[tempKey]=nk;
       }
     }
@@ -911,7 +945,7 @@ function buildManagerFilter(){
   var managers = getUniqueValues('업무담당');
   var menu = document.getElementById('managerDdMenu');
   if(!menu) return;
-  var opts = [{ val:'ALL', label:'업무담당 전체' }];
+  var opts = [{ val:'ALL', label:'관리 전체' }];
   managers.forEach(function(m){ opts.push({ val:m, label:m }); });
   menu.innerHTML = opts.map(function(o){
     return '<div class="dd-opt'+(o.val==='ALL'?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
@@ -945,7 +979,7 @@ function closeManagerDd(){
 function selectManager(val, el){
   document.querySelectorAll('#managerDdMenu .dd-opt').forEach(function(o){ o.classList.remove('sel'); });
   if(el) el.classList.add('sel');
-  document.getElementById('managerDdLabel').textContent = val==='ALL' ? '업무담당 전체' : val;
+  document.getElementById('managerDdLabel').textContent = val==='ALL' ? '관리 전체' : val;
   var btn = document.getElementById('managerDdBtn');
   if(btn){
     if(val==='ALL'){ btn.style.background=''; btn.style.color=''; btn.style.borderColor=''; }
@@ -1076,25 +1110,33 @@ function updateKPI(tabNum){
   } else if(tabNum === 1){
     updateKpiForList();
   } else if(tabNum === 2){
-    var g=calcGroupKpi('터널명');
-    setKpiLabels('터널 수','미처리 합계','평균 완료율','미흡');
-    document.getElementById('kpiTotal').textContent = g.count+'개';
-    document.getElementById('kpiProg').textContent  = g.unproc;
-    document.getElementById('kpiDone').textContent  = g.avgRate+'%';
-    document.getElementById('kpiPoor').textContent  = poor;
+    // 미처리 탭
+    var unproc = prog + poor;
+    setKpiLabels('미처리 전체','진행중','미흡','완료');
+    document.getElementById('kpiTotal').textContent = unproc;
+    document.getElementById('kpiProg').textContent  = prog;
+    document.getElementById('kpiDone').textContent  = poor;
+    document.getElementById('kpiPoor').textContent  = done;
   } else if(tabNum === 3){
-    var g=calcGroupKpi('공종');
-    setKpiLabels('공종 수','미처리 합계','평균 완료율','미흡');
-    document.getElementById('kpiTotal').textContent = g.count+'개';
-    document.getElementById('kpiProg').textContent  = g.unproc;
-    document.getElementById('kpiDone').textContent  = g.avgRate+'%';
+    var g2=calcGroupKpi('터널명');
+    setKpiLabels('터널 수','미처리 합계','평균 완료율','미흡');
+    document.getElementById('kpiTotal').textContent = g2.count+'개';
+    document.getElementById('kpiProg').textContent  = g2.unproc;
+    document.getElementById('kpiDone').textContent  = g2.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
   } else if(tabNum === 4){
-    var g=calcGroupKpi('업체명');
+    var g3=calcGroupKpi('공종');
+    setKpiLabels('공종 수','미처리 합계','평균 완료율','미흡');
+    document.getElementById('kpiTotal').textContent = g3.count+'개';
+    document.getElementById('kpiProg').textContent  = g3.unproc;
+    document.getElementById('kpiDone').textContent  = g3.avgRate+'%';
+    document.getElementById('kpiPoor').textContent  = poor;
+  } else if(tabNum === 5){
+    var g4=calcGroupKpi('업체명');
     setKpiLabels('업체 수','미처리 합계','평균 완료율','미흡');
-    document.getElementById('kpiTotal').textContent = g.count+'개';
-    document.getElementById('kpiProg').textContent  = g.unproc;
-    document.getElementById('kpiDone').textContent  = g.avgRate+'%';
+    document.getElementById('kpiTotal').textContent = g4.count+'개';
+    document.getElementById('kpiProg').textContent  = g4.unproc;
+    document.getElementById('kpiDone').textContent  = g4.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
   }
 }
@@ -1114,7 +1156,9 @@ function updateKpiForList(){
     var s=r['조치여부'];
     if(s==='완료') done++; else if(s==='진행중') prog++; else if(s==='미흡') poor++;
   });
-  setKpiLabels('필터 결과','진행중','완료','미흡');
+  var isFiltered = FILTER.status!=='ALL' || FILTER.tunnel!=='ALL' || FILTER.manager!=='ALL'
+    || (document.getElementById('searchBox') && document.getElementById('searchBox').value.trim()!=='');
+  setKpiLabels(isFiltered ? '필터 결과' : '전체', '진행중', '완료', '미흡');
   document.getElementById('kpiTotal').textContent = rows.length;
   document.getElementById('kpiProg').textContent  = prog;
   document.getElementById('kpiDone').textContent  = done;
@@ -1126,10 +1170,64 @@ function updateKpiForList(){
 function renderAll(){
   rebuildListHeader();
   renderList();
+  renderUnprocPanel();
   renderDashboard();
   renderTunnelPanel();
   renderTypePanel();
   renderCompanyPanel();
+}
+
+/* ── UNPROC FILTER ── */
+var UNPROC_FILTER = 'ALL';
+
+function setUnprocFilter(val, el){
+  UNPROC_FILTER = val;
+  document.querySelectorAll('#unprocStatusFilter .f-chip').forEach(function(b){ b.classList.remove('on'); });
+  el.classList.add('on');
+  renderUnprocPanel();
+}
+
+/* ── UNPROC PANEL ── */
+function renderUnprocPanel(){
+  var rows = ALL_DATA.filter(function(r){
+    var s = r['조치여부'];
+    return s === '진행중' || s === '미흡';
+  });
+  if(UNPROC_FILTER !== 'ALL'){
+    rows = rows.filter(function(r){ return r['조치여부'] === UNPROC_FILTER; });
+  }
+  // 날짜 오름차순 (오래된 것 먼저)
+  rows = rows.slice().sort(function(a,b){
+    var da=(a['날짜']||'').replace(/[.\/]/g,'-');
+    var db=(b['날짜']||'').replace(/[.\/]/g,'-');
+    return da < db ? -1 : da > db ? 1 : 0;
+  });
+
+  var cnt = document.getElementById('unprocCount');
+  if(cnt) cnt.textContent = '총 '+rows.length+'건';
+
+  var tbody = document.getElementById('unprocBody');
+  if(!tbody) return;
+  if(!rows.length){
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--teal600);font-weight:700">🎉 미처리 하자가 없습니다!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(function(r){
+    var s = r['조치여부'];
+    var badge = s==='진행중' ? 'badge-prog' : 'badge-poor';
+    return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
+      +'<td><span class="badge '+badge+'">'+esc(s)+'</span></td>'
+      +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
+      +'<td class="td-nowrap"><strong>'+esc(r['터널명']||'-')+'</strong></td>'
+      +'<td class="td-nowrap">'+esc(r['공종']||'-')+'</td>'
+      +'<td class="td-nowrap">'+esc(r['위치']||'-')+'</td>'
+      +'<td><span class="td-content">'+esc(r['하자내용']||'-')+'</span></td>'
+      +'<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>'
+      +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
+      +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
+      +'</tr>';
+  }).join('');
+  if(CURRENT_TAB===2) updateKPI(2);
 }
 
 /* ── LIST HEADER 동적 생성 ── */
@@ -1145,7 +1243,6 @@ function rebuildListHeader(){
 
 /* ── LIST ── */
 function renderList(){
-  rebuildListHeader();
   var rows = filtered();
   rows = rows.map(function(r){
     return { r:r, d:(r['날짜']||'').replace(/[.\/]/g,'-') };
@@ -1175,9 +1272,7 @@ function renderList(){
       if(key==='하자내용')   return '<td><span class="td-content">'+esc(val)+'</span></td>';
       if(key==='하자사진_URL'||key==='조치사진_URL'){
         if(!val) return '<td>-</td>';
-        var driveId=extractDriveId(val);
-        var href=driveId?'https://drive.google.com/file/d/'+driveId+'/view':val;
-        return '<td><a href="'+esc(href)+'" target="_blank" style="color:var(--sky600);font-size:12px">보기</a></td>';
+        return '<td><a href="'+esc(val)+'" target="_blank" style="color:var(--sky600);font-size:12px">보기</a></td>';
       }
       return '<td class="'+cls+' td-nowrap">'+esc(val||'-')+'</td>';
     }).join('');
@@ -1193,6 +1288,21 @@ function shortDate(d){
   return d.substring(0,5)||d;
 }
 
+/* ── BAR ROW 공통 헬퍼 ── */
+// label: 표시명, count: 건수, max: 최대건수(비율 기준), color: 바 색상
+// rate: 완료율(숫자, 없으면 null), unprocBadge: 미처리 뱃지 HTML(없으면 ''), labelStyle: 추가 style
+function buildBarRow(label, count, max, color, rate, unprocBadge, labelStyle){
+  var pct = Math.round(count / max * 100);
+  var html = '<div class="bar-row">'
+    +'<div class="bar-label"'+(labelStyle?' style="'+labelStyle+'"':'')+'>'+esc(label)+'</div>'
+    +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'
+    +'<div class="bar-val">'+count+'</div>';
+  if(rate !== null) html += '<div class="bar-sub" style="color:var(--teal600)">'+rate+'%</div>';
+  if(unprocBadge) html += unprocBadge;
+  html += '</div>';
+  return html;
+}
+
 /* ── DASHBOARD CHARTS ── */
 function renderDashboard(){
   var tunnels  = groupBy(ALL_DATA,'터널명');
@@ -1205,14 +1315,8 @@ function renderDashboard(){
   tc.innerHTML = Object.keys(tunnels).sort().map(function(t){
     var rows = tunnels[t];
     var done = rows.filter(function(r){return r['조치여부']==='완료';}).length;
-    var pct  = Math.round(rows.length/tmax*100);
     var rate = Math.round(done/rows.length*100);
-    return '<div class="bar-row">'
-      +'<div class="bar-label">'+esc(t)+'</div>'
-      +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:var(--sky600)"></div></div>'
-      +'<div class="bar-val">'+rows.length+'</div>'
-      +'<div class="bar-sub" style="color:var(--teal600)">'+rate+'%</div>'
-      +'</div>';
+    return buildBarRow(t, rows.length, tmax, 'var(--sky600)', rate, '', '');
   }).join('');
 
   // 공종별
@@ -1222,12 +1326,8 @@ function renderDashboard(){
   var ci = 0;
   ec.innerHTML = Object.keys(types).sort(function(a,b){return types[b].length-types[a].length;}).map(function(t){
     var rows = types[t];
-    var pct  = Math.round(rows.length/emax*100);
     var col  = colors[ci++ % colors.length];
-    return '<div class="bar-row">'
-      +'<div class="bar-label">'+esc(t)+'</div>'
-      +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'
-      +'<div class="bar-val">'+rows.length+'</div></div>';
+    return buildBarRow(t, rows.length, emax, col, null, '', '');
   }).join('');
 
   // 업체별
@@ -1240,21 +1340,13 @@ function renderDashboard(){
     var done = rows.filter(function(r){return r['조치여부']==='완료';}).length;
     var prog = rows.filter(function(r){return r['조치여부']==='진행중';}).length;
     var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
-    var pct  = Math.round(rows.length/cmax*100);
     var rate = Math.round(done/rows.length*100);
     var col  = colors[ci2++ % colors.length];
-    // 미처리(진행중+미흡) 뱃지
     var unproc = prog + poor;
-    var unprocHtml = unproc > 0
+    var unprocBadge = unproc > 0
       ? '<span style="font-size:10px;font-weight:700;color:var(--coral);background:var(--coral50);border-radius:10px;padding:1px 6px;margin-left:4px">미처리 '+unproc+'</span>'
       : '';
-    return '<div class="bar-row">'
-      +'<div class="bar-label" style="min-width:80px;max-width:80px;overflow:hidden;text-overflow:ellipsis" title="'+esc(cp)+'">'+esc(cp)+'</div>'
-      +'<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'
-      +'<div class="bar-val">'+rows.length+'</div>'
-      +'<div class="bar-sub" style="color:var(--teal600);min-width:36px">'+rate+'%</div>'
-      +unprocHtml
-      +'</div>';
+    return buildBarRow(cp, rows.length, cmax, col, rate, unprocBadge, 'min-width:80px;max-width:80px;overflow:hidden;text-overflow:ellipsis');
   }).join('');
 }
 
@@ -1269,10 +1361,13 @@ function buildTabDropdowns(){
     tmenu.innerHTML = topts.map(function(o){
       return '<div class="dd-opt'+(TAB_FILTER.tunnel===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
     }).join('');
-    tmenu.addEventListener('click', function(e){
-      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
-      if(opt && opt.dataset && opt.dataset.val) selectTabDd('tunnel', opt.dataset.val, opt);
-    });
+    if(!tmenu._bound){
+      tmenu._bound = true;
+      tmenu.addEventListener('click', function(e){
+        var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+        if(opt && opt.dataset && opt.dataset.val) selectTabDd('tunnel', opt.dataset.val, opt);
+      });
+    }
   }
   // 공종별 드롭다운
   var types = getUniqueValues('공종');
@@ -1283,10 +1378,13 @@ function buildTabDropdowns(){
     emenu.innerHTML = eopts.map(function(o){
       return '<div class="dd-opt'+(TAB_FILTER.type===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
     }).join('');
-    emenu.addEventListener('click', function(e){
-      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
-      if(opt && opt.dataset && opt.dataset.val) selectTabDd('type', opt.dataset.val, opt);
-    });
+    if(!emenu._bound){
+      emenu._bound = true;
+      emenu.addEventListener('click', function(e){
+        var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+        if(opt && opt.dataset && opt.dataset.val) selectTabDd('type', opt.dataset.val, opt);
+      });
+    }
   }
   // 업체별 드롭다운
   var companies = getUniqueValues('업체명');
@@ -1297,10 +1395,13 @@ function buildTabDropdowns(){
     cmenu.innerHTML = copts.map(function(o){
       return '<div class="dd-opt'+(TAB_FILTER.company===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
     }).join('');
-    cmenu.addEventListener('click', function(e){
-      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
-      if(opt && opt.dataset && opt.dataset.val) selectTabDd('company', opt.dataset.val, opt);
-    });
+    if(!cmenu._bound){
+      cmenu._bound = true;
+      cmenu.addEventListener('click', function(e){
+        var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+        if(opt && opt.dataset && opt.dataset.val) selectTabDd('company', opt.dataset.val, opt);
+      });
+    }
   }
   // 외부 클릭 닫기 (중복 등록 방지: 한 번만)
   if(!buildTabDropdowns._bound){
@@ -1413,7 +1514,7 @@ function renderTunnelPanel(){
       +'<span style="font-size:12px;font-weight:700;color:var(--teal600)">'+rate+'%</span>'
       +'</div></div>'
       +'<div class="tbl-wrap"><div class="tbl-scroll">'
-      +'<table><thead><tr><th>날짜</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th><th>업체</th><th class="col-contact">담당자</th><th class="col-contact">전화번호</th></tr></thead>'
+      +'<table><thead><tr><th>날짜</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th></tr></thead>'
       +'<tbody>'+body+'</tbody></table></div></div></div>';
   }).join('');
 }
@@ -1512,52 +1613,27 @@ function renderTypePanel(){
       +(poor>0?'<span class="badge badge-poor">미흡 '+poor+'</span>':'')
       +'</div></div>'
       +'<div class="tbl-wrap"><div class="tbl-scroll">'
-      +'<table><thead><tr><th>날짜</th><th>터널</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th><th>업체</th><th class="col-contact">담당자</th><th class="col-contact">전화번호</th></tr></thead>'
+      +'<table><thead><tr><th>날짜</th><th>터널</th><th>위치</th><th class="col-expand">하자내용</th><th>상태</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th></tr></thead>'
       +'<tbody>'+body+'</tbody></table></div></div></div>';
   }).join('');
 }
 
 /* ── PHOTO URL 변환 ── */
-function extractDriveId(url){
-  if(!url) return '';
-  url = url.trim();
-  var m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if(m1) return m1[1];
-  var m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if(m2) return m2[1];
-  return '';
-}
 
 function makePhotoHtml(label, rawUrl){
   if(!rawUrl || !rawUrl.trim()) return '';
   var origUrl = rawUrl.trim();
-  var driveId = extractDriveId(origUrl);
 
-  var inner = '';
-  if(driveId){
-    // 구글 드라이브: 썸네일 URL로 직접 표시 (프록시 없이)
-    var thumbUrl = 'https://drive.google.com/thumbnail?id='+driveId+'&sz=w600';
-    var viewUrl  = 'https://drive.google.com/file/d/'+driveId+'/view';
-    inner = '<div class="photo-wrap">'
-      +'<a href="'+esc(viewUrl)+'" target="_blank" rel="noopener">'
-      +'<img class="photo-img loading" src="'+esc(thumbUrl)+'" alt="'+esc(label)+'"'
-      +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
-      +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
-      +'></a>'
-      +'<div class="photo-spinner"></div>'
-      +'<div class="photo-err">미리보기 불가<br><a href="'+esc(viewUrl)+'" target="_blank">🔗 Drive에서 직접 열기</a></div>'
-      +'</div>';
-  } else {
-    inner = '<div class="photo-wrap">'
-      +'<a href="'+esc(origUrl)+'" target="_blank" rel="noopener">'
-      +'<img class="photo-img loading" src="'+esc(origUrl)+'" alt="'+esc(label)+'"'
-      +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
-      +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
-      +'></a>'
-      +'<div class="photo-spinner"></div>'
-      +'<div class="photo-err">이미지를 불러올 수 없습니다<br><a href="'+esc(origUrl)+'" target="_blank">링크로 직접 열기 →</a></div>'
-      +'</div>';
-  }
+  var inner = '<div class="photo-wrap">'
+    +'<a href="'+esc(origUrl)+'" target="_blank" rel="noopener">'
+    +'<img class="photo-img loading" src="'+esc(origUrl)+'" alt="'+esc(label)+'"'
+    +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+    +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+    +'></a>'
+    +'<div class="photo-spinner"></div>'
+    +'<div class="photo-err">이미지를 불러올 수 없습니다<br><a href="'+esc(origUrl)+'" target="_blank">링크로 직접 열기 →</a></div>'
+    +'</div>';
+
   return '<div class="photo-section">'
     +'<div class="photo-label">'+esc(label)+'</div>'
     +inner
@@ -1572,26 +1648,26 @@ function openDetail(idx){
   var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
   document.getElementById('detailTitle').innerHTML = esc(r['터널명'])+' · '+esc(r['공종']);
   var rows = [
-    ['날짜', r['날짜']],
-    ['터널명', r['터널명']],
-    ['공종', r['공종']],
-    ['위치', r['위치']],
-    ['하자내용', r['하자내용']],
+    ['날짜',   esc(r['날짜']||'-')],
+    ['터널명', esc(r['터널명']||'-')],
+    ['공종',   esc(r['공종']||'-')],
+    ['위치',   esc(r['위치']||'-')],
+    ['하자내용', esc(r['하자내용']||'-')],
     ['조치여부', '<span class="badge '+badge+'">'+esc(s||'-')+'</span>'],
-    ['조치일', r['조치일']||'-'],
-    ['업체명', r['업체명']||'-'],
-    ['담당자', r['업체담당자']||'-'],
-    ['전화번호', r['전화번호']||'-'],
-    ['비고', r['비고']||'-'],
-    ['업무담당', r['업무담당']||'-'],
+    ['조치일',  esc(r['조치일']||'-')],
+    ['업체명',  esc(r['업체명']||'-')],
+    ['담당자',  esc(r['업체담당자']||'-')],
+    ['전화번호', esc(r['전화번호']||'-')],
+    ['비고',    esc(r['비고']||'-')],
+    ['관리',    esc(r['업무담당']||'-')],
   ];
   var infoHtml = rows.map(function(rv){
     return '<div class="detail-row"><div class="detail-key">'+rv[0]+'</div><div class="detail-val">'+rv[1]+'</div></div>';
   }).join('');
 
   var photoHtml = '';
-  var p1 = r['하자사진_URL']||r['하자사진']||'';
-  var p2 = r['조치사진_URL']||r['조치사진']||'';
+  var p1 = r['하자사진_URL']||'';
+  var p2 = r['조치사진_URL']||'';
   if(p1) photoHtml += makePhotoHtml('하자사진', p1);
   if(p2) photoHtml += makePhotoHtml('조치사진', p2);
 
