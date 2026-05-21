@@ -141,6 +141,9 @@ tbody tr:last-child td{border-bottom:none}
 .modal-save{background:var(--sky);border:none;color:#fff;border-radius:var(--r8);padding:10px 20px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;min-height:40px}
 .modal-cancel{background:var(--bg);border:1.5px solid var(--border);color:var(--txt2);border-radius:var(--r8);padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;min-height:40px}
 
+
+
+
 /* ── DETAIL MODAL ── */
 #detailModal{display:none}
 #detailModal.modal-open{display:block}
@@ -171,7 +174,6 @@ tbody tr:last-child td{border-bottom:none}
 .empty{text-align:center;padding:48px 20px;color:var(--txt3)}
 .empty svg{width:40px;height:40px;stroke:var(--gray100);margin-bottom:10px}
 .empty p{font-size:13px}
-.load-hint{font-size:12px;color:var(--txt3);text-align:center;padding:10px 0 4px}
 .last-update{font-size:12px;color:var(--txt3);text-align:right;padding:6px 14px 8px}
 .err-msg{font-size:12px;color:var(--coral);text-align:center;padding:8px 14px}
 
@@ -204,9 +206,10 @@ tbody tr:last-child td{border-bottom:none}
   .sc{padding:12px}
   .sc-hd{flex-wrap:wrap;gap:6px}
 
-  /* 테이블 */
-  .col-manager{display:table-cell}
-  table{min-width:360px}
+  /* 테이블 - 모바일에서 담당자·전화번호 숨김 */
+  .col-contact{display:none}
+  .col-remark{display:none}
+  table{min-width:480px}
   td{padding:7px 8px;font-size:12px}
   th{padding:7px 8px;font-size:11px}
   .td-content{-webkit-line-clamp:4}
@@ -233,7 +236,6 @@ tbody tr:last-child td{border-bottom:none}
   .wrap{padding:14px}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
-  .col-manager{display:table-cell}
 }
 
 /* PC (961px ~) */
@@ -242,7 +244,6 @@ tbody tr:last-child td{border-bottom:none}
   .wrap{padding:18px}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
-  .col-manager{display:table-cell}
   table{width:100%;min-width:1100px}
 }
 
@@ -259,7 +260,7 @@ tbody tr:last-child td{border-bottom:none}
 .dd-btn::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--sky600)}
 .dd-btn.active{background:var(--sky800);color:#fff;border-color:var(--sky800)}
 .dd-btn.active::after{color:#fff}
-.dd-menu{position:absolute;top:calc(100% + 6px);left:0;background:var(--card);border:1px solid var(--border);border-radius:var(--r12);box-shadow:0 8px 24px rgba(55,138,221,.15);z-index:500;min-width:130px;display:none;overflow-y:auto;max-height:200px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.dd-menu{position:absolute;top:calc(100% + 6px);left:0;background:var(--card);border:1px solid var(--border);border-radius:var(--r12);box-shadow:0 8px 24px rgba(55,138,221,.15);z-index:500;min-width:130px;display:none;overflow:hidden}
 .dd-menu.open{display:block}
 .dd-opt{padding:9px 14px;font-size:13px;font-weight:600;color:var(--txt2);cursor:pointer;-webkit-tap-highlight-color:transparent;border-bottom:1px solid var(--border2);white-space:nowrap}
 .dd-opt:last-child{border-bottom:none}
@@ -273,20 +274,20 @@ tbody tr:last-child td{border-bottom:none}
 <!-- 설정 모달 -->
 <div id="cfgModal">
   <div class="modal-backdrop" onclick="closeCfgModal(event)">
-    <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-box" style="max-width:480px" onclick="event.stopPropagation()">
       <div class="modal-title">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0F9D58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
-        Google Sheets 연동 설정
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        연동 설정
       </div>
       <div class="modal-field">
-        <label class="modal-label">Google Sheets ID</label>
-        <input id="cfgSheetId" class="modal-input" type="text" placeholder="https://docs.google.com/spreadsheets/d/..."/>
-        <div class="modal-hint">스프레드시트 URL 전체 붙여넣기 OK · <strong>링크 공유(뷰어)</strong> 설정 필요</div>
+        <label class="modal-label">Cloudflare Worker URL</label>
+        <input id="cfgWorkerUrl" class="modal-input" type="text" placeholder="https://your-worker.workers.dev"/>
+        <div class="modal-hint">저장된 값은 XX로 마스킹 표시 · 변경 시에만 새로 입력하세요</div>
       </div>
       <div class="modal-field">
-        <label class="modal-label">시트 이름 <span style="font-weight:400;color:var(--txt3)">(선택 — 비워두면 첫 번째 시트)</span></label>
-        <input id="cfgSheetName" class="modal-input" type="text" placeholder="하자보수DB"/>
-        <div class="modal-hint">탭 이름과 정확히 일치 (한글 OK)</div>
+        <label class="modal-label">노션 DB ID</label>
+        <input id="cfgDbId" class="modal-input" type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"/>
+        <div class="modal-hint">저장된 값은 XX로 마스킹 표시 · 변경 시에만 새로 입력하세요</div>
       </div>
       <div class="modal-btns">
         <button class="modal-cancel" onclick="closeCfgModal()">취소</button>
@@ -318,7 +319,7 @@ tbody tr:last-child td{border-bottom:none}
       </div>
       <div>
         <div class="hdr-title">하자보수 현황</div>
-        <div class="hdr-sub" id="hdrSub">Google Sheets 연동</div>
+        <div class="hdr-sub" id="hdrSub">Notion 실시간 연동</div>
       </div>
     </div>
     <div class="hdr-right">
@@ -342,7 +343,6 @@ tbody tr:last-child td{border-bottom:none}
     <button class="tab-btn" onclick="switchTab(2,this)">터널별</button>
     <button class="tab-btn" onclick="switchTab(3,this)">공종별</button>
     <button class="tab-btn" onclick="switchTab(4,this)">업체별</button>
-    <button class="tab-btn" onclick="switchTab(5,this)">업체목록</button>
   </div>
   <!-- KPI -->
   <div class="kpi-bar" id="kpiBar">
@@ -415,9 +415,7 @@ tbody tr:last-child td{border-bottom:none}
   <div class="tbl-wrap">
     <div class="tbl-scroll">
       <table>
-        <thead><tr>
-          <th class="col-date">날짜</th><th class="col-tunnel">터널</th><th class="col-type">공종</th><th class="col-loc">위치</th><th class="col-expand">하자내용</th><th class="col-status">상태</th><th class="col-date2">조치일</th><th class="col-company">업체</th><th class="col-contact">담당자</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">업무담당</th>
-        </tr></thead>
+        <thead><tr id="listHead"></tr></thead>
         <tbody id="listBody"></tbody>
       </table>
     </div>
@@ -469,66 +467,122 @@ tbody tr:last-child td{border-bottom:none}
   <div id="companyPanels"></div>
 </div>
 
-<!-- 패널5: 업체목록 -->
-<div class="panel" id="p5">
-  <div class="filter-row" style="margin-bottom:14px">
-    <input class="search-box" id="vendorSearchBox" placeholder="🔍 업체명, 담당자 검색..." oninput="renderVendorList()">
-    <div class="filter-count" id="vendorCount"></div>
-  </div>
-  <div class="tbl-wrap">
-    <div class="tbl-scroll">
-      <table id="vendorTable">
-        <thead><tr>
-          <th style="min-width:90px">업체명</th>
-          <th style="min-width:70px">담당자</th>
-          <th style="min-width:100px">전화번호</th>
-          <th style="min-width:80px">터널명</th>
-          <th style="min-width:48px;text-align:center">전체</th>
-          <th style="min-width:48px;text-align:center">완료</th>
-          <th style="min-width:48px;text-align:center">진행중</th>
-          <th style="min-width:200px">최근 처리내용</th>
-        </tr></thead>
-        <tbody id="vendorBody"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 </div><!-- /wrap -->
 
 <script>
 var ALL_DATA = [];
 var FILTER = { status:'ALL', tunnel:'ALL', manager:'ALL' };
 var TAB_FILTER = { tunnel:'ALL', type:'ALL', company:'ALL' };
-var CFG = { sheetId:'', sheetName:'' };
 
-/* ── 데모 데이터 (2026년 1월 발생 하자, 편집·확인용) ── */
+// ── 열 정의 (노션 DB 컬럼 순서와 동일) ──
+var COL_DEFS = [
+  { key:'조치여부',    label:'상태',     width:'col-status',  fixed:true  },
+  { key:'날짜',        label:'날짜',     width:'col-date',    fixed:false },
+  { key:'터널명',      label:'터널',     width:'col-tunnel',  fixed:false },
+  { key:'공종',        label:'공종',     width:'col-type',    fixed:false },
+  { key:'위치',        label:'위치',     width:'col-loc',     fixed:false },
+  { key:'업무담당',    label:'담당자',   width:'col-manager', fixed:false },
+  { key:'하자내용',    label:'하자내용', width:'col-expand',  fixed:true  },
+  { key:'하자사진_URL',label:'하자사진', width:'col-photo',   fixed:false },
+  { key:'조치일',      label:'조치일',   width:'col-date2',   fixed:false },
+  { key:'조치사진_URL',label:'조치사진', width:'col-photo',   fixed:false },
+  { key:'업체명',      label:'업체',     width:'col-company', fixed:false },
+  { key:'업체담당자',  label:'업체담당', width:'col-contact', fixed:false },
+  { key:'전화번호',    label:'전화번호', width:'col-contact', fixed:false },
+  { key:'비고',        label:'비고',     width:'col-remark',  fixed:false }
+];
+
+// 열 표시 여부 (사진 열은 기본 숨김)
+var COL_VISIBLE = {};
+COL_DEFS.forEach(function(c){ COL_VISIBLE[c.key] = true; });
+COL_VISIBLE['하자사진_URL'] = false;
+COL_VISIBLE['조치사진_URL'] = false;
+
+// probe로 감지된 실제 노션 속성명 매핑 { 내부key: 실제Notion속성명 }
+var NOTION_PROP_MAP = {};
+
+// 열 정의 조회 헬퍼
+function getColDef(key){ return COL_DEFS.find(function(c){return c.key===key;})||null; }
+// 현재 표시 열 순서 (visible=true인 것만)
+function getVisibleCols(){ return COL_DEFS.map(function(c){return c.key;}).filter(function(k){ return COL_VISIBLE[k]; }); }
+
+// ── 설정 (localStorage) ──
+var CFG = (function(){
+  try{
+    return {
+      workerUrl: localStorage.getItem('haja_workerUrl')||'',
+      dbId:      localStorage.getItem('haja_dbId')||''
+    };
+  }catch(e){ return {workerUrl:'',dbId:''}; }
+})();
+
+// ── 마스킹 헬퍼 ──
+function maskVal(v){
+  if(!v) return '';
+  if(v.startsWith('http')){
+    try{
+      var u=new URL(v);
+      var h=u.hostname;
+      var parts=h.split('.');
+      var masked=parts[0].length>4
+        ? parts[0].slice(0,2)+'XX'+parts[0].slice(-2)+'.'+parts.slice(1).join('.')
+        : 'XX.'+parts.slice(1).join('.');
+      return u.protocol+'//'+masked;
+    }catch(e){ return v.slice(0,6)+'XX...XX'+v.slice(-4); }
+  }
+  if(/^[0-9a-f\-]{32,36}$/i.test(v)){
+    var clean=v.replace(/-/g,'');
+    return clean.slice(0,4)+'-XXXX-XXXX-XXXX-'+clean.slice(-4);
+  }
+  return v.slice(0,3)+'XX...XX'+v.slice(-3);
+}
+
+/* ── 데모 데이터 (노션 하자보수DB · 2025년 11~12월 실제 데이터) ── */
 var DEMO_DATA = [
-  {_idx:1, 날짜:'2026-01-06', 공종:'설비', 터널명:'흥해', 위치:'관리동', 하자내용:'히팅케이블 가동시간 표출 불량 (포항방향)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'서진엔지니어링', 업체담당자:'성용성 부장', 전화번호:'010-2715-6672', 비고:'', 업무담당:'흥해터널'},
-  {_idx:2, 날짜:'2026-01-13', 공종:'소방', 터널명:'흥해', 위치:'관리동', 하자내용:'전자식 압력스위치 점검용 볼밸브 누락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-20', 조치사진_URL:'', 업체명:'서진엔지니어링', 업체담당자:'성용성 부장', 전화번호:'010-2715-6672', 비고:'', 업무담당:'흥해터널'},
-  {_idx:3, 날짜:'2026-01-13', 공종:'건축', 터널명:'흥해', 위치:'관리동', 하자내용:'현관입구 유리 파손', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'태갑종합건축', 업체담당자:'조시현 소장', 전화번호:'010-2879-6910', 비고:'', 업무담당:'흥해터널'},
-  {_idx:4, 날짜:'2026-01-23', 공종:'전기', 터널명:'흥해', 위치:'관리동', 하자내용:'UPS#1 밧데리 BMS 내부저항 이상 경보 (5번 ~ 8번 밧데리 내부저항 이상 표출)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-23', 조치사진_URL:'', 업체명:'', 업체담당자:'', 전화번호:'', 비고:'자체보수', 업무담당:'흥해터널'},
-  {_idx:5, 날짜:'2026-01-05', 공종:'건축', 터널명:'청하', 위치:'부전기실', 하자내용:'출입구 셔터 조작스위치 마감 미흡', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'㈜태양건설', 업체담당자:'박봉수 소장', 전화번호:'010-4517-9368', 비고:'', 업무담당:'청하터널'},
-  {_idx:6, 날짜:'2026-01-06', 공종:'전기', 터널명:'청하', 위치:'부전기실', 하자내용:'201/LV  MCCB 전원 투입 영상고조파필터기기 내부 단락 으로 인한 손상 (0129 A/S차 수거, 0226 기기설치, 0310 A/S팀 방문 전원투입, 0311 이상소음발생 전원 끔 0325고조파필터 기기 교체2ea)', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-03-25', 조치사진_URL:'', 업체명:'프라임솔루션', 업체담당자:'황대영 이사', 전화번호:'010-5241-1061', 비고:'0325 영상고조파필터 기기 새재품 으로 교체', 업무담당:'청하터널'},
-  {_idx:7, 날짜:'2026-01-12', 공종:'설비', 터널명:'청하', 위치:'본선회차로', 하자내용:'터널 입구(영덕) 회차로 X게이트 파손', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-14', 조치사진_URL:'', 업체명:'㈜이화', 업체담당자:'이재환 과장', 전화번호:'010-7220-4848', 비고:'', 업무담당:'청하터널'},
-  {_idx:8, 날짜:'2026-01-14', 공종:'설비', 터널명:'청하', 위치:'본선', 하자내용:'포항방향(주행) 차단막 상부 기어박스 본체 뒷면 커버문짝 탈락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'HP시스템', 업체담당자:'박은경 부사장', 전화번호:'010-2082-9932', 비고:'', 업무담당:'청하터널'},
-  {_idx:9, 날짜:'2026-01-15', 공종:'전기', 터널명:'청하', 위치:'주전기실', 하자내용:'112/LV 제트팬판넬 JFD-203 푸시버튼 GL 미점등', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'일렉콤', 업체담당자:'정석희 이사', 전화번호:'010-2847-6858', 비고:'', 업무담당:'청하터널'},
-  {_idx:10, 날짜:'2026-01-16', 공종:'전기', 터널명:'청하', 위치:'주전기실', 하자내용:'112/LV 제트팬판넬 전자접촉기(MC65a) 교체요청', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-29', 조치사진_URL:'', 업체명:'일렉콤', 업체담당자:'정석희 이사', 전화번호:'010-2847-6858', 비고:'', 업무담당:'청하터널'},
-  {_idx:11, 날짜:'2026-01-22', 공종:'환기', 터널명:'청하', 위치:'터널', 하자내용:'포항방향 VICO #102 불량', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-02-24', 조치사진_URL:'', 업체명:'파코코리아', 업체담당자:'김종원 차장', 전화번호:'010-4543-3736', 비고:'', 업무담당:'청하터널'},
-  {_idx:12, 날짜:'2026-01-01', 공종:'전기', 터널명:'남정5', 위치:'발전기  히터', 하자내용:'발전기 히팅후 차단기 Trip됨 히팅전류 35A, 차단기용량 20A 차단기 용량 50A 증설예정', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-28', 조치사진_URL:'', 업체명:'하이맥스', 업체담당자:'홍대건 과장', 전화번호:'010-9522-3588', 비고:'', 업무담당:'남정5터널'},
-  {_idx:13, 날짜:'2026-01-21', 공종:'건축', 터널명:'남정5', 위치:'지하공동구', 하자내용:'공동구 집수정 토사물 적체', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-04-02', 조치사진_URL:'', 업체명:'현대산업', 업체담당자:'이민우 과장', 전화번호:'010-8880-0475', 비고:'', 업무담당:'남정5터널'},
-  {_idx:14, 날짜:'2026-01-22', 공종:'전기', 터널명:'남정5', 위치:'시선유도등', 하자내용:'시선유도등용(영덕방향) ZCT 결선불량', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-28', 조치사진_URL:'', 업체명:'하이맥스', 업체담당자:'홍대건 과장', 전화번호:'010-9522-3588', 비고:'', 업무담당:'남정5터널'},
-  {_idx:15, 날짜:'2026-01-01', 공종:'전기', 터널명:'남정4', 위치:'옥외 전기실', 하자내용:'UPS PCB기판 불랭', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-08', 조치사진_URL:'', 업체명:'성신전기공업', 업체담당자:'이성규과장', 전화번호:'010-4730-0240', 비고:'', 업무담당:'점검팀'},
-  {_idx:16, 날짜:'2026-01-14', 공종:'전기', 터널명:'청하', 위치:'포항방향', 하자내용:'터널진입차단설비 뒷면 카버 탈락', 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-19', 조치사진_URL:'', 업체명:'HP시스템', 업체담당자:'박은경 대표', 전화번호:'010-2082-9932', 비고:'', 업무담당:'점검팀'}
+  {_idx:1,  날짜:'2025-11-07', 공종:'설비', 터널명:'남정5터널', 위치:'공동구',      하자내용:'공동구 전선출구 덮개 불량 (빗물 침투 우려됨)',              하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-23', 조치사진_URL:'', 업체명:'현대산업개발',     업체담당자:'천훈식 팀장',  전화번호:'010-9511-3817', 비고:'',        업무담당:'안전관리자'},
+  {_idx:2,  날짜:'2025-11-07', 공종:'전기', 터널명:'남정5터널', 위치:'기계실',      하자내용:'전선 취부 불량',                                           하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-05', 조치사진_URL:'', 업체명:'명신전기통신',     업체담당자:'노제훈 부장',  전화번호:'010-2214-8873', 비고:'',        업무담당:'안전관리자'},
+  {_idx:3,  날짜:'2025-11-07', 공종:'설비', 터널명:'남정5터널', 위치:'발전실 바닥', 하자내용:'에폭시 누락',                                               하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-19', 조치사진_URL:'', 업체명:'(주)태양건설',     업체담당자:'박봉수 소장',  전화번호:'010-4517-9368', 비고:'',        업무담당:'안전관리자'},
+  {_idx:4,  날짜:'2025-11-12', 공종:'설비', 터널명:'청하터널',  위치:'관리동',      하자내용:'관리동 대기실 바닥 온열판널 불량',                          하자사진_URL:'', 조치여부:'완료', 조치일:'2025-11-12', 조치사진_URL:'', 업체명:'DL이앵씨',        업체담당자:'소장 안진옥',  전화번호:'010-3524-7180', 비고:'',        업무담당:'안전관리자'},
+  {_idx:5,  날짜:'2025-11-12', 공종:'토목', 터널명:'청하터널',  위치:'공동구',      하자내용:'공동구 청소 미흡 (배수로 진흙 및 쓰레기)',                  하자사진_URL:'', 조치여부:'완료', 조치일:'2026-04-02', 조치사진_URL:'', 업체명:'한화',            업체담당자:'과장 정승규',  전화번호:'010-4808-5039', 비고:'2공구',  업무담당:'안전관리자'},
+  {_idx:6,  날짜:'2025-11-14', 공종:'소방', 터널명:'남정5터널', 위치:'하론 약제실', 하자내용:'유도등 불량',                                               하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-01', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'변창식 소장',  전화번호:'010-5334-8119', 비고:'',        업무담당:'안전관리자'},
+  {_idx:7,  날짜:'2025-11-14', 공종:'설비', 터널명:'남정5터널', 위치:'하론 약제실', 하자내용:'방화문 안닫힌',                                             하자사진_URL:'', 조치여부:'완료', 조치일:'2025-11-17', 조치사진_URL:'', 업체명:'(주)태양건설',     업체담당자:'박봉수 소장',  전화번호:'010-4517-9368', 비고:'',        업무담당:'안전관리자'},
+  {_idx:8,  날짜:'2025-11-14', 공종:'설비', 터널명:'남정5터널', 위치:'배터리실',    하자내용:'방화문 안닫힌',                                             하자사진_URL:'', 조치여부:'완료', 조치일:'2025-11-17', 조치사진_URL:'', 업체명:'(주)태양건설',     업체담당자:'박봉수 소장',  전화번호:'010-4517-9368', 비고:'',        업무담당:'안전관리자'},
+  {_idx:9,  날짜:'2025-11-14', 공종:'소방', 터널명:'남정5터널', 위치:'하론 약제실', 하자내용:'화재수신기 예비전원 연결선 누락',                           하자사진_URL:'', 조치여부:'완료', 조치일:'2025-11-18', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'박민규 대리',  전화번호:'010-5176-5549', 비고:'',        업무담당:'안전관리자'},
+  {_idx:10, 날짜:'2025-11-17', 공종:'통신', 터널명:'남정5터널', 위치:'관리동',      하자내용:'터널무선중계 시스템 설정창 오류',                           하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-24', 조치사진_URL:'', 업체명:'무선중계IBK',      업체담당자:'김홍삼 이사',  전화번호:'010-4231-1506', 비고:'',        업무담당:'안전관리자'},
+  {_idx:11, 날짜:'2025-11-18', 공종:'소방', 터널명:'흥해터널',  위치:'관리동',      하자내용:'소방예비펌프 이상 기동',                                   하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-06', 조치사진_URL:'', 업체명:'',                업체담당자:'',             전화번호:'',              비고:'자체보수', 업무담당:'안전관리자'},
+  {_idx:12, 날짜:'2025-12-03', 공종:'전기', 터널명:'남정5터널', 위치:'보안등',      하자내용:'관리동보안등 2개소 불량',                                   하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-05', 조치사진_URL:'', 업체명:'명신전기통신',     업체담당자:'노제훈 부장',  전화번호:'010-2214-8873', 비고:'',        업무담당:'안전관리자'},
+  {_idx:13, 날짜:'2025-12-05', 공종:'소방', 터널명:'청하터널',  위치:'기계실',      하자내용:'충압펌프 드레인 호수 누락',                                 하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-17', 조치사진_URL:'', 업체명:'서진엔지니어링',   업체담당자:'소장 성용성',  전화번호:'010-8829-4628', 비고:'',        업무담당:'안전관리자'},
+  {_idx:14, 날짜:'2025-12-08', 공종:'소방', 터널명:'흥해터널',  위치:'터널',        하자내용:'포항방향 17번 소화전 경종, 시각경보기 불량',                하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:15, 날짜:'2025-12-08', 공종:'소방', 터널명:'흥해터널',  위치:'터널',        하자내용:'포항방향 15번 소화전 경종, 시각경보기 불량',                하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:16, 날짜:'2025-12-08', 공종:'소방', 터널명:'흥해터널',  위치:'터널',        하자내용:'포항방향 19번 소화전 경종 불량',                            하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:17, 날짜:'2025-12-08', 공종:'소방', 터널명:'청하터널',  위치:'터널',        하자내용:'포항방향 5번 발신기 버튼 불량',                             하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:18, 날짜:'2025-12-08', 공종:'소방', 터널명:'흥해터널',  위치:'관리동',      하자내용:'비상방송 송출 불량',                                       하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-23', 조치사진_URL:'', 업체명:'LK시스템',        업체담당자:'남형택 부장',  전화번호:'010-3621-9794', 비고:'설비 신설', 업무담당:'안전관리자'},
+  {_idx:19, 날짜:'2025-12-08', 공종:'설비', 터널명:'흥해터널',  위치:'관리동',      하자내용:'옥상 사다리 추락 방지망 누락',                             하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-26', 조치사진_URL:'', 업체명:'태갑종합건축',     업체담당자:'조시현 소장',  전화번호:'010-2879-6910', 비고:'',        업무담당:'안전관리자'},
+  {_idx:20, 날짜:'2025-12-08', 공종:'설비', 터널명:'흥해터널',  위치:'관리동',      하자내용:'비상발전기 유류탱크실 출입문 닫힘 불량',                   하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-12', 조치사진_URL:'', 업체명:'태갑종합건축',     업체담당자:'조시현 소장',  전화번호:'010-2879-6910', 비고:'',        업무담당:'안전관리자'},
+  {_idx:21, 날짜:'2025-12-08', 공종:'전기', 터널명:'흥해터널',  위치:'관리동',      하자내용:'전력RTU 결선 누락 (조명)',                                  하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-30', 조치사진_URL:'', 업체명:'동양ENT',          업체담당자:'박관수 이사',  전화번호:'010-4604-1321', 비고:'',        업무담당:'안전관리자'},
+  {_idx:22, 날짜:'2025-12-08', 공종:'통신', 터널명:'청하터널',  위치:'관리동',      하자내용:'청하터널 관리사무소 출입구 CCTV 작동 불량',                하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-12', 조치사진_URL:'', 업체명:'신성정보기술',     업체담당자:'박경민',       전화번호:'010-6485-3386', 비고:'',        업무담당:'안전관리자'},
+  {_idx:23, 날짜:'2025-12-10', 공종:'소방', 터널명:'청하터널',  위치:'터널',        하자내용:'영덕방향 8번 시각경보기 불량',                             하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:24, 날짜:'2025-12-10', 공종:'소방', 터널명:'청하터널',  위치:'터널',        하자내용:'포항방향 27번 경종 불량',                                  하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:25, 날짜:'2025-12-10', 공종:'소방', 터널명:'청하터널',  위치:'터널',        하자내용:'관리동 지하공동구 끝단 통로유도등 불량',                   하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'김병훈 과장',  전화번호:'010-4842-5426', 비고:'',        업무담당:'점검팀'},
+  {_idx:26, 날짜:'2025-12-15', 공종:'소방', 터널명:'청하터널',  위치:'공동구',      하자내용:'피난유도등 불량',                                          하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-15', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'변창식 소장',  전화번호:'010-5334-8119', 비고:'',        업무담당:'안전관리자'},
+  {_idx:27, 날짜:'2025-12-15', 공종:'건축', 터널명:'청하터널',  위치:'주전기실',    하자내용:'전기실 진입로 미장 처리 미흡',                             하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-19', 조치사진_URL:'', 업체명:'태갑종합건축',     업체담당자:'조시현 소장',  전화번호:'010-2879-6910', 비고:'',        업무담당:'안전관리자'},
+  {_idx:28, 날짜:'2025-12-17', 공종:'전기', 터널명:'청하터널',  위치:'기계실',      하자내용:'노출콘센트 접지선 결선 누락',                              하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-17', 조치사진_URL:'', 업체명:'오리엔트(주)',      업체담당자:'양기호 소장',  전화번호:'010-3532-4324', 비고:'',        업무담당:'안전관리자'},
+  {_idx:29, 날짜:'2025-12-17', 공종:'소방', 터널명:'남정6터널', 위치:'터널',        하자내용:'부저음향정지 버튼해지시 알람발생',                         하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-16', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'최준혁 과장',  전화번호:'010-8469-8520', 비고:'',        업무담당:'점검팀'},
+  {_idx:30, 날짜:'2025-12-18', 공종:'소방', 터널명:'남정7터널', 위치:'터널',        하자내용:'낙이 바닥에 고정 불량',                                    하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-16', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'최준혁 과장',  전화번호:'010-8469-8520', 비고:'',        업무담당:'점검팀'},
+  {_idx:31, 날짜:'2025-12-18', 공종:'통신', 터널명:'청하터널',  위치:'관리동',      하자내용:'터널 CCTV 화면 표출 안됨 (IPWall error, 서버 다운)',        하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-18', 조치사진_URL:'', 업체명:'코리아넷',         업체담당자:'오종익',       전화번호:'010-3874-5979', 비고:'',        업무담당:'안전관리자'},
+  {_idx:32, 날짜:'2025-12-16', 공종:'전기', 터널명:'남정6터널', 위치:'터널',        하자내용:'포항방향 추월로(1차로) 제어함 인버터(이동) 불량',           하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-19', 조치사진_URL:'', 업체명:'대성기업(주)',     업체담당자:'오석준 대표',  전화번호:'010-5494-0042', 비고:'',        업무담당:'점검팀'},
+  {_idx:33, 날짜:'2025-12-16', 공종:'전기', 터널명:'남정5터널', 위치:'터널',        하자내용:'영덕방향 주행로(2차로) 제어함 인버터(이동) 불량',           하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-19', 조치사진_URL:'', 업체명:'대성기업(주)',     업체담당자:'오석준 대표',  전화번호:'010-5494-0042', 비고:'',        업무담당:'점검팀'},
+  {_idx:34, 날짜:'2025-12-22', 공종:'소방', 터널명:'남정5터널', 위치:'터널',        하자내용:'영덕방향 9번 소화전 중계기 불량',                          하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-16', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'최준혁 과장',  전화번호:'010-8469-8520', 비고:'',        업무담당:'점검팀'},
+  {_idx:35, 날짜:'2025-12-22', 공종:'소방', 터널명:'남정5터널', 위치:'터널',        하자내용:'포항방향 21번 소화전 발신기 응답램프 불량',                 하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-16', 조치사진_URL:'', 업체명:'D2U',             업체담당자:'최준혁 과장',  전화번호:'010-8469-8520', 비고:'',        업무담당:'점검팀'},
+  {_idx:36, 날짜:'2025-12-24', 공종:'통신', 터널명:'흥해터널',  위치:'관리동',      하자내용:'신설 비상방송 터치 스크린 불량',                           하자사진_URL:'', 조치여부:'완료', 조치일:'2026-01-16', 조치사진_URL:'', 업체명:'LK시스템',        업체담당자:'남형택 부장',  전화번호:'010-3621-9794', 비고:'',        업무담당:'안전관리자'},
+  {_idx:37, 날짜:'2025-12-26', 공종:'토목', 터널명:'청하터널',  위치:'부전기실',    하자내용:'가드레일 주변, 외부 청소상태 미흡',                        하자사진_URL:'', 조치여부:'진행중', 조치일:'', 조치사진_URL:'',    업체명:'DL이앵씨',        업체담당자:'홍순철 부장',  전화번호:'010-4786-4146', 비고:'2공구',  업무담당:'안전관리자'},
+  {_idx:38, 날짜:'2025-12-31', 공종:'설비', 터널명:'청하터널',  위치:'터널',        하자내용:'청하터널 포항방향 입구부 히팅케이블 온도센서 교체',         하자사진_URL:'', 조치여부:'완료', 조치일:'2025-12-31', 조치사진_URL:'', 업체명:'세인',            업체담당자:'홍순범 부장',  전화번호:'010-4501-4914', 비고:'',        업무담당:'안전관리자'},
+  {_idx:39, 날짜:'2025-12-31', 공종:'토목', 터널명:'청하터널',  위치:'터널',        하자내용:'청하터널 영덕방향 출구부, 포항방향 입구부 점검로 전선통로 막 설치 미흡', 하자사진_URL:'', 조치여부:'진행중', 조치일:'', 조치사진_URL:'', 업체명:'DL이앵씨', 업체담당자:'홍순범 부장', 전화번호:'010-4786-4146', 비고:'', 업무담당:'안전관리자'}
 ];
 
 /* ── INIT ── */
 (function init(){
-  var sid = localStorage.getItem('haja_sheetId') || '';
-  var sn  = localStorage.getItem('haja_sheetName') || '';
-  CFG.sheetId   = sid;
-  CFG.sheetName = sn;
-  if(sid){ loadData(); }
+  if(CFG.workerUrl && CFG.dbId){ loadData(); }
   else { loadDemo(); }
 })();
 
@@ -539,17 +593,24 @@ function loadDemo(){
   buildTabDropdowns();
   updateKPI();
   renderAll();
-  document.getElementById('lastUpdate').textContent = '';
-  // KPI 바 초기 상태는 switchTab(0)에서 처리됨
+  var lu=document.getElementById('lastUpdate');
+  if(lu){ lu.textContent='데모 데이터 (노션 하자보수DB 2025년 11~12월 실제) · 설정에서 Notion DB 연결하세요'; lu.style.color='rgba(255,255,255,.6)'; }
+  // 초기 탭이 요약(0)이므로 KPI 바 숨김
   var kpiBar = document.getElementById('kpiBar');
   if(kpiBar) kpiBar.style.display = 'none';
 }
 
 /* ── CONFIG MODAL ── */
 function openCfgModal(){
-  document.getElementById('cfgSheetId').value   = CFG.sheetId;
-  document.getElementById('cfgSheetName').value = CFG.sheetName;
+  var wu=CFG.workerUrl, db=CFG.dbId;
+  var wEl=document.getElementById('cfgWorkerUrl');
+  var dEl=document.getElementById('cfgDbId');
+  if(wu){ wEl.value=''; wEl.placeholder=maskVal(wu); wEl.dataset.saved='1'; }
+  else   { wEl.value=''; wEl.placeholder='https://your-worker.workers.dev'; delete wEl.dataset.saved; }
+  if(db){ dEl.value=''; dEl.placeholder=maskVal(db); dEl.dataset.saved='1'; }
+  else   { dEl.value=''; dEl.placeholder='xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'; delete dEl.dataset.saved; }
   document.getElementById('cfgModal').classList.add('modal-open');
+  document.body.style.overflow='hidden';
 }
 function closeCfgModal(e){
   if(e && e.target !== document.querySelector('#cfgModal .modal-backdrop')) return;
@@ -557,91 +618,297 @@ function closeCfgModal(e){
   document.body.style.overflow='';
 }
 function saveCfg(){
-  var raw = document.getElementById('cfgSheetId').value.trim();
-  var m = raw.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
-  var sid = m ? m[1] : raw;
-  var sn  = document.getElementById('cfgSheetName').value.trim();
-  if(!sid){ alert('구글시트 ID를 입력해주세요.'); return; }
-  CFG.sheetId   = sid;
-  CFG.sheetName = sn;
-  localStorage.setItem('haja_sheetId',   sid);
-  localStorage.setItem('haja_sheetName', sn);
+  var wEl=document.getElementById('cfgWorkerUrl');
+  var dEl=document.getElementById('cfgDbId');
+  var newWu=wEl.value.trim();
+  var newDb=dEl.value.trim();
+  if(newWu) CFG.workerUrl=newWu;
+  if(newDb) CFG.dbId=newDb;
+  if(!CFG.workerUrl||!CFG.dbId){ alert('Worker URL과 DB ID를 모두 입력해주세요.'); return; }
+  try{
+    localStorage.setItem('haja_workerUrl', CFG.workerUrl);
+    localStorage.setItem('haja_dbId',      CFG.dbId);
+  }catch(e){}
   document.getElementById('cfgModal').classList.remove('modal-open');
   document.body.style.overflow='';
+  ALL_DATA=[];
+  NOTION_PROP_MAP={};
   loadData();
 }
+// ESC 키로 모달 닫기
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    document.getElementById('cfgModal').classList.remove('modal-open');
+    document.getElementById('detailModal').classList.remove('modal-open');
+    document.body.style.overflow='';
+  }
+});
 
-/* ── LOAD DATA ── */
-function loadData(){
-  if(!CFG.sheetId){ openCfgModal(); return; }
-  setSync(true);
-  var url = 'https://docs.google.com/spreadsheets/d/'+CFG.sheetId+'/gviz/tq?tqx=out:json'
-    + (CFG.sheetName ? '&sheet='+encodeURIComponent(CFG.sheetName) : '');
-  fetch(url)
-    .then(function(r){ return r.text(); })
-    .then(function(txt){
-      var json = JSON.parse(txt.replace(/^[^(]+\(|\);?\s*$/g,''));
-      if(!json || !json.table){
-        throw new Error('gviz 응답에 table 데이터가 없습니다. 시트 이름 또는 공유 설정을 확인하세요.');
+/* ── NOTION FETCH HELPER ── */
+function fetchNotion(workerUrl, dbId, body){
+  return fetch(workerUrl+'/v1/databases/'+dbId+'/query',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  }).then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.json();
+  });
+}
+
+/* ── parseNotionPage ── */
+
+function getPropText(p){
+  if(!p) return '';
+  if(p.type==='title')      return (p.title||[]).map(function(t){return t.plain_text||'';}).join('');
+  if(p.type==='rich_text')  return (p.rich_text||[]).map(function(t){return t.plain_text||'';}).join('');
+  if(p.type==='select')     return (p.select&&p.select.name)||'';
+  if(p.type==='multi_select') return (p.multi_select||[]).map(function(s){return s.name;}).join(', ');
+  if(p.type==='number')     return p.number!==null&&p.number!==undefined ? String(p.number) : '';
+  if(p.type==='formula')    return String(p.formula&&(p.formula.string||p.formula.number)||'');
+  if(p.type==='url')        return p.url||'';
+  if(p.type==='date')       return (p.date&&p.date.start)||'';
+  if(p.type==='checkbox')   return p.checkbox ? '완료' : '진행중';
+  return '';
+}
+
+function parseNotionPage(page, idx){
+  var props = page.properties||{};
+  var result = { _idx: idx+1, _pageId: page.id };
+
+  // NOTION_PROP_MAP이 있으면 직접 접근, 없으면 키워드 검색 폴백
+  function getField(internalKey, kwFallback){
+    var notionKey = NOTION_PROP_MAP[internalKey];
+    if(notionKey && props[notionKey]) return getPropText(props[notionKey]);
+    // 폴백: 키워드 검색
+    var entries=Object.entries(props);
+    for(var ki=0; ki<kwFallback.length; ki++){
+      var kw=kwFallback[ki].toLowerCase();
+      for(var ei=0; ei<entries.length; ei++){
+        if(entries[ei][0].toLowerCase().includes(kw)){
+          var v=getPropText(entries[ei][1]);
+          if(v) return v;
+        }
       }
-      ALL_DATA = parseGviz(json);
-      buildTunnelFilter();
-      buildManagerFilter();
-      buildTabDropdowns();
-      updateKPI();
-      renderAll();
-      setSync(false);
-      var kpiBar = document.getElementById('kpiBar');
-      if(kpiBar) kpiBar.style.display = CURRENT_TAB === 0 ? 'none' : '';
-      var now = new Date();
-      var upTxt = '마지막 업데이트: '+fmt(now.getMonth()+1)+'. '+fmt(now.getDate())+'. '+fmt(now.getHours())+':'+fmt(now.getMinutes());
-      document.getElementById('lastUpdate').textContent = upTxt;
-      document.getElementById('lastUpdate').style.color = 'rgba(255,255,255,.75)';
+    }
+    return '';
+  }
+
+  // 날짜: date 타입 우선
+  var dateVal='';
+  var notionDateKey = NOTION_PROP_MAP['날짜'];
+  if(notionDateKey && props[notionDateKey] && props[notionDateKey].type==='date'){
+    dateVal = (props[notionDateKey].date&&props[notionDateKey].date.start||'').slice(0,10);
+  }
+  if(!dateVal){
+    var entries=Object.entries(props);
+    for(var i=0; i<entries.length; i++){
+      var p=entries[i][1];
+      if(p.type==='date'&&p.date&&p.date.start){ dateVal=p.date.start.slice(0,10); break; }
+    }
+  }
+  if(!dateVal){
+    var _t=new Date();
+    dateVal=_t.getFullYear()+'-'+fmt(_t.getMonth()+1)+'-'+fmt(_t.getDate());
+  }
+  result['날짜'] = dateVal.slice(0,10);
+
+  result['터널명']     = getField('터널명',    ['터널명','터널','tunnel']);
+  result['공종']       = getField('공종',       ['공종','type','공사종류']);
+  result['위치']       = getField('위치',       ['위치','location','loc']);
+  result['하자내용']   = getField('하자내용',   ['하자내용','내용','content']);
+  result['조치여부']   = getField('조치여부',   ['조치여부','상태','status'])||'진행중';
+  result['조치일']     = getField('조치일',     ['조치일','완료일','act_date']);
+  result['업체명']     = getField('업체명',     ['업체명','업체','company']);
+  result['업체담당자'] = getField('업체담당자', ['업체담당자','업체담당','contact']);
+  result['전화번호']   = getField('전화번호',   ['전화번호','phone','연락처']);
+  result['비고']       = getField('비고',       ['비고','remark','memo','메모']);
+  result['업무담당']   = getField('업무담당',   ['담당자','담당','manager','업무담당']);
+
+  // 사진: file 타입 → 첫 번째 파일 URL 추출
+  function getFileUrl(internalKey, kwFallback){
+    var notionKey=NOTION_PROP_MAP[internalKey];
+    var p = notionKey&&props[notionKey] ? props[notionKey] : null;
+    if(!p){
+      var entries2=Object.entries(props);
+      for(var ki2=0; ki2<kwFallback.length; ki2++){
+        var kw2=kwFallback[ki2].toLowerCase();
+        for(var ei2=0; ei2<entries2.length; ei2++){
+          if(entries2[ei2][0].toLowerCase().includes(kw2)){ p=entries2[ei2][1]; break; }
+        }
+        if(p) break;
+      }
+    }
+    if(!p) return '';
+    if(p.type==='files'&&p.files&&p.files.length){
+      var f=p.files[0];
+      return (f.type==='external'?f.external&&f.external.url:f.file&&f.file.url)||'';
+    }
+    if(p.type==='url') return p.url||'';
+    return getPropText(p);
+  }
+  result['하자사진_URL'] = getFileUrl('하자사진_URL', ['하자사진','photo1','사진1']);
+  result['조치사진_URL'] = getFileUrl('조치사진_URL', ['조치사진','photo2','사진2']);
+
+  // title 타입 폴백
+  if(!result['하자내용']){
+    var ents=Object.entries(props);
+    for(var j=0; j<ents.length; j++){
+      if(ents[j][1].type==='title'){
+        var tv=getPropText(ents[j][1]);
+        if(tv){ result['하자내용']=tv; break; }
+      }
+    }
+  }
+
+  // _extra_ 컬럼 처리
+  COL_DEFS.forEach(function(c){
+    if(c.key.indexOf('_extra_')===0){
+      var nk=NOTION_PROP_MAP[c.key];
+      if(nk&&props[nk]) result[c.key]=getPropText(props[nk]);
+    }
+  });
+
+  return result;
+}
+
+/* ── LOAD DATA (Notion) ── */
+function loadData(){
+  if(!CFG.workerUrl||!CFG.dbId){ openCfgModal(); return; }
+  setSync(true);
+  var lu = document.getElementById('lastUpdate');
+  if(lu){ lu.textContent=''; }
+
+  // probe: 1건 조회로 실제 속성명 자동 감지 → NOTION_PROP_MAP 갱신
+  fetchNotion(CFG.workerUrl, CFG.dbId, {page_size:1})
+    .then(function(probe){
+      var pages = probe.results||[];
+      if(pages.length){ buildNotionPropMap(pages[0].properties||{}); }
+
+      // 전체 데이터 조회
+      var sortProp = (NOTION_PROP_MAP['날짜']||'날짜');
+      var body = { page_size:100, sorts:[{property:sortProp, direction:'descending'}] };
+
+      return fetchNotion(CFG.workerUrl, CFG.dbId, body)
+        .then(function(data){
+          var allPages = data.results||[];
+          var cursor = data.next_cursor, hasMore = data.has_more, pageCount = 0;
+          function fetchNext(cur, more){
+            if(!cur||!more||pageCount++>=20) return Promise.resolve();
+            return fetchNotion(CFG.workerUrl, CFG.dbId, Object.assign({},body,{start_cursor:cur}))
+              .then(function(d2){
+                allPages = allPages.concat(d2.results||[]);
+                return fetchNext(d2.next_cursor, d2.has_more);
+              });
+          }
+          return fetchNext(cursor, hasMore).then(function(){
+            ALL_DATA = allPages.map(parseNotionPage).filter(function(r){ return r['하자내용']&&r['하자내용'].length>0; });
+            buildTunnelFilter();
+            buildManagerFilter();
+            buildTabDropdowns();
+            updateKPI();
+            renderAll();
+            rebuildListHeader();
+            setSync(false);
+            var kpiBar=document.getElementById('kpiBar');
+            if(kpiBar) kpiBar.style.display = CURRENT_TAB===0?'none':'';
+            var now=new Date();
+            var upTxt='마지막 업데이트: '+fmt(now.getMonth()+1)+'. '+fmt(now.getDate())+'. '+fmt(now.getHours())+':'+fmt(now.getMinutes());
+            if(lu){ lu.textContent=upTxt; lu.style.color='rgba(255,255,255,.75)'; }
+          });
+        });
     })
     .catch(function(e){
       setSync(false);
-      document.getElementById('lastUpdate').textContent = '로드 실패: '+(e.message||'');
-      document.getElementById('lastUpdate').style.color = 'var(--coral)';
+      if(!ALL_DATA.length){ ALL_DATA=DEMO_DATA; buildTunnelFilter(); buildManagerFilter(); buildTabDropdowns(); updateKPI(); renderAll(); rebuildListHeader(); }
+      var msg='⚠ '+e.message;
+      if(e.message.indexOf('400')>=0)       msg='⚠ HTTP 400 — Worker URL 또는 DB ID를 확인하세요';
+      else if(e.message.indexOf('401')>=0||e.message.indexOf('403')>=0) msg='⚠ 인증 오류 — Notion API 키를 확인하세요';
+      else if(e.message.indexOf('404')>=0)  msg='⚠ DB를 찾을 수 없습니다 — DB ID를 확인하세요';
+      else if(e.message.indexOf('fetch')>=0||e.message.indexOf('network')>=0) msg='⚠ 네트워크 오류 — Worker URL을 확인하세요';
+      if(lu){ lu.textContent=msg; lu.style.color='rgba(255,150,130,.9)'; }
       console.error(e);
     });
 }
 
-function parseGviz(json){
-  var cols = json.table.cols.map(function(c){ return c.label; });
-  return (json.table.rows||[]).map(function(r,i){
-    var obj = { _idx: i+1 };
-    cols.forEach(function(lbl,ci){
-      var cell = r.c && r.c[ci];
-      var val = '';
-      if(cell){
-        if(cell.f) val = cell.f;
-        else if(cell.v !== null && cell.v !== undefined){
-          var sv = String(cell.v);
-          // gviz Date(yyyy,m,d) 형식 → yyyy-MM-dd 변환
-          var dm = sv.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);
-          if(dm){
-            val = dm[1]+'-'+fmt(parseInt(dm[2])+1)+'-'+fmt(parseInt(dm[3]));
-          } else {
-            val = sv;
-          }
+/* ── probe: 실제 노션 속성명 → 내부 key 매핑 ── */
+function buildNotionPropMap(props){
+  NOTION_PROP_MAP = {};
+  var keys = Object.keys(props);
+
+  // 내부 key별 키워드와 타입 힌트로 매칭
+  var matchers = [
+    { key:'날짜',        kws:['날짜','date'],            types:['date','created_time'] },
+    { key:'터널명',      kws:['터널명','터널','tunnel'],  types:['select','multi_select','title','rich_text'] },
+    { key:'공종',        kws:['공종','type','공사'],      types:['select','multi_select','rich_text'] },
+    { key:'위치',        kws:['위치','location','loc'],  types:['rich_text','text','title'] },
+    { key:'업무담당',    kws:['담당자','담당','manager','업무담당'], types:['select','rich_text','title'] },
+    { key:'하자내용',    kws:['하자내용','내용','content','하자'], types:['title','rich_text'] },
+    { key:'조치여부',    kws:['조치여부','상태','status'], types:['select','checkbox'] },
+    { key:'조치일',      kws:['조치일','완료일','act'],   types:['date'] },
+    { key:'하자사진_URL',kws:['하자사진','photo1','사진1','하자'], types:['files','url','rich_text'] },
+    { key:'조치사진_URL',kws:['조치사진','photo2','사진2','조치사'], types:['files','url','rich_text'] },
+    { key:'업체명',      kws:['업체명','업체','company'], types:['rich_text','title','text'] },
+    { key:'업체담당자',  kws:['업체담당자','업체담당','contact','담당자'], types:['rich_text','text','title'] },
+    { key:'전화번호',    kws:['전화번호','전화','phone','연락'], types:['phone_number','rich_text','text'] },
+    { key:'비고',        kws:['비고','remark','memo','메모'], types:['rich_text','text'] }
+  ];
+
+  matchers.forEach(function(m){
+    // 1차: 키워드 + 타입 동시 매칭 (정확도 높음)
+    for(var ki=0; ki<m.kws.length; ki++){
+      var kw = m.kws[ki].toLowerCase();
+      for(var ni=0; ni<keys.length; ni++){
+        var nk = keys[ni];
+        if(nk.toLowerCase().includes(kw) && m.types.indexOf(props[nk].type)>=0){
+          if(!NOTION_PROP_MAP[m.key]){ NOTION_PROP_MAP[m.key]=nk; return; }
         }
       }
-      obj[lbl] = val.trim();
-    });
-    return obj;
-  }).filter(function(r){
-    // 빈 행 제거 + 헤더행이 데이터로 읽힌 경우 제거
-    return r['하자내용'] && r['하자내용'].length > 0 && r['하자내용'] !== '하자내용';
+    }
+    // 2차: 키워드만 매칭 (타입 무관)
+    for(var ki2=0; ki2<m.kws.length; ki2++){
+      var kw2=m.kws[ki2].toLowerCase();
+      for(var ni2=0; ni2<keys.length; ni2++){
+        var nk2=keys[ni2];
+        if(nk2.toLowerCase().includes(kw2)){
+          if(!NOTION_PROP_MAP[m.key]){ NOTION_PROP_MAP[m.key]=nk2; return; }
+        }
+      }
+    }
+  });
+  // title 타입 → 하자내용 폴백
+  if(!NOTION_PROP_MAP['하자내용']){
+    for(var ti=0; ti<keys.length; ti++){
+      if(props[keys[ti]].type==='title'){ NOTION_PROP_MAP['하자내용']=keys[ti]; break; }
+    }
+  }
+  // COL_DEFS에 없는 노션 속성 추가 (새 컬럼 자동 감지)
+  keys.forEach(function(nk){
+    var alreadyMapped = Object.values(NOTION_PROP_MAP).indexOf(nk)>=0;
+    if(!alreadyMapped){
+      var tempKey = '_extra_'+nk;
+      var alreadyInDefs = COL_DEFS.some(function(c){ return c.key===tempKey; });
+      if(!alreadyInDefs){
+        COL_DEFS.push({key:tempKey,label:nk,width:'col-remark',fixed:false});
+        COL_VISIBLE[tempKey]=false; // 기본 숨김
+        NOTION_PROP_MAP[tempKey]=nk;
+      }
+    }
   });
 }
 
 function fmt(n){ return n<10?'0'+n:String(n); }
 
+/* ── COMMON HELPER ── */
+function getUniqueValues(key){
+  var seen={}, result=[];
+  ALL_DATA.forEach(function(r){ var v=r[key]; if(v&&!seen[v]){seen[v]=1;result.push(v);} });
+  return result.sort();
+}
+
 /* ── BUILD MANAGER DROPDOWN ── */
 function buildManagerFilter(){
-  var managers = [];
-  ALL_DATA.forEach(function(r){ if(r['업무담당'] && !managers.includes(r['업무담당'])) managers.push(r['업무담당']); });
-  managers.sort();
+  var managers = getUniqueValues('업무담당');
   var menu = document.getElementById('managerDdMenu');
   if(!menu) return;
   var opts = [{ val:'ALL', label:'업무담당 전체' }];
@@ -649,12 +916,12 @@ function buildManagerFilter(){
   menu.innerHTML = opts.map(function(o){
     return '<div class="dd-opt'+(o.val==='ALL'?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
   }).join('');
-  menu.addEventListener('click', function(e){
-    var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
-    if(opt && opt.dataset && opt.dataset.val) selectManager(opt.dataset.val, opt);
-  });
   if(!buildManagerFilter._bound){
     buildManagerFilter._bound = true;
+    menu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(opt && opt.dataset && opt.dataset.val) selectManager(opt.dataset.val, opt);
+    });
     document.addEventListener('click', function(e){
       var wrap = document.getElementById('managerDdWrap');
       if(wrap && !wrap.contains(e.target)) closeManagerDd();
@@ -667,10 +934,7 @@ function toggleManagerDd(){
   var btn  = document.getElementById('managerDdBtn');
   if(!menu||!btn) return;
   if(menu.classList.contains('open')){ closeManagerDd(); }
-  else {
-    setDdMaxHeight(menu, btn);
-    menu.classList.add('open'); btn.classList.add('active');
-  }
+  else { menu.classList.add('open'); btn.classList.add('active'); }
 }
 
 function closeManagerDd(){
@@ -718,21 +982,19 @@ function filtered(){
 
 /* ── BUILD TUNNEL DROPDOWN ── */
 function buildTunnelFilter(){
-  var tunnels = [];
-  ALL_DATA.forEach(function(r){ if(r['터널명'] && !tunnels.includes(r['터널명'])) tunnels.push(r['터널명']); });
-  tunnels.sort();
+  var tunnels = getUniqueValues('터널명');
   var menu = document.getElementById('tunnelDdMenu');
   var opts = [{ val:'ALL', label:'터널 전체' }];
   tunnels.forEach(function(t){ opts.push({ val:t, label:t }); });
   menu.innerHTML = opts.map(function(o){
     return '<div class="dd-opt'+(o.val==='ALL'?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
   }).join('');
-  menu.addEventListener('click', function(e){
-    var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
-    if(opt && opt.dataset && opt.dataset.val) selectTunnel(opt.dataset.val, opt);
-  });
   if(!buildTunnelFilter._bound){
     buildTunnelFilter._bound = true;
+    menu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(opt && opt.dataset && opt.dataset.val) selectTunnel(opt.dataset.val, opt);
+    });
     document.addEventListener('click', function(e){
       var wrap = document.getElementById('tunnelDdWrap');
       if(wrap && !wrap.contains(e.target)) closeTunnelDd();
@@ -745,10 +1007,7 @@ function toggleTunnelDd(){
   var btn  = document.getElementById('tunnelDdBtn');
   var isOpen = menu.classList.contains('open');
   if(isOpen){ closeTunnelDd(); }
-  else {
-    setDdMaxHeight(menu, btn);
-    menu.classList.add('open'); btn.classList.add('active');
-  }
+  else { menu.classList.add('open'); btn.classList.add('active'); }
 }
 
 function closeTunnelDd(){
@@ -774,6 +1033,19 @@ function selectTunnel(val, el){
 /* ── KPI ── */
 var CURRENT_TAB = 0;
 
+function calcGroupKpi(groupKey){
+  var d = ALL_DATA;
+  var groups = groupBy(d, groupKey);
+  var keys = Object.keys(groups);
+  var rates = keys.map(function(k){
+    var r=groups[k], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
+    return Math.round(dn/r.length*100);
+  });
+  var avgRate = keys.length>0 ? Math.round(rates.reduce(function(a,b){return a+b;},0)/keys.length) : 0;
+  var unproc  = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+  return { count:keys.length, unproc:unproc, avgRate:avgRate };
+}
+
 function updateKPI(tabNum){
   if(tabNum === undefined) tabNum = CURRENT_TAB;
   var d = ALL_DATA;
@@ -796,79 +1068,33 @@ function updateKPI(tabNum){
     +'<div class="bar-fill" style="width:'+rate+'%;background:var(--teal600)"></div></div>';
 
   if(tabNum === 0){
-    // 요약: 전체 기준
     setKpiLabels('전체','진행중','완료','미흡');
     document.getElementById('kpiTotal').textContent = d.length;
     document.getElementById('kpiProg').textContent  = prog;
     document.getElementById('kpiDone').textContent  = done;
     document.getElementById('kpiPoor').textContent  = poor;
-
   } else if(tabNum === 1){
-    // 하자내역: 현재 필터 결과 기준
     updateKpiForList();
-
   } else if(tabNum === 2){
-    // 터널별
-    var tunnels = groupBy(d,'터널명');
-    var tCount = Object.keys(tunnels).length;
-    var tRates = Object.keys(tunnels).map(function(t){
-      var r=tunnels[t], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
-      return Math.round(dn/r.length*100);
-    });
-    var avgRate = tCount>0?Math.round(tRates.reduce(function(a,b){return a+b;},0)/tCount):0;
-    var unprocT = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+    var g=calcGroupKpi('터널명');
     setKpiLabels('터널 수','미처리 합계','평균 완료율','미흡');
-    document.getElementById('kpiTotal').textContent = tCount+'개';
-    document.getElementById('kpiProg').textContent  = unprocT;
-    document.getElementById('kpiDone').textContent  = avgRate+'%';
+    document.getElementById('kpiTotal').textContent = g.count+'개';
+    document.getElementById('kpiProg').textContent  = g.unproc;
+    document.getElementById('kpiDone').textContent  = g.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
-
   } else if(tabNum === 3){
-    // 공종별
-    var types = groupBy(d,'공종');
-    var tyCount = Object.keys(types).length;
-    var tyRates = Object.keys(types).map(function(t){
-      var r=types[t], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
-      return Math.round(dn/r.length*100);
-    });
-    var avgRateTy = tyCount>0?Math.round(tyRates.reduce(function(a,b){return a+b;},0)/tyCount):0;
-    var unprocTy = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+    var g=calcGroupKpi('공종');
     setKpiLabels('공종 수','미처리 합계','평균 완료율','미흡');
-    document.getElementById('kpiTotal').textContent = tyCount+'개';
-    document.getElementById('kpiProg').textContent  = unprocTy;
-    document.getElementById('kpiDone').textContent  = avgRateTy+'%';
+    document.getElementById('kpiTotal').textContent = g.count+'개';
+    document.getElementById('kpiProg').textContent  = g.unproc;
+    document.getElementById('kpiDone').textContent  = g.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
-
   } else if(tabNum === 4){
-    // 업체별
-    var companies = groupBy(d,'업체명');
-    var cCount = Object.keys(companies).length;
-    var cRates = Object.keys(companies).map(function(c){
-      var r=companies[c], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
-      return Math.round(dn/r.length*100);
-    });
-    var avgRateC = cCount>0?Math.round(cRates.reduce(function(a,b){return a+b;},0)/cCount):0;
-    var unprocC = d.filter(function(r){return r['조치여부']==='진행중'||r['조치여부']==='미흡';}).length;
+    var g=calcGroupKpi('업체명');
     setKpiLabels('업체 수','미처리 합계','평균 완료율','미흡');
-    document.getElementById('kpiTotal').textContent = cCount+'개';
-    document.getElementById('kpiProg').textContent  = unprocC;
-    document.getElementById('kpiDone').textContent  = avgRateC+'%';
-    document.getElementById('kpiPoor').textContent  = poor;
-
-  } else if(tabNum === 5){
-    // 업체목록
-    var vCompanies = groupBy(d,'업체명');
-    var vCount = Object.keys(vCompanies).filter(function(k){ return k !== '(미지정)'; }).length;
-    setKpiLabels('업체 수','미처리 합계','평균 완료율','미흡');
-    var vUnproc = d.filter(function(r){ return r['조치여부']==='진행중'||r['조치여부']==='미흡'; }).length;
-    var vRates = Object.keys(vCompanies).map(function(c){
-      var r=vCompanies[c], dn=r.filter(function(x){return x['조치여부']==='완료';}).length;
-      return Math.round(dn/r.length*100);
-    });
-    var vAvg = vRates.length>0?Math.round(vRates.reduce(function(a,b){return a+b;},0)/vRates.length):0;
-    document.getElementById('kpiTotal').textContent = vCount+'개';
-    document.getElementById('kpiProg').textContent  = vUnproc;
-    document.getElementById('kpiDone').textContent  = vAvg+'%';
+    document.getElementById('kpiTotal').textContent = g.count+'개';
+    document.getElementById('kpiProg').textContent  = g.unproc;
+    document.getElementById('kpiDone').textContent  = g.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
   }
 }
@@ -898,48 +1124,64 @@ function updateKpiForList(){
 
 /* ── RENDER ALL ── */
 function renderAll(){
+  rebuildListHeader();
   renderList();
   renderDashboard();
   renderTunnelPanel();
   renderTypePanel();
   renderCompanyPanel();
-  renderVendorList();
+}
+
+/* ── LIST HEADER 동적 생성 ── */
+function rebuildListHeader(){
+  var visKeys = getVisibleCols();
+  var thead = document.getElementById('listHead');
+  if(!thead) return;
+  thead.innerHTML = visKeys.map(function(key){
+    var def=getColDef(key); if(!def) return '';
+    return '<th class="'+def.width+'">'+esc(def.label)+'</th>';
+  }).join('');
 }
 
 /* ── LIST ── */
 function renderList(){
+  rebuildListHeader();
   var rows = filtered();
-  // 날짜 오름차순 정렬
-  rows.sort(function(a, b){
-    var da = (a['날짜']||'').replace(/[.\/]/g,'-');
-    var db = (b['날짜']||'').replace(/[.\/]/g,'-');
-    return da < db ? -1 : da > db ? 1 : 0;
-  });
+  rows = rows.map(function(r){
+    return { r:r, d:(r['날짜']||'').replace(/[.\/]/g,'-') };
+  }).sort(function(a,b){
+    return a.d < b.d ? -1 : a.d > b.d ? 1 : 0;
+  }).map(function(o){ return o.r; });
+
+  var visKeys = getVisibleCols();
   document.getElementById('filterCount').textContent = '총 '+rows.length+'건';
   var tbody = document.getElementById('listBody');
   if(!rows.length){
-    tbody.innerHTML = '<tr><td colspan="12" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="'+visKeys.length+'" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
     if(CURRENT_TAB===1) updateKpiForList();
     return;
   }
-  tbody.innerHTML = rows.map(function(r,i){
+  tbody.innerHTML = rows.map(function(r){
     var s = r['조치여부'];
-    var badge = statusBadge(s);
-    var slbl  = s==='완료'?'완료':s==='진행중'?'진행중':s||'-';
-    return '<tr onclick="openDetail('+r._idx+')">'
-      +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
-      +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
-      +'<td class="td-nowrap">'+esc(r['공종'])+'</td>'
-      +'<td class="td-nowrap">'+esc(r['위치'])+'</td>'
-      +'<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>'
-      +'<td><span class="badge '+badge+'">'+slbl+'</span></td>'
-      +'<td class="td-nowrap">'+shortDate(r['조치일'])+'</td>'
-      +'<td class="td-nowrap">'+esc(r['업체명'])+'</td>'
-      +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
-      +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
-      +'<td class="col-remark" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['비고']||'-')+'</td>'
-      +'<td class="col-manager" style="white-space:normal;word-break:keep-all;line-height:1.55">'+esc(r['업무담당']||'-')+'</td>'
-      +'</tr>';
+    var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
+    var cells = visKeys.map(function(key){
+      var def = getColDef(key);
+      var cls = def ? def.width : '';
+      var val = r[key]||'';
+      if(key==='날짜')       return '<td class="td-nowrap">'+shortDate(val)+'</td>';
+      if(key==='조치일')     return '<td class="td-nowrap">'+shortDate(val)+'</td>';
+      if(key==='터널명')     return '<td class="td-nowrap"><strong>'+esc(val)+'</strong></td>';
+      if(key==='조치여부')   return '<td><span class="badge '+badge+'">'+esc(s||'-')+'</span></td>';
+      if(key==='하자내용')   return '<td><span class="td-content">'+esc(val)+'</span></td>';
+      if(key==='하자사진_URL'||key==='조치사진_URL'){
+        if(!val) return '<td>-</td>';
+        var driveId=extractDriveId(val);
+        var href=driveId?'https://drive.google.com/file/d/'+driveId+'/view':val;
+        return '<td><a href="'+esc(href)+'" target="_blank" style="color:var(--sky600);font-size:12px">보기</a></td>';
+      }
+      return '<td class="'+cls+' td-nowrap">'+esc(val||'-')+'</td>';
+    }).join('');
+    return '<tr onclick="openDetail('+r._idx+')">'+cells+'</tr>';
   }).join('');
   if(CURRENT_TAB===1) updateKpiForList();
 }
@@ -1019,9 +1261,7 @@ function renderDashboard(){
 /* ── TAB DROPDOWN (터널별·공종별 탭 공용) ── */
 function buildTabDropdowns(){
   // 터널별 드롭다운
-  var tunnels = [];
-  ALL_DATA.forEach(function(r){ if(r['터널명'] && !tunnels.includes(r['터널명'])) tunnels.push(r['터널명']); });
-  tunnels.sort();
+  var tunnels = getUniqueValues('터널명');
   var tmenu = document.getElementById('tunnelTabDdMenu');
   if(tmenu){
     tmenu.innerHTML = '';
@@ -1035,9 +1275,7 @@ function buildTabDropdowns(){
     });
   }
   // 공종별 드롭다운
-  var types = [];
-  ALL_DATA.forEach(function(r){ if(r['공종'] && !types.includes(r['공종'])) types.push(r['공종']); });
-  types.sort();
+  var types = getUniqueValues('공종');
   var emenu = document.getElementById('typeTabDdMenu');
   if(emenu){
     emenu.innerHTML = '';
@@ -1051,9 +1289,7 @@ function buildTabDropdowns(){
     });
   }
   // 업체별 드롭다운
-  var companies = [];
-  ALL_DATA.forEach(function(r){ if(r['업체명'] && !companies.includes(r['업체명'])) companies.push(r['업체명']); });
-  companies.sort();
+  var companies = getUniqueValues('업체명');
   var cmenu = document.getElementById('companyTabDdMenu');
   if(cmenu){
     cmenu.innerHTML = '';
@@ -1088,10 +1324,7 @@ function toggleTabDd(kind){
   var btn  = document.getElementById(btnId);
   if(!menu||!btn) return;
   if(menu.classList.contains('open')){ closeTabDd(menuId,btnId); }
-  else {
-    setDdMaxHeight(menu, btn);
-    menu.classList.add('open'); btn.classList.add('active');
-  }
+  else { menu.classList.add('open'); btn.classList.add('active'); }
 }
 
 function closeTabDd(menuId, btnId){
@@ -1138,91 +1371,6 @@ function updateTabCounts(){
   }
 }
 
-/* ── VENDOR LIST ── */
-function renderVendorList(){
-  var q = (document.getElementById('vendorSearchBox') ? document.getElementById('vendorSearchBox').value : '').trim().toLowerCase();
-  var companies = groupBy(ALL_DATA, '업체명');
-  var sorted = Object.keys(companies)
-    .filter(function(k){ return k && k !== '(미지정)'; })
-    .sort();
-
-  // 검색 필터
-  if(q){
-    sorted = sorted.filter(function(cp){
-      var rows = companies[cp];
-      var contact = rows[0]['업체담당자']||'';
-      return cp.toLowerCase().includes(q) || contact.toLowerCase().includes(q);
-    });
-  }
-
-  document.getElementById('vendorCount').textContent = '총 '+sorted.length+'개 업체';
-  var tbody = document.getElementById('vendorBody');
-  if(!tbody) return;
-
-  if(!sorted.length){
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = sorted.map(function(cp){
-    var rows = companies[cp];
-    var total = rows.length;
-    var done  = rows.filter(function(r){ return r['조치여부']==='완료'; }).length;
-    var prog  = rows.filter(function(r){ return r['조치여부']==='진행중'; }).length;
-
-    // 담당자·전화번호: 행마다 다를 수 있으므로 고유값 수집
-    var contacts = [];
-    var tels = [];
-    var tunnels = [];
-    rows.forEach(function(r){
-      if(r['업체담당자'] && !contacts.includes(r['업체담당자'])) contacts.push(r['업체담당자']);
-      if(r['전화번호']   && !tels.includes(r['전화번호']))       tels.push(r['전화번호']);
-      if(r['터널명']     && !tunnels.includes(r['터널명']))      tunnels.push(r['터널명']);
-    });
-
-    // 최근 처리내용: 조치일 기준 가장 최근 완료 행
-    var doneRows = rows.filter(function(r){ return r['조치여부']==='완료' && r['조치일']; });
-    doneRows.sort(function(a,b){
-      return (b['조치일']||'') > (a['조치일']||'') ? 1 : -1;
-    });
-    var latestContent = doneRows.length ? doneRows[0]['하자내용'] : (rows[0]['하자내용']||'-');
-
-    // 진행중 강조
-    var progHtml = prog > 0
-      ? '<span style="color:var(--coral);font-weight:700">'+prog+'</span>'
-      : '<span style="color:var(--txt3)">0</span>';
-
-    return '<tr onclick="filterCompanyTab(\''+esc(cp)+'\')" style="cursor:pointer">'
-      +'<td style="font-weight:700;color:var(--txt)">'+esc(cp)+'</td>'
-      +'<td class="td-nowrap">'+esc(contacts.join(', ')||'-')+'</td>'
-      +'<td class="td-nowrap">'+esc(tels.join(', ')||'-')+'</td>'
-      +'<td class="td-nowrap" style="color:var(--txt2)">'+esc(tunnels.join(', ')||'-')+'</td>'
-      +'<td style="text-align:center;font-weight:700;color:var(--sky800)">'+total+'</td>'
-      +'<td style="text-align:center;font-weight:700;color:var(--teal600)">'+done+'</td>'
-      +'<td style="text-align:center">'+progHtml+'</td>'
-      +'<td style="white-space:normal;line-height:1.5;color:var(--txt2);font-size:12px">'+esc(latestContent)+'</td>'
-      +'</tr>';
-  }).join('');
-}
-
-// 업체목록 행 클릭 → 업체별 탭으로 이동
-function filterCompanyTab(cp){
-  // 업체별 탭(4)으로 전환 후 해당 업체 필터
-  var btn = document.querySelectorAll('.tab-btn')[4];
-  switchTab(4, btn);
-  TAB_FILTER.company = cp;
-  renderCompanyPanel();
-  updateTabCounts();
-  // 드롭다운 라벨 업데이트
-  var label = document.getElementById('companyTabDdLabel');
-  if(label) label.textContent = cp;
-  var ddBtn = document.getElementById('companyTabDdBtn');
-  if(ddBtn){ ddBtn.style.background='var(--sky800)'; ddBtn.style.color='#fff'; ddBtn.style.borderColor='var(--sky800)'; }
-  document.querySelectorAll('#companyTabDdMenu .dd-opt').forEach(function(o){
-    o.classList.toggle('sel', o.dataset.val === cp);
-  });
-}
-
 /* ── TUNNEL PANEL ── */
 function renderTunnelPanel(){
   var allTunnels = groupBy(ALL_DATA,'터널명');
@@ -1244,7 +1392,7 @@ function renderTunnelPanel(){
     var rate = Math.round(done/rows.length*100);
     var body = rows.map(function(r){
       var s=r['조치여부'];
-      var badge=statusBadge(s);
+      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
       return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap">'+esc(r['공종'])+'</td>'
@@ -1291,7 +1439,7 @@ function renderCompanyPanel(){
     var rate = Math.round(done/rows.length*100);
     var body = rows.map(function(r){
       var s=r['조치여부'];
-      var badge=statusBadge(s);
+      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
       return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
@@ -1301,8 +1449,9 @@ function renderCompanyPanel(){
         +'<td><span class="badge '+badge+'">'+esc(s||'-')+'</span></td>'
         +'</tr>';
     }).join('');
-    var contact = rows[0]['업체담당자']||'';
-    var tel = rows[0]['전화번호']||'';
+    var contactRow = rows.find(function(r){ return r['업체담당자']||r['전화번호']; }) || rows[0];
+    var contact = contactRow['업체담당자']||'';
+    var tel = contactRow['전화번호']||'';
     var subHtml = (contact||tel)
       ? '<div style="font-size:13px;color:var(--txt2);margin-top:3px">'+esc(contact)+(tel?' &nbsp;&middot;&nbsp; '+esc(tel):'')+'</div>'
       : '';
@@ -1343,7 +1492,7 @@ function renderTypePanel(){
     var poor = rows.filter(function(r){return r['조치여부']==='미흡';}).length;
     var body = rows.map(function(r){
       var s=r['조치여부'];
-      var badge=statusBadge(s);
+      var badge=s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
       return '<tr onclick="openDetail('+r._idx+')" style="cursor:pointer">'
         +'<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>'
         +'<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>'
@@ -1369,11 +1518,6 @@ function renderTypePanel(){
 }
 
 /* ── PHOTO URL 변환 ── */
-// Apps Script 이미지 프록시 (구글 드라이브 → GitHub Pages 사진 표시용)
-// ⚠️ 보안: GitHub Pages가 공개 저장소라면 이 URL이 외부에 노출됩니다.
-// Apps Script 측에서 Referer 헤더 또는 doGet() 내 허용 도메인 검사를 추가하세요.
-var PHOTO_PROXY = 'https://script.google.com/macros/s/AKfycbxW68Wd6kmUx-K482Dyc4cEr8LAwL4vdx38zhEe3HL1lujehjr3dJKJuggckGKpQAYrcg/exec';
-
 function extractDriveId(url){
   if(!url) return '';
   url = url.trim();
@@ -1384,35 +1528,6 @@ function extractDriveId(url){
   return '';
 }
 
-// 프록시 fetch → base64 data URL → img 주입
-function loadProxyPhoto(uid, proxyUrl, viewUrl, label){
-  var wrap = document.getElementById(uid);
-  if(!wrap) return;
-
-  fetch(proxyUrl, {redirect: 'follow', mode: 'cors'})
-    .then(function(r){ return r.text(); })
-    .then(function(d){
-      var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
-      // Apps Script가 JSON {"dataUrl":"data:..."} 형식으로 반환하는 경우 파싱
-      var dataUrl = d;
-      if(d && d.indexOf('{') === 0){
-        try { var obj = JSON.parse(d); dataUrl = obj.dataUrl || ''; } catch(e){}
-      }
-      if(!dataUrl || dataUrl.indexOf('data:') !== 0){
-        var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block'; return;
-      }
-      var a = document.createElement('a'); a.href=viewUrl; a.target='_blank'; a.rel='noopener';
-      var img = document.createElement('img'); img.className='photo-img loaded';
-      img.src = dataUrl; img.alt = label;
-      a.appendChild(img); wrap.insertBefore(a, wrap.firstChild);
-    })
-    .catch(function(err){
-      console.error('photo load error:', err);
-      var sp = wrap.querySelector('.photo-spinner'); if(sp) sp.remove();
-      var er = wrap.querySelector('.photo-err'); if(er) er.style.display='block';
-    });
-}
-
 function makePhotoHtml(label, rawUrl){
   if(!rawUrl || !rawUrl.trim()) return '';
   var origUrl = rawUrl.trim();
@@ -1420,20 +1535,22 @@ function makePhotoHtml(label, rawUrl){
 
   var inner = '';
   if(driveId){
-    var proxyUrl = PHOTO_PROXY + '?id=' + driveId;
+    // 구글 드라이브: 썸네일 URL로 직접 표시 (프록시 없이)
+    var thumbUrl = 'https://drive.google.com/thumbnail?id='+driveId+'&sz=w600';
     var viewUrl  = 'https://drive.google.com/file/d/'+driveId+'/view';
-    var uid = 'pi'+Math.random().toString(36).slice(2,10);
-    // placeholder 생성 후 setTimeout으로 fetch 실행 (DOM 삽입 후)
-    inner = '<div class="photo-wrap" id="'+uid+'">'
+    inner = '<div class="photo-wrap">'
+      +'<a href="'+esc(viewUrl)+'" target="_blank" rel="noopener">'
+      +'<img class="photo-img loading" src="'+esc(thumbUrl)+'" alt="'+esc(label)+'"'
+      +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+      +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+      +'></a>'
       +'<div class="photo-spinner"></div>'
-      +'<div class="photo-err" style="display:none">미리보기 불가<br><a href="'+esc(viewUrl)+'" target="_blank">🔗 Drive에서 직접 열기</a></div>'
+      +'<div class="photo-err">미리보기 불가<br><a href="'+esc(viewUrl)+'" target="_blank">🔗 Drive에서 직접 열기</a></div>'
       +'</div>';
-    // DOM 삽입 후 실행되도록 rAF 사용 (setTimeout 50ms 레이스 컨디션 방지)
-    setTimeout(function(){ requestAnimationFrame(function(){ loadProxyPhoto(uid, proxyUrl, viewUrl, label); }); }, 0);
   } else {
     inner = '<div class="photo-wrap">'
       +'<a href="'+esc(origUrl)+'" target="_blank" rel="noopener">'
-      +'<img class="photo-img loading" src="'+esc(origUrl)+'" alt="'+label+'"'
+      +'<img class="photo-img loading" src="'+esc(origUrl)+'" alt="'+esc(label)+'"'
       +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
       +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
       +'></a>'
@@ -1442,7 +1559,7 @@ function makePhotoHtml(label, rawUrl){
       +'</div>';
   }
   return '<div class="photo-section">'
-    +'<div class="photo-label">'+label+'</div>'
+    +'<div class="photo-label">'+esc(label)+'</div>'
     +inner
     +'</div>';
 }
@@ -1452,7 +1569,7 @@ function openDetail(idx){
   var r = ALL_DATA.find(function(d){ return d._idx===idx; });
   if(!r) return;
   var s = r['조치여부'];
-  var badge = statusBadge(s);
+  var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
   document.getElementById('detailTitle').innerHTML = esc(r['터널명'])+' · '+esc(r['공종']);
   var rows = [
     ['날짜', r['날짜']],
@@ -1480,9 +1597,10 @@ function openDetail(idx){
 
   document.getElementById('detailBody').innerHTML = infoHtml + photoHtml;
   document.getElementById('detailModal').classList.add('modal-open');
+  document.body.style.overflow='hidden';
 }
 function closeDetail(e){
-  if(e && e.target !== document.querySelector('#detailModal .modal-backdrop')) return;
+  if(e && e.type==='click' && e.target !== document.querySelector('#detailModal .modal-backdrop')) return;
   document.getElementById('detailModal').classList.remove('modal-open');
   document.body.style.overflow='';
 }
@@ -1498,13 +1616,6 @@ function switchTab(n,el){
   var kpiBar = document.getElementById('kpiBar');
   if(kpiBar) kpiBar.style.display = n === 0 ? 'none' : '';
   updateKPI(n);
-}
-
-/* ── DROPDOWN MAX-HEIGHT 동적 계산 ── */
-function setDdMaxHeight(menu, btn){
-  var rect = btn.getBoundingClientRect();
-  var spaceBelow = window.innerHeight - rect.bottom - 12;
-  menu.style.maxHeight = Math.max(120, spaceBelow) + 'px';
 }
 
 /* ── SYNC BUTTON ── */
@@ -1524,14 +1635,6 @@ function setSync(loading){
 }
 
 /* ── HELPERS ── */
-// 조치여부 → badge 클래스 (allowlist 검사 포함)
-function statusBadge(s){
-  if(s==='완료')   return 'badge-done';
-  if(s==='진행중') return 'badge-prog';
-  if(s==='미흡')   return 'badge-poor';
-  return 'badge-poor';
-}
-
 function groupBy(arr, key){
   var obj={};
   arr.forEach(function(r){ var k=r[key]||'(미지정)'; if(!obj[k]) obj[k]=[]; obj[k].push(r); });
