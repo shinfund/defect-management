@@ -723,7 +723,7 @@ function parseNotionPage(page, idx){
   result['업체담당자'] = getField('업체담당자', ['업체담당자','업체담당','contact']);
   result['전화번호']   = getField('전화번호',   ['전화번호','phone','연락처']);
   result['비고']       = getField('비고',       ['비고','remark','memo','메모']);
-  result['업무담당']   = getField('업무담당',   ['담당자','담당','manager','업무담당']);
+  result['업무담당']   = getField('업무담당',   ['업무담당','담당','manager']);
 
   // 사진: file 타입 → 첫 번째 파일 URL 추출
   function getFileUrl(internalKey, kwFallback){
@@ -842,14 +842,14 @@ function buildNotionPropMap(props){
     { key:'터널명',      kws:['터널명','터널','tunnel'],  types:['select','multi_select','title','rich_text'] },
     { key:'공종',        kws:['공종','type','공사'],      types:['select','multi_select','rich_text'] },
     { key:'위치',        kws:['위치','location','loc'],  types:['rich_text','text','title'] },
-    { key:'업무담당',    kws:['담당자','담당','manager','업무담당'], types:['select','rich_text','title'] },
+    { key:'업무담당',    kws:['업무담당','담당자','담당','manager'], types:['select','rich_text','title'] },
+    { key:'업체담당자',  kws:['업체담당자','업체담당','contact'], types:['rich_text','text','title'] },
     { key:'하자내용',    kws:['하자내용','내용','content','하자'], types:['title','rich_text'] },
     { key:'조치여부',    kws:['조치여부','상태','status'], types:['select','checkbox'] },
     { key:'조치일',      kws:['조치일','완료일','act'],   types:['date'] },
     { key:'하자사진_URL',kws:['하자사진','photo1','사진1','하자'], types:['files','url','rich_text'] },
     { key:'조치사진_URL',kws:['조치사진','photo2','사진2','조치사'], types:['files','url','rich_text'] },
     { key:'업체명',      kws:['업체명','업체','company'], types:['rich_text','title','text'] },
-    { key:'업체담당자',  kws:['업체담당자','업체담당','contact','담당자'], types:['rich_text','text','title'] },
     { key:'전화번호',    kws:['전화번호','전화','phone','연락'], types:['phone_number','rich_text','text'] },
     { key:'비고',        kws:['비고','remark','memo','메모'], types:['rich_text','text'] }
   ];
