@@ -1549,10 +1549,12 @@ function renderCompanyPanel(){
     {render:function(r){return '<td class="td-nowrap">'+esc(r['공종'])+'</td>';}},
     {render:function(r){return '<td class="td-nowrap">'+esc(r['위치'])+'</td>';}},
     {render:function(r){return '<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>';}},
+    {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
+    {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-remark">'+esc(r['비고']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
   ];
-  var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
+  var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
   el.innerHTML = sorted.map(function(cp){
     var rows = companies[cp];
     var contactRow = rows.find(function(r){ return r['업체담당자']||r['전화번호']; })||rows[0];
