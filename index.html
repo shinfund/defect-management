@@ -24,7 +24,7 @@
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;word-break:keep-all;-webkit-font-smoothing:antialiased}
 
 /* ── HEADER ── */
-.hdr-wrap{position:sticky;top:0;z-index:100}
+.hdr-wrap{position:sticky;top:0;z-index:600}
 .hdr{background:var(--sky800);padding:13px 16px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(12,68,124,.25)}
 .hdr-left{display:flex;align-items:center;gap:10px}
 .hdr-icon{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:var(--r8);display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -88,7 +88,8 @@ tbody tr:last-child td{border-bottom:none}
 .td-content{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;color:var(--txt);line-height:1.55;word-break:keep-all}
 .td-nowrap{white-space:nowrap}
 .col-expand{width:100%;min-width:320px}
-.col-remark{width:100px;min-width:100px;max-width:100px}
+.col-remark{width:120px;min-width:120px;max-width:160px}
+td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.55;word-break:keep-all}
 .col-date{width:80px;white-space:nowrap}
 .col-tunnel{width:52px;white-space:nowrap}
 .col-type{width:44px;white-space:nowrap}
@@ -186,12 +187,13 @@ tbody tr:last-child td{border-bottom:none}
   .hdr-icon svg{width:16px;height:16px}
   .hdr-right{flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0}
   .hdr-btns{gap:5px}
-  .hdr-btn{padding:4px 9px;font-size:11px;min-height:26px;gap:3px}
+  /* [개선2] 터치 타겟 40px 확보 */
+  .hdr-btn{padding:8px 10px;font-size:11px;min-height:40px;gap:3px}
   .hdr-btn svg{width:11px;height:11px}
   .last-update{font-size:10px}
 
-  /* 탭 - 균등 분할 */
-  .tab-btn{font-size:13px;padding:11px 2px;letter-spacing:-.02em}
+  /* [개선3] 탭 6개 - 균등 분할, 글자 잘림 방지 */
+  .tab-btn{font-size:12px;padding:10px 1px;letter-spacing:-.03em}
 
   /* KPI */
   .kpi-bar{padding:8px 10px;gap:6px}
@@ -212,14 +214,21 @@ tbody tr:last-child td{border-bottom:none}
   .col-contact{display:none}
   .col-remark{display:none}
   .col-manager{display:none}
-  table{min-width:480px}
+  /* [문제1 수정] 숨긴 컬럼 반영해 min-width 축소 */
+  table{min-width:340px}
   td{padding:7px 8px;font-size:12px}
   th{padding:7px 8px;font-size:11px}
   .td-content{-webkit-line-clamp:4}
 
-  /* 필터 */
-  .f-chip{font-size:11px;padding:4px 8px}
+  /* [개선4] 필터 - 검색박스 모바일에서 독립 줄 배치 */
+  .filter-row{flex-direction:column;gap:8px}
+  .filter-row .filter-group{flex-wrap:wrap}
+  .filter-row .search-box{width:100%;order:3;min-width:unset}
+  .f-chip{font-size:11px;padding:8px 10px;min-height:40px}
   .search-box{font-size:12px}
+
+  /* 드롭다운 - 모바일 높이 제한 */
+  .dd-menu{max-height:200px}
 
   /* 모달 */
   .modal-box{padding:18px;border-radius:var(--r16)}
@@ -228,7 +237,8 @@ tbody tr:last-child td{border-bottom:none}
 
 /* 소형 모바일 (~ 380px) */
 @media(max-width:380px){
-  .tab-btn{font-size:12px}
+  /* [개선3] 소형 기기 탭 폰트 추가 축소 */
+  .tab-btn{font-size:11px;letter-spacing:-.04em}
   .hdr-title{font-size:14px}
   .kpi-num{font-size:16px}
 }
@@ -240,6 +250,8 @@ tbody tr:last-child td{border-bottom:none}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
   .col-manager{display:table-cell}
+  /* [개선1] 태블릿 테이블 min-width 추가 */
+  table{min-width:800px}
 }
 
 /* PC (961px ~) */
@@ -268,7 +280,10 @@ tbody tr:last-child td{border-bottom:none}
 .dd-btn::after{content:'▾';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--sky600)}
 .dd-btn.active{background:var(--sky800);color:#fff;border-color:var(--sky800)}
 .dd-btn.active::after{color:#fff}
-.dd-menu{position:absolute;top:calc(100% + 6px);left:0;background:var(--card);border:1px solid var(--border);border-radius:var(--r12);box-shadow:0 8px 24px rgba(55,138,221,.15);z-index:500;min-width:130px;display:none;overflow:hidden}
+.dd-menu{position:absolute;top:calc(100% + 6px);left:0;background:var(--card);border:1px solid var(--border);border-radius:var(--r12);box-shadow:0 8px 24px rgba(55,138,221,.15);z-index:500;min-width:130px;display:none;overflow-y:auto;max-height:280px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.dd-menu::-webkit-scrollbar{width:4px}
+.dd-menu::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.dd-menu::-webkit-scrollbar-track{background:transparent}
 .dd-menu.open{display:block}
 .dd-opt{padding:9px 14px;font-size:13px;font-weight:600;color:var(--txt2);cursor:pointer;-webkit-tap-highlight-color:transparent;border-bottom:1px solid var(--border2);white-space:nowrap}
 .dd-opt:last-child{border-bottom:none}
@@ -398,11 +413,12 @@ tbody tr:last-child td{border-bottom:none}
 <!-- 패널1: 목록 -->
 <div class="panel" id="p1">
   <div class="filter-row">
-    <div class="filter-group" id="statusFilter">
-      <button class="f-chip on" data-val="ALL" onclick="setFilter('status','ALL',this)">전체</button>
-      <button class="f-chip c-coral" data-val="진행중" onclick="setFilter('status','진행중',this)">진행중</button>
-      <button class="f-chip c-teal" data-val="완료" onclick="setFilter('status','완료',this)">완료</button>
-      <button class="f-chip c-amber" data-val="미흡" onclick="setFilter('status','미흡',this)">미흡</button>
+    <div class="dd-wrap" id="statusDdWrap">
+      <button class="dd-btn" id="statusDdBtn" onclick="toggleStatusDd()" aria-haspopup="listbox" aria-label="상태 선택">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="statusDdLabel">상태 전체</span>
+      </button>
+      <div class="dd-menu" id="statusDdMenu"></div>
     </div>
     <div class="dd-wrap" id="tunnelDdWrap">
       <button class="dd-btn" id="tunnelDdBtn" onclick="toggleTunnelDd()" aria-haspopup="listbox" aria-label="터널 선택">
@@ -434,10 +450,16 @@ tbody tr:last-child td{border-bottom:none}
 <!-- 패널2: 미처리 -->
 <div class="panel" id="p2">
   <div class="filter-row" style="margin-bottom:14px">
-    <div class="filter-group" id="unprocStatusFilter">
-      <button class="f-chip c-coral on" data-val="ALL" onclick="setUnprocFilter('ALL',this)">전체 미처리</button>
-      <button class="f-chip c-coral" data-val="진행중" onclick="setUnprocFilter('진행중',this)">진행중</button>
-      <button class="f-chip c-amber" data-val="미흡" onclick="setUnprocFilter('미흡',this)">미흡</button>
+    <div class="dd-wrap" id="unprocStatusDdWrap">
+      <button class="dd-btn" id="unprocStatusDdBtn" onclick="toggleUnprocStatusDd()" aria-haspopup="listbox" aria-label="상태 선택">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="unprocStatusDdLabel">전체 미처리</span>
+      </button>
+      <div class="dd-menu" id="unprocStatusDdMenu">
+        <div class="dd-opt sel" data-val="ALL">전체 미처리</div>
+        <div class="dd-opt" data-val="진행중">진행중</div>
+        <div class="dd-opt" data-val="미흡">미흡</div>
+      </div>
     </div>
     <div class="filter-count" id="unprocCount"></div>
   </div>
@@ -628,6 +650,7 @@ document.addEventListener('DOMContentLoaded', init);
 
 function loadDemo(){
   ALL_DATA = DEMO_DATA;
+  buildStatusFilter();
   buildTunnelFilter();
   buildManagerFilter();
   buildTabDropdowns();
@@ -849,6 +872,7 @@ function loadData(){
           }
           return fetchNext(cursor, hasMore).then(function(){
             ALL_DATA = allPages.map(parseNotionPage).filter(function(r){ return r['하자내용']&&r['하자내용'].length>0; });
+            buildStatusFilter();
             buildTunnelFilter();
             buildManagerFilter();
             buildTabDropdowns();
@@ -1006,12 +1030,75 @@ function selectManager(val, el){
   renderList();
 }
 
+/* ── BUILD STATUS DROPDOWN (하자내역 탭) ── */
+function buildStatusFilter(){
+  var menu = document.getElementById('statusDdMenu');
+  if(!menu) return;
+  var opts = [
+    { val:'ALL',   label:'상태 전체' },
+    { val:'진행중', label:'진행중' },
+    { val:'완료',  label:'완료' },
+    { val:'미흡',  label:'미흡' }
+  ];
+  menu.innerHTML = opts.map(function(o){
+    return '<div class="dd-opt'+(o.val==='ALL'?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+  }).join('');
+  if(!buildStatusFilter._bound){
+    buildStatusFilter._bound = true;
+    menu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(opt && opt.dataset && opt.dataset.val) selectStatus(opt.dataset.val, opt);
+    });
+    document.addEventListener('click', function(e){
+      var wrap = document.getElementById('statusDdWrap');
+      if(wrap && !wrap.contains(e.target)) closeStatusDd();
+    });
+  }
+}
+function toggleStatusDd(){ toggleDd('statusDdMenu','statusDdBtn'); }
+function closeStatusDd()  { closeDd('statusDdMenu','statusDdBtn'); }
+function selectStatus(val, el){
+  document.querySelectorAll('#statusDdMenu .dd-opt').forEach(function(o){ o.classList.remove('sel'); });
+  if(el) el.classList.add('sel');
+  var labelMap = { ALL:'상태 전체', '진행중':'진행중', '완료':'완료', '미흡':'미흡' };
+  document.getElementById('statusDdLabel').textContent = labelMap[val] || val;
+  var btn = document.getElementById('statusDdBtn');
+  if(btn) btn.classList.toggle('active', val!=='ALL');
+  FILTER.status = val;
+  closeStatusDd();
+  renderList();
+}
+
+/* ── UNPROC STATUS DROPDOWN (미처리 탭) ── */
+function toggleUnprocStatusDd(){ toggleDd('unprocStatusDdMenu','unprocStatusDdBtn'); }
+function closeUnprocStatusDd() { closeDd('unprocStatusDdMenu','unprocStatusDdBtn'); }
+(function(){
+  document.addEventListener('click', function(e){
+    var wrap = document.getElementById('unprocStatusDdWrap');
+    if(wrap && !wrap.contains(e.target)) closeUnprocStatusDd();
+  });
+  var menu = document.getElementById('unprocStatusDdMenu');
+  if(menu && !menu._bound){
+    menu._bound = true;
+    menu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(!opt || !opt.dataset || !opt.dataset.val) return;
+      var val = opt.dataset.val;
+      menu.querySelectorAll('.dd-opt').forEach(function(o){ o.classList.remove('sel'); });
+      opt.classList.add('sel');
+      var labelMap = { ALL:'전체 미처리', '진행중':'진행중', '미흡':'미흡' };
+      document.getElementById('unprocStatusDdLabel').textContent = labelMap[val] || val;
+      var btn = document.getElementById('unprocStatusDdBtn');
+      if(btn) btn.classList.toggle('active', val!=='ALL');
+      closeUnprocStatusDd();
+      setUnprocFilter(val);
+    });
+  }
+})();
+
 /* ── FILTER ── */
-function setFilter(key, val, el){
+function setFilter(key, val){
   FILTER[key] = val;
-  var btns = document.getElementById('statusFilter').querySelectorAll('.f-chip');
-  btns.forEach(function(b){ b.classList.remove('on'); });
-  el.classList.add('on');
   renderList();
 }
 
@@ -1191,10 +1278,8 @@ function renderAll(){
 /* ── UNPROC FILTER ── */
 var UNPROC_FILTER = 'ALL';
 
-function setUnprocFilter(val, el){
+function setUnprocFilter(val){
   UNPROC_FILTER = val;
-  document.querySelectorAll('#unprocStatusFilter .f-chip').forEach(function(b){ b.classList.remove('on'); });
-  el.classList.add('on');
   renderUnprocPanel();
 }
 
@@ -1236,7 +1321,7 @@ function renderUnprocPanel(){
       +'<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>'
       +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
       +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
-      +'<td class="td-nowrap col-remark">'+esc(r['비고']||'-')+'</td>'
+      +'<td class="col-remark">'+esc(r['비고']||'-')+'</td>'
       +'<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>'
       +'</tr>';
   }).join('');
@@ -1528,7 +1613,7 @@ function renderTunnelPanel(){
     {render:function(r){return '<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap col-remark">'+esc(r['비고']||'-')+'</td>';}},
+    {render:function(r){return '<td class="col-remark">'+esc(r['비고']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
   ];
   var thead = '<th class="col-status">상태</th><th>날짜</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
@@ -1556,7 +1641,7 @@ function renderCompanyPanel(){
     {render:function(r){return '<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap col-remark">'+esc(r['비고']||'-')+'</td>';}},
+    {render:function(r){return '<td class="col-remark">'+esc(r['비고']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
   ];
   var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
@@ -1590,7 +1675,7 @@ function renderTypePanel(){
     {render:function(r){return '<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap col-remark">'+esc(r['비고']||'-')+'</td>';}},
+    {render:function(r){return '<td class="col-remark">'+esc(r['비고']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
   ];
   var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>위치</th><th class="col-expand">하자내용</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
