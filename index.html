@@ -59,7 +59,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--txt)
 .kpi-poor .kpi-num{color:var(--amber)}
 
 /* ── MAIN WRAP ── */
-.wrap{max-width:1280px;margin:0 auto;padding:14px}
+.wrap{max-width:1600px;margin:0 auto;padding:14px}
 .panel{display:none}
 .panel.on{display:block}
 
@@ -88,7 +88,7 @@ tbody tr:last-child td{border-bottom:none}
 .td-content{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;color:var(--txt);line-height:1.55;word-break:keep-all}
 .td-nowrap{white-space:nowrap}
 .col-expand{width:100%;min-width:320px}
-.col-remark{width:140px;min-width:140px;max-width:140px}
+.col-remark{width:100px;min-width:100px;max-width:100px}
 .col-date{width:80px;white-space:nowrap}
 .col-tunnel{width:52px;white-space:nowrap}
 .col-type{width:44px;white-space:nowrap}
@@ -211,6 +211,7 @@ tbody tr:last-child td{border-bottom:none}
   /* 테이블 - 모바일에서 담당자·전화번호 숨김 */
   .col-contact{display:none}
   .col-remark{display:none}
+  .col-manager{display:none}
   table{min-width:480px}
   td{padding:7px 8px;font-size:12px}
   th{padding:7px 8px;font-size:11px}
@@ -238,6 +239,7 @@ tbody tr:last-child td{border-bottom:none}
   .wrap{padding:14px}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
+  .col-manager{display:table-cell}
 }
 
 /* PC (961px ~) */
@@ -246,7 +248,8 @@ tbody tr:last-child td{border-bottom:none}
   .wrap{padding:18px}
   .col-contact{display:table-cell}
   .col-remark{display:table-cell}
-  table{width:100%;min-width:1100px}
+  .col-manager{display:table-cell}
+  table{width:100%;min-width:1200px}
   .hdr-right{flex-direction:column;align-items:flex-end;gap:4px}
   .hdr-btn{padding:5px 13px;font-size:13px;min-height:32px}
   .last-update{font-size:11px}
