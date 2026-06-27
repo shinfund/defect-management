@@ -273,6 +273,35 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
   .modal-box{border-radius:var(--r16) var(--r16) 0 0;max-width:100%}
 }
 
+/* ── ADD FORM MODAL ── */
+#addModal{visibility:hidden;opacity:0;pointer-events:none;transition:opacity .15s,visibility .15s}
+#addModal.modal-open{visibility:visible;opacity:1;pointer-events:auto}
+.add-modal-box{max-width:560px;max-height:90vh;overflow-y:auto}
+.modal-section{font-size:11px;font-weight:700;color:var(--txt3);letter-spacing:.06em;text-transform:uppercase;margin:18px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border2)}
+.modal-section:first-child{margin-top:0}
+.modal-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-textarea{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r8);padding:10px 12px;font-size:14px;font-family:inherit;color:var(--txt);outline:none;resize:vertical;min-height:80px;transition:border .18s}
+.modal-textarea:focus{border-color:var(--sky);background:#fff}
+.modal-select{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r8);padding:10px 12px;font-size:14px;font-family:inherit;color:var(--txt);outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B7E99' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;transition:border .18s;cursor:pointer}
+.modal-select:focus{border-color:var(--sky);background-color:#fff}
+.modal-required{color:var(--coral);margin-left:2px}
+.modal-hint-url{font-size:11px;color:var(--txt3);margin-top:3px}
+.add-submit-btn{background:var(--sky);border:none;color:#fff;border-radius:var(--r8);padding:10px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;min-height:40px;display:flex;align-items:center;gap:6px}
+.add-submit-btn:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:640px){.modal-form-row{grid-template-columns:1fr}}
+
+/* ── PHOTO UPLOAD ── */
+.photo-upload-box{border:1.5px dashed var(--border);border-radius:var(--r8);padding:12px;background:var(--bg);transition:border-color .15s}
+.photo-upload-box:hover{border-color:var(--sky100)}
+.photo-upload-row{display:flex;align-items:center;gap:10px}
+.photo-upload-file-btn{background:var(--sky50);border:1.5px solid var(--sky100);color:var(--sky800);border-radius:var(--r8);padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0;transition:background .12s}
+.photo-upload-file-btn:hover{background:var(--sky100)}
+.photo-upload-status{font-size:12px;color:var(--txt3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.photo-upload-status.ok{color:var(--teal600);font-weight:700}
+.photo-upload-status.err{color:var(--coral);font-weight:700}
+.photo-thumb{width:72px;height:72px;object-fit:cover;border-radius:var(--r6);border:1px solid var(--border);display:none;margin-top:10px;cursor:zoom-in}
+.photo-thumb.show{display:block}
+
 /* ── TUNNEL DROPDOWN ── */
 .dd-wrap{position:relative;display:inline-block}
 .dd-btn{background:var(--sky50);border:1.5px solid var(--sky100);color:var(--sky800);border-radius:20px;padding:5px 28px 5px 10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;min-height:30px;white-space:nowrap;display:flex;align-items:center;gap:5px;-webkit-tap-highlight-color:transparent;user-select:none;position:relative;transition:border-color .15s}
@@ -293,6 +322,149 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 </style>
 </head>
 <body>
+
+<!-- 신규 하자 등록 모달 -->
+<div id="addModal">
+  <div class="modal-backdrop" onclick="closeAddModal(event)">
+    <div class="modal-box add-modal-box" onclick="event.stopPropagation()">
+      <div class="detail-modal-hd">
+        <h3 style="display:flex;align-items:center;gap:7px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          신규 하자 등록
+        </h3>
+        <button class="detail-modal-close" onclick="closeAddModal()" aria-label="닫기">✕</button>
+      </div>
+
+      <div style="font-size:11px;color:var(--txt3);margin-bottom:14px"><span class="modal-required">*</span> 필수 항목</div>
+
+      <!-- 1.날짜 | 2.공종 -->
+      <div class="modal-form-row">
+        <div class="modal-field">
+          <label class="modal-label">날짜 <span class="modal-required">*</span></label>
+          <input id="addDate" class="modal-input" type="date"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">공종 <span class="modal-required">*</span></label>
+          <select id="addType" class="modal-select">
+            <option value="">선택</option>
+            <option value="설비">설비</option>
+            <option value="전기">전기</option>
+            <option value="소방">소방</option>
+            <option value="통신">통신</option>
+            <option value="토목">토목</option>
+            <option value="건축">건축</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 3.터널명 | 4.위치 -->
+      <div class="modal-form-row">
+        <div class="modal-field">
+          <label class="modal-label">터널명 <span class="modal-required">*</span></label>
+          <select id="addTunnel" class="modal-select">
+            <option value="">선택</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">위치 <span class="modal-required">*</span></label>
+          <input id="addLoc" class="modal-input" type="text" placeholder="예: 관리동, 기계실"/>
+        </div>
+      </div>
+
+      <!-- 5.하자내용 -->
+      <div class="modal-field">
+        <label class="modal-label">하자내용 <span class="modal-required">*</span></label>
+        <textarea id="addContent" class="modal-textarea" placeholder="하자 내용을 상세히 입력하세요"></textarea>
+      </div>
+
+      <!-- 6.하자사진 -->
+      <div class="modal-field">
+        <label class="modal-label">하자사진</label>
+        <div class="photo-upload-box">
+          <div class="photo-upload-row">
+            <button type="button" class="photo-upload-file-btn" onclick="document.getElementById('addPhoto1File').click()">사진 선택</button>
+            <span class="photo-upload-status" id="photo1Status">파일을 선택하세요</span>
+          </div>
+          <img class="photo-thumb" id="photo1Thumb" alt="하자사진 미리보기">
+        </div>
+        <input type="file" id="addPhoto1File" accept="image/*" style="display:none" onchange="uploadPhoto(this,'photo1')">
+        <input type="hidden" id="addPhoto1">
+      </div>
+
+      <!-- 7.조치일 | 8.조치사진 URL -->
+      <div class="modal-form-row">
+        <div class="modal-field">
+          <label class="modal-label">조치일</label>
+          <input id="addActionDate" class="modal-input" type="date"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">조치사진</label>
+          <div class="photo-upload-box">
+            <div class="photo-upload-row">
+              <button type="button" class="photo-upload-file-btn" onclick="document.getElementById('addPhoto2File').click()">사진 선택</button>
+              <span class="photo-upload-status" id="photo2Status">파일을 선택하세요</span>
+            </div>
+            <img class="photo-thumb" id="photo2Thumb" alt="조치사진 미리보기">
+          </div>
+          <input type="file" id="addPhoto2File" accept="image/*" style="display:none" onchange="uploadPhoto(this,'photo2')">
+          <input type="hidden" id="addPhoto2">
+        </div>
+      </div>
+
+      <!-- 9.조치여부 -->
+      <div class="modal-field">
+        <label class="modal-label">조치여부</label>
+        <select id="addStatus" class="modal-select" style="max-width:200px">
+          <option value="진행중">진행중</option>
+          <option value="완료">완료</option>
+          <option value="미흡">미흡</option>
+        </select>
+      </div>
+
+      <!-- 10.업체명 | 11.업체담당자 -->
+      <div class="modal-form-row">
+        <div class="modal-field">
+          <label class="modal-label">업체명</label>
+          <input id="addCompany" class="modal-input" type="text" placeholder="업체명"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">업체담당자</label>
+          <input id="addContact" class="modal-input" type="text" placeholder="이름·직급"/>
+        </div>
+      </div>
+
+      <!-- 12.전화번호 | 13.비고 -->
+      <div class="modal-form-row">
+        <div class="modal-field">
+          <label class="modal-label">전화번호</label>
+          <input id="addPhone" class="modal-input" type="text" placeholder="010-0000-0000"/>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">비고</label>
+          <input id="addRemark" class="modal-input" type="text" placeholder="추가 사항"/>
+        </div>
+      </div>
+
+      <!-- 14.관리 -->
+      <div class="modal-field">
+        <label class="modal-label">관리</label>
+        <select id="addManager" class="modal-select" style="max-width:200px">
+          <option value="">선택</option>
+          <option value="안전관리자">안전관리자</option>
+          <option value="점검팀">점검팀</option>
+        </select>
+      </div>
+
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="closeAddModal()">취소</button>
+        <button class="add-submit-btn" id="addSubmitBtn" onclick="submitAddForm()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="addSubmitLabel">등록</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- 설정 모달 -->
 <div id="cfgModal">
@@ -347,6 +519,10 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
     </div>
     <div class="hdr-right">
       <div class="hdr-btns">
+        <button class="hdr-btn" onclick="openAddModal()" aria-label="신규 하자 등록" style="background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.6)">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          등록
+        </button>
         <button class="hdr-btn" onclick="openCfgModal()" aria-label="연동 설정">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
           설정
@@ -703,6 +879,7 @@ document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){
     document.getElementById('cfgModal').classList.remove('modal-open');
     document.getElementById('detailModal').classList.remove('modal-open');
+    document.getElementById('addModal').classList.remove('modal-open');
     document.body.style.overflow='';
   }
 });
@@ -1790,6 +1967,204 @@ function groupBy(arr, key){
   return obj;
 }
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/* ── 사진 업로드 (R2) ── */
+function uploadPhoto(input, key){
+  var file = input.files[0];
+  if(!file) return;
+
+  var num       = key==='photo1' ? '1' : '2';
+  var statusEl  = document.getElementById('photo'+num+'Status');
+  var thumbEl   = document.getElementById('photo'+num+'Thumb');
+  var urlEl     = document.getElementById('addPhoto'+num);
+
+  // 로컬 미리보기 (업로드 전)
+  var reader = new FileReader();
+  reader.onload = function(e){
+    thumbEl.src = e.target.result;
+    thumbEl.classList.add('show');
+  };
+  reader.readAsDataURL(file);
+
+  if(!CFG.workerUrl){
+    statusEl.textContent = '⚠ Worker URL 미설정';
+    statusEl.className = 'photo-upload-status err';
+    return;
+  }
+
+  statusEl.textContent = '업로드 중...';
+  statusEl.className = 'photo-upload-status';
+
+  var formData = new FormData();
+  formData.append('file', file);
+
+  fetch(CFG.workerUrl+'/upload', { method:'POST', body:formData })
+    .then(function(r){
+      if(!r.ok) return r.text().then(function(t){ throw new Error('HTTP '+r.status+': '+t); });
+      return r.json();
+    })
+    .then(function(data){
+      urlEl.value = data.url;
+      thumbEl.src = data.url;
+      statusEl.textContent = '✓ 업로드 완료';
+      statusEl.className = 'photo-upload-status ok';
+    })
+    .catch(function(e){
+      statusEl.textContent = '✗ ' + e.message;
+      statusEl.className = 'photo-upload-status err';
+    });
+}
+
+/* ── 신규 하자 등록 모달 ── */
+function openAddModal(){
+  // 오늘 날짜 기본값
+  var today = new Date();
+  var ymd = today.getFullYear()+'-'+fmt(today.getMonth()+1)+'-'+fmt(today.getDate());
+  document.getElementById('addDate').value = ymd;
+  document.getElementById('addActionDate').value = '';
+  document.getElementById('addStatus').value = '진행중';
+  document.getElementById('addType').value = '';
+  document.getElementById('addLoc').value = '';
+  document.getElementById('addContent').value = '';
+  document.getElementById('addCompany').value = '';
+  document.getElementById('addContact').value = '';
+  document.getElementById('addPhone').value = '';
+  document.getElementById('addRemark').value = '';
+  document.getElementById('addPhoto1').value = '';
+  document.getElementById('addPhoto2').value = '';
+  document.getElementById('addPhoto1File').value = '';
+  document.getElementById('addPhoto2File').value = '';
+  document.getElementById('photo1Status').textContent = '파일을 선택하세요';
+  document.getElementById('photo1Status').className = 'photo-upload-status';
+  document.getElementById('photo2Status').textContent = '파일을 선택하세요';
+  document.getElementById('photo2Status').className = 'photo-upload-status';
+  document.getElementById('photo1Thumb').classList.remove('show');
+  document.getElementById('photo2Thumb').classList.remove('show');
+  document.getElementById('addManager').value = '';
+
+  // 터널 목록: 현재 데이터에서 동적 생성 (없으면 고정 목록)
+  var tunnelSel = document.getElementById('addTunnel');
+  var tunnels = ALL_DATA.length ? getUniqueValues('터널명') : ['남정5터널','남정6터널','남정7터널','청하터널','흥해터널'];
+  tunnelSel.innerHTML = '<option value="">선택</option>'
+    + tunnels.map(function(t){ return '<option value="'+esc(t)+'">'+esc(t)+'</option>'; }).join('');
+
+  document.getElementById('addModal').classList.add('modal-open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('addDate').focus(); }, 100);
+}
+
+function closeAddModal(e){
+  if(e && !e.target.classList.contains('modal-backdrop')) return;
+  document.getElementById('addModal').classList.remove('modal-open');
+  document.body.style.overflow = '';
+}
+
+function submitAddForm(){
+  var date    = document.getElementById('addDate').value.trim();
+  var type    = document.getElementById('addType').value.trim();
+  var tunnel  = document.getElementById('addTunnel').value.trim();
+  var loc     = document.getElementById('addLoc').value.trim();
+  var content = document.getElementById('addContent').value.trim();
+
+  if(!date)    { alert('날짜를 입력해주세요.'); document.getElementById('addDate').focus(); return; }
+  if(!type)    { alert('공종을 선택해주세요.'); document.getElementById('addType').focus(); return; }
+  if(!tunnel)  { alert('터널명을 선택해주세요.'); document.getElementById('addTunnel').focus(); return; }
+  if(!loc)     { alert('위치를 입력해주세요.'); document.getElementById('addLoc').focus(); return; }
+  if(!content) { alert('하자내용을 입력해주세요.'); document.getElementById('addContent').focus(); return; }
+
+  if(!CFG.workerUrl || !CFG.dbId) { alert('연동 설정(Worker URL, DB ID)을 먼저 입력해주세요.'); closeAddModal(); openCfgModal(); return; }
+
+  var status    = document.getElementById('addStatus').value;
+  var actDate   = document.getElementById('addActionDate').value.trim();
+  var company   = document.getElementById('addCompany').value.trim();
+  var contact   = document.getElementById('addContact').value.trim();
+  var phone     = document.getElementById('addPhone').value.trim();
+  var remark    = document.getElementById('addRemark').value.trim();
+  var manager   = document.getElementById('addManager').value.trim();
+  var photo1    = document.getElementById('addPhoto1').value.trim();
+  var photo2    = document.getElementById('addPhoto2').value.trim();
+
+  var btn = document.getElementById('addSubmitBtn');
+  var lbl = document.getElementById('addSubmitLabel');
+  btn.disabled = true;
+  lbl.textContent = '등록 중...';
+
+  // NOTION_PROP_MAP 기반으로 실제 속성명 결정 (폴백: 한국어 키)
+  function nk(internalKey){ return NOTION_PROP_MAP[internalKey] || internalKey; }
+
+  var properties = {};
+
+  // 하자내용 → title
+  var contentKey = nk('하자내용');
+  properties[contentKey] = { title: [{ text: { content: content } }] };
+
+  // 날짜
+  properties[nk('날짜')] = { date: { start: date } };
+
+  // 공종 (노션에서 multi_select 타입)
+  properties[nk('공종')] = { multi_select: [{ name: type }] };
+
+  // 터널명
+  properties[nk('터널명')] = { select: { name: tunnel } };
+
+  // 위치
+  properties[nk('위치')] = { rich_text: [{ text: { content: loc } }] };
+
+  // 조치여부
+  properties[nk('조치여부')] = { select: { name: status } };
+
+  // 조치일
+  if(actDate) properties[nk('조치일')] = { date: { start: actDate } };
+
+  // 업체명
+  if(company) properties[nk('업체명')] = { rich_text: [{ text: { content: company } }] };
+
+  // 업체담당자
+  if(contact) properties[nk('업체담당자')] = { rich_text: [{ text: { content: contact } }] };
+
+  // 전화번호
+  if(phone) properties[nk('전화번호')] = { rich_text: [{ text: { content: phone } }] };
+
+  // 비고
+  if(remark) properties[nk('비고')] = { rich_text: [{ text: { content: remark } }] };
+
+  // 업무담당
+  if(manager) properties[nk('업무담당')] = { select: { name: manager } };
+
+  // 하자사진 URL
+  if(photo1) properties[nk('하자사진_URL')] = { url: photo1 };
+
+  // 조치사진 URL
+  if(photo2) properties[nk('조치사진_URL')] = { url: photo2 };
+
+  var body = {
+    parent: { database_id: CFG.dbId },
+    properties: properties
+  };
+
+  fetch(CFG.workerUrl + '/v1/pages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  })
+  .then(function(r){
+    if(!r.ok) return r.text().then(function(t){ throw new Error('HTTP '+r.status+': '+t); });
+    return r.json();
+  })
+  .then(function(){
+    btn.disabled = false;
+    lbl.textContent = '등록';
+    closeAddModal();
+    loadData(); // 등록 후 새로고침
+  })
+  .catch(function(e){
+    btn.disabled = false;
+    lbl.textContent = '등록';
+    alert('등록 실패: ' + e.message + '\n\nWorker가 POST /v1/pages 라우트를 지원하는지 확인하세요.');
+    console.error(e);
+  });
+}
+
 </script>
 </body>
 </html>
