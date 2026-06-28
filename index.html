@@ -151,10 +151,13 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 .detail-modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .detail-modal-hd h3{font-size:15px;font-weight:700;color:var(--txt)}
 .detail-modal-close{width:28px;height:28px;border-radius:var(--r6);border:none;background:var(--bg);color:var(--txt2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.detail-row{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border2)}
+.detail-info-wrap{border:1.5px solid var(--border);border-radius:var(--r10);overflow:hidden;margin-bottom:14px}
+.detail-row{display:flex;gap:0;border-bottom:1px solid var(--border2)}
 .detail-row:last-child{border-bottom:none}
-.detail-key{font-size:13px;font-weight:700;color:var(--txt2);min-width:80px;flex-shrink:0;padding-top:1px}
-.detail-val{font-size:13px;color:var(--txt);line-height:1.6;flex:1}
+.detail-row:nth-child(odd){background:#fff}
+.detail-row:nth-child(even){background:var(--sky50)}
+.detail-key{font-size:12px;font-weight:700;color:var(--sky800);min-width:78px;width:78px;flex-shrink:0;padding:10px 12px;background:rgba(55,138,221,.07);border-right:1.5px solid var(--border);display:flex;align-items:flex-start;line-height:1.5}
+.detail-val{font-size:13px;color:var(--txt);line-height:1.6;flex:1;padding:10px 14px}
 
 /* ── 사진 영역 ── */
 .photo-section{padding:10px 0;border-bottom:1px solid var(--border2)}
@@ -302,6 +305,15 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 .photo-thumb{width:72px;height:72px;object-fit:cover;border-radius:var(--r6);border:1px solid var(--border);display:none;margin-top:10px;cursor:zoom-in}
 .photo-thumb.show{display:block}
 
+/* ── DETAIL ACTION BUTTONS ── */
+.detail-act-btn{display:inline-flex;align-items:center;gap:4px;border-radius:var(--r6);padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid transparent;white-space:nowrap;transition:opacity .12s}
+.detail-edit-btn{background:var(--sky50);border-color:var(--sky100);color:var(--sky800)}
+.detail-edit-btn:hover{background:var(--sky100)}
+.detail-del-btn{background:var(--coral50);border-color:var(--coral100);color:var(--coral800)}
+.detail-del-btn:hover{background:var(--coral100)}
+.detail-del-btn:disabled,.detail-edit-btn:disabled{opacity:.5;cursor:not-allowed}
+.del-confirm-bar{background:var(--coral50);border:1.5px solid var(--coral100);border-radius:var(--r8);padding:12px 14px;margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+
 /* ── TUNNEL DROPDOWN ── */
 .dd-wrap{position:relative;display:inline-block}
 .dd-btn{background:var(--sky50);border:1.5px solid var(--sky100);color:var(--sky800);border-radius:20px;padding:5px 28px 5px 10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;min-height:30px;white-space:nowrap;display:flex;align-items:center;gap:5px;-webkit-tap-highlight-color:transparent;user-select:none;position:relative;transition:border-color .15s}
@@ -330,45 +342,45 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       <div class="detail-modal-hd">
         <h3 style="display:flex;align-items:center;gap:7px">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          신규 하자 등록
+          <span id="addModalTitleText">신규 하자 등록</span>
         </h3>
         <button class="detail-modal-close" onclick="closeAddModal()" aria-label="닫기">✕</button>
       </div>
 
       <div style="font-size:11px;color:var(--txt3);margin-bottom:14px"><span class="modal-required">*</span> 필수 항목</div>
 
-      <!-- 1.날짜 | 2.공종 -->
-      <div class="modal-form-row">
-        <div class="modal-field">
-          <label class="modal-label">날짜 <span class="modal-required">*</span></label>
-          <input id="addDate" class="modal-input" type="date"/>
-        </div>
-        <div class="modal-field">
-          <label class="modal-label">공종 <span class="modal-required">*</span></label>
-          <select id="addType" class="modal-select">
-            <option value="">선택</option>
-            <option value="설비">설비</option>
-            <option value="전기">전기</option>
-            <option value="소방">소방</option>
-            <option value="통신">통신</option>
-            <option value="토목">토목</option>
-            <option value="건축">건축</option>
-          </select>
-        </div>
+      <!-- 1.날짜 -->
+      <div class="modal-field">
+        <label class="modal-label">날짜 <span class="modal-required">*</span></label>
+        <input id="addDate" class="modal-input" type="date"/>
       </div>
 
-      <!-- 3.터널명 | 4.위치 -->
-      <div class="modal-form-row">
-        <div class="modal-field">
-          <label class="modal-label">터널명 <span class="modal-required">*</span></label>
-          <select id="addTunnel" class="modal-select">
-            <option value="">선택</option>
-          </select>
-        </div>
-        <div class="modal-field">
-          <label class="modal-label">위치 <span class="modal-required">*</span></label>
-          <input id="addLoc" class="modal-input" type="text" placeholder="예: 관리동, 기계실"/>
-        </div>
+      <!-- 2.공종 -->
+      <div class="modal-field">
+        <label class="modal-label">공종 <span class="modal-required">*</span></label>
+        <select id="addType" class="modal-select">
+          <option value="">선택</option>
+          <option value="설비">설비</option>
+          <option value="전기">전기</option>
+          <option value="소방">소방</option>
+          <option value="통신">통신</option>
+          <option value="토목">토목</option>
+          <option value="건축">건축</option>
+        </select>
+      </div>
+
+      <!-- 3.터널명 -->
+      <div class="modal-field">
+        <label class="modal-label">터널명 <span class="modal-required">*</span></label>
+        <select id="addTunnel" class="modal-select">
+          <option value="">선택</option>
+        </select>
+      </div>
+
+      <!-- 4.위치 -->
+      <div class="modal-field">
+        <label class="modal-label">위치 <span class="modal-required">*</span></label>
+        <input id="addLoc" class="modal-input" type="text" placeholder="예: 관리동, 기계실"/>
       </div>
 
       <!-- 5.하자내용 -->
@@ -391,27 +403,33 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
         <input type="hidden" id="addPhoto1">
       </div>
 
-      <!-- 7.조치일 | 8.조치사진 URL -->
-      <div class="modal-form-row">
-        <div class="modal-field">
-          <label class="modal-label">조치일</label>
-          <input id="addActionDate" class="modal-input" type="date"/>
-        </div>
-        <div class="modal-field">
-          <label class="modal-label">조치사진</label>
-          <div class="photo-upload-box">
-            <div class="photo-upload-row">
-              <button type="button" class="photo-upload-file-btn" onclick="document.getElementById('addPhoto2File').click()">사진 선택</button>
-              <span class="photo-upload-status" id="photo2Status">파일을 선택하세요</span>
-            </div>
-            <img class="photo-thumb" id="photo2Thumb" alt="조치사진 미리보기">
-          </div>
-          <input type="file" id="addPhoto2File" accept="image/*" style="display:none" onchange="uploadPhoto(this,'photo2')">
-          <input type="hidden" id="addPhoto2">
-        </div>
+      <!-- 7.조치일 -->
+      <div class="modal-field">
+        <label class="modal-label">조치일</label>
+        <input id="addActionDate" class="modal-input" type="date"/>
       </div>
 
-      <!-- 9.조치여부 -->
+      <!-- 8.조치내용 -->
+      <div class="modal-field">
+        <label class="modal-label">조치내용</label>
+        <textarea id="addActionContent" class="modal-textarea" placeholder="조치 내용을 입력하세요"></textarea>
+      </div>
+
+      <!-- 9.조치사진 -->
+      <div class="modal-field">
+        <label class="modal-label">조치사진</label>
+        <div class="photo-upload-box">
+          <div class="photo-upload-row">
+            <button type="button" class="photo-upload-file-btn" onclick="document.getElementById('addPhoto2File').click()">사진 선택</button>
+            <span class="photo-upload-status" id="photo2Status">파일을 선택하세요</span>
+          </div>
+          <img class="photo-thumb" id="photo2Thumb" alt="조치사진 미리보기">
+        </div>
+        <input type="file" id="addPhoto2File" accept="image/*" style="display:none" onchange="uploadPhoto(this,'photo2')">
+        <input type="hidden" id="addPhoto2">
+      </div>
+
+      <!-- 10.조치여부 -->
       <div class="modal-field">
         <label class="modal-label">조치여부</label>
         <select id="addStatus" class="modal-select" style="max-width:200px">
@@ -421,31 +439,31 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
         </select>
       </div>
 
-      <!-- 10.업체명 | 11.업체담당자 -->
-      <div class="modal-form-row">
-        <div class="modal-field">
-          <label class="modal-label">업체명</label>
-          <input id="addCompany" class="modal-input" type="text" placeholder="업체명"/>
-        </div>
-        <div class="modal-field">
-          <label class="modal-label">업체담당자</label>
-          <input id="addContact" class="modal-input" type="text" placeholder="이름·직급"/>
-        </div>
+      <!-- 11.업체명 -->
+      <div class="modal-field">
+        <label class="modal-label">업체명</label>
+        <input id="addCompany" class="modal-input" type="text" placeholder="업체명"/>
       </div>
 
-      <!-- 12.전화번호 | 13.비고 -->
-      <div class="modal-form-row">
-        <div class="modal-field">
-          <label class="modal-label">전화번호</label>
-          <input id="addPhone" class="modal-input" type="text" placeholder="010-0000-0000"/>
-        </div>
-        <div class="modal-field">
-          <label class="modal-label">비고</label>
-          <input id="addRemark" class="modal-input" type="text" placeholder="추가 사항"/>
-        </div>
+      <!-- 12.업체담당자 -->
+      <div class="modal-field">
+        <label class="modal-label">업체담당자</label>
+        <input id="addContact" class="modal-input" type="text" placeholder="이름·직급"/>
       </div>
 
-      <!-- 14.관리 -->
+      <!-- 13.전화번호 -->
+      <div class="modal-field">
+        <label class="modal-label">전화번호</label>
+        <input id="addPhone" class="modal-input" type="text" placeholder="010-0000-0000"/>
+      </div>
+
+      <!-- 14.비고 -->
+      <div class="modal-field">
+        <label class="modal-label">비고</label>
+        <input id="addRemark" class="modal-input" type="text" placeholder="추가 사항"/>
+      </div>
+
+      <!-- 15.관리 -->
       <div class="modal-field">
         <label class="modal-label">관리</label>
         <select id="addManager" class="modal-select" style="max-width:200px">
@@ -498,9 +516,13 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
     <div class="modal-box detail-modal-box" onclick="event.stopPropagation()">
       <div class="detail-modal-hd">
         <h3 id="detailTitle">하자 상세</h3>
-        <button class="detail-modal-close" onclick="closeDetail()" aria-label="닫기">✕</button>
+        <div style="display:flex;gap:6px;align-items:center">
+          <div id="detailActions"></div>
+          <button class="detail-modal-close" onclick="closeDetail()" aria-label="닫기">✕</button>
+        </div>
       </div>
       <div id="detailBody"></div>
+      <div id="detailFooter"></div>
     </div>
   </div>
 </div>
@@ -541,8 +563,8 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
     <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(1,this)">하자내역</button>
     <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(2,this)">미처리</button>
     <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(3,this)">터널별</button>
-    <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(4,this)">공종별</button>
-    <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(5,this)">업체별</button>
+    <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(4,this)">업체별</button>
+    <button class="tab-btn" role="tab" aria-selected="false" onclick="switchTab(5,this)">업체연락처</button>
   </div>
   <!-- KPI -->
   <div class="kpi-bar" id="kpiBar">
@@ -676,23 +698,8 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
   <div id="tunnelPanels"></div>
 </div>
 
-<!-- 패널4: 공종별 -->
+<!-- 패널4: 업체별 -->
 <div class="panel" id="p4">
-  <div class="filter-row" style="margin-bottom:14px">
-    <div class="dd-wrap" id="typeTabDdWrap">
-      <button class="dd-btn" id="typeTabDdBtn" onclick="toggleTabDd('type')" aria-haspopup="listbox" aria-label="공종 선택">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        <span id="typeTabDdLabel">공종 전체</span>
-      </button>
-      <div class="dd-menu" id="typeTabDdMenu"></div>
-    </div>
-    <div class="filter-count" id="typeTabCount"></div>
-  </div>
-  <div id="typePanels"></div>
-</div>
-
-<!-- 패널5: 업체별 -->
-<div class="panel" id="p5">
   <div class="filter-row" style="margin-bottom:14px">
     <div class="dd-wrap" id="companyTabDdWrap">
       <button class="dd-btn" id="companyTabDdBtn" onclick="toggleTabDd('company')" aria-haspopup="listbox" aria-label="업체 선택">
@@ -706,12 +713,48 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
   <div id="companyPanels"></div>
 </div>
 
+<!-- 패널5: 업체연락처 -->
+<div class="panel" id="p5">
+  <div class="filter-row">
+    <div class="filter-group" id="contactGroupFilter">
+      <button class="f-chip on" onclick="selectContactGroup('ALL',this)">전체</button>
+      <button class="f-chip" onclick="selectContactGroup('안전관리자',this)">안전관리자</button>
+      <button class="f-chip" onclick="selectContactGroup('점검팀',this)">점검팀</button>
+    </div>
+    <div class="dd-wrap" id="contactTunnelDdWrap">
+      <button class="dd-btn" id="contactTunnelDdBtn" onclick="toggleContactTunnelDd()" aria-haspopup="listbox" aria-label="터널 선택">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        <span id="contactTunnelDdLabel">터널 전체</span>
+      </button>
+      <div class="dd-menu" id="contactTunnelDdMenu"></div>
+    </div>
+    <input class="search-box" id="contactSearchBox" placeholder="🔍 업체명, 담당자, 관련업무 검색..." oninput="renderContactTable()">
+  </div>
+  <div class="filter-count" id="contactCount"></div>
+  <div class="tbl-wrap">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th style="width:84px;white-space:nowrap">관리구분</th>
+          <th style="width:90px;white-space:nowrap">터널명</th>
+          <th style="width:110px;white-space:nowrap">업체명</th>
+          <th style="width:96px;white-space:nowrap">담당자</th>
+          <th style="width:120px;white-space:nowrap">전화번호</th>
+          <th class="col-expand">관련업무</th>
+          <th style="width:80px;white-space:nowrap">비고</th>
+        </tr></thead>
+        <tbody id="contactBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 </div><!-- /wrap -->
 
 <script>
 var ALL_DATA = [];
 var FILTER = { status:'ALL', tunnel:'ALL', manager:'ALL' };
-var TAB_FILTER = { tunnel:'ALL', type:'ALL', company:'ALL' };
+var TAB_FILTER = { tunnel:'ALL', company:'ALL' };
 var CURRENT_TAB = 0;
 
 // ── 열 정의 (노션 DB 컬럼 순서와 동일) ──
@@ -724,6 +767,7 @@ var COL_DEFS = [
   { key:'위치',       label:'위치',     width:'col-loc',     fixed:false },
   { key:'하자내용',   label:'하자내용', width:'col-expand',  fixed:true  },
   { key:'조치일',     label:'조치일',   width:'col-date2',   fixed:false },
+  { key:'조치내용',   label:'조치내용', width:'col-expand',  fixed:false },
   { key:'업체명',     label:'업체',     width:'col-company', fixed:false },
   { key:'업체담당자', label:'업체담당', width:'col-contact', fixed:false },
   { key:'전화번호',   label:'전화번호', width:'col-contact', fixed:false },
@@ -742,6 +786,7 @@ function getVisibleCols(){
 }
 
 var MAX_PAGES = 20; // 노션 페이지네이션 최대 페이지 수 (100건/페이지 × 20 = 2,000건)
+var EDIT_PAGE_ID = null; // 수정 모드: 노션 페이지 ID (null이면 등록 모드)
 
 // ── 설정 (localStorage) ──
 var CFG = (function(){
@@ -961,6 +1006,7 @@ function parseNotionPage(page, idx){
   result['하자내용']   = getField('하자내용',   ['하자내용','내용','content']);
   result['조치여부']   = getField('조치여부',   ['조치여부','상태','status'])||'진행중';
   result['조치일']     = getField('조치일',     ['조치일','완료일','act_date']);
+  result['조치내용']   = getField('조치내용',   ['조치내용','action_content']);
   result['업체명']     = getField('업체명',     ['업체명','업체','company']);
   result['업무담당']   = getField('업무담당',   ['관리','업무담당','manager']);
   result['업체담당자'] = getField('업체담당자', ['업체담당자','업체담당','contact']);
@@ -1097,6 +1143,7 @@ function buildNotionPropMap(props){
     { key:'하자내용',    kws:['하자내용','내용','content','하자'], types:['title','rich_text'] },
     { key:'조치여부',    kws:['조치여부','상태','status'], types:['select','checkbox'] },
     { key:'조치일',      kws:['조치일','완료일','act'],   types:['date'] },
+    { key:'조치내용',    kws:['조치내용','조치내용','action_content'], types:['rich_text','text','title'] },
     { key:'하자사진_URL',kws:['하자사진','photo1','사진1','하자'], types:['files','url','rich_text'] },
     { key:'조치사진_URL',kws:['조치사진','photo2','사진2','조치사'], types:['files','url','rich_text'] },
     { key:'업체명',      kws:['업체명','업체','company'], types:['rich_text','title','text'] },
@@ -1399,19 +1446,23 @@ function updateKPI(tabNum){
     document.getElementById('kpiDone').textContent  = g2.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
   } else if(tabNum === 4){
-    var g3=calcGroupKpi('공종');
-    setKpiLabels('공종 수','미처리 합계','평균 완료율','미흡','poor');
-    document.getElementById('kpiTotal').textContent = g3.count+'개';
-    document.getElementById('kpiProg').textContent  = g3.unproc;
-    document.getElementById('kpiDone').textContent  = g3.avgRate+'%';
-    document.getElementById('kpiPoor').textContent  = poor;
-  } else if(tabNum === 5){
     var g4=calcGroupKpi('업체명');
     setKpiLabels('업체 수','미처리 합계','평균 완료율','미흡','poor');
     document.getElementById('kpiTotal').textContent = g4.count+'개';
     document.getElementById('kpiProg').textContent  = g4.unproc;
     document.getElementById('kpiDone').textContent  = g4.avgRate+'%';
     document.getElementById('kpiPoor').textContent  = poor;
+  } else if(tabNum === 5){
+    var cdata = CONTACT_DATA;
+    var cuniq={}, tuniq={};
+    cdata.forEach(function(r){ if(r.업체명) cuniq[r.업체명]=1; if(r.터널명) tuniq[r.터널명]=1; });
+    var safe = cdata.filter(function(r){ return r.관리구분==='안전관리자'; }).length;
+    var check = cdata.filter(function(r){ return r.관리구분==='점검팀'; }).length;
+    setKpiLabels('총 연락처','안전관리자','점검팀','업체 수','done');
+    document.getElementById('kpiTotal').textContent = cdata.length;
+    document.getElementById('kpiProg').textContent  = safe;
+    document.getElementById('kpiDone').textContent  = check;
+    document.getElementById('kpiPoor').textContent  = Object.keys(cuniq).length+'개';
   }
 }
 
@@ -1448,7 +1499,6 @@ function renderAll(){
   renderUnprocPanel();
   renderDashboard();
   renderTunnelPanel();
-  renderTypePanel();
   renderCompanyPanel();
 }
 
@@ -1647,23 +1697,6 @@ function buildTabDropdowns(){
       });
     }
   }
-  // 공종별 드롭다운
-  var types = getUniqueValues('공종');
-  var emenu = document.getElementById('typeTabDdMenu');
-  if(emenu){
-    emenu.innerHTML = '';
-    var eopts = [{val:'ALL',label:'공종 전체'}].concat(types.map(function(t){return{val:t,label:t};}));
-    emenu.innerHTML = eopts.map(function(o){
-      return '<div class="dd-opt'+(TAB_FILTER.type===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
-    }).join('');
-    if(!emenu._bound){
-      emenu._bound = true;
-      emenu.addEventListener('click', function(e){
-        var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
-        if(opt && opt.dataset && opt.dataset.val) selectTabDd('type', opt.dataset.val, opt);
-      });
-    }
-  }
   // 업체별 드롭다운
   var companies = getUniqueValues('업체명');
   var cmenu = document.getElementById('companyTabDdMenu');
@@ -1685,7 +1718,7 @@ function buildTabDropdowns(){
   if(!buildTabDropdowns._bound){
     buildTabDropdowns._bound = true;
     document.addEventListener('click', function(e){
-      var pairs = [['tunnelTabDdMenu','tunnelTabDdBtn'],['typeTabDdMenu','typeTabDdBtn'],['companyTabDdMenu','companyTabDdBtn']];
+      var pairs = [['tunnelTabDdMenu','tunnelTabDdBtn'],['companyTabDdMenu','companyTabDdBtn']];
       pairs.forEach(function(p){
         var wrap = document.getElementById(p[0].replace('DdMenu','DdWrap'));
         if(wrap && !wrap.contains(e.target)) closeTabDd(p[0], p[1]);
@@ -1697,18 +1730,18 @@ function buildTabDropdowns(){
 }
 
 function toggleTabDd(kind){
-  var menuId = kind==='tunnel'?'tunnelTabDdMenu':kind==='type'?'typeTabDdMenu':'companyTabDdMenu';
-  var btnId  = kind==='tunnel'?'tunnelTabDdBtn':kind==='type'?'typeTabDdBtn':'companyTabDdBtn';
+  var menuId = kind==='tunnel'?'tunnelTabDdMenu':'companyTabDdMenu';
+  var btnId  = kind==='tunnel'?'tunnelTabDdBtn':'companyTabDdBtn';
   toggleDd(menuId, btnId);
 }
 
 function closeTabDd(menuId, btnId){ closeDd(menuId, btnId); }
 
 function selectTabDd(kind, val, el){
-  var menuId  = kind==='tunnel'?'tunnelTabDdMenu':kind==='type'?'typeTabDdMenu':'companyTabDdMenu';
-  var btnId   = kind==='tunnel'?'tunnelTabDdBtn':kind==='type'?'typeTabDdBtn':'companyTabDdBtn';
-  var labelId = kind==='tunnel'?'tunnelTabDdLabel':kind==='type'?'typeTabDdLabel':'companyTabDdLabel';
-  var defLabel= kind==='tunnel'?'터널 전체':kind==='type'?'공종 전체':'업체 전체';
+  var menuId  = kind==='tunnel'?'tunnelTabDdMenu':'companyTabDdMenu';
+  var btnId   = kind==='tunnel'?'tunnelTabDdBtn':'companyTabDdBtn';
+  var labelId = kind==='tunnel'?'tunnelTabDdLabel':'companyTabDdLabel';
+  var defLabel= kind==='tunnel'?'터널 전체':'업체 전체';
   document.querySelectorAll('#'+menuId+' .dd-opt').forEach(function(o){ o.classList.remove('sel'); });
   if(el) el.classList.add('sel');
   document.getElementById(labelId).textContent = val==='ALL' ? defLabel : val;
@@ -1717,22 +1750,16 @@ function selectTabDd(kind, val, el){
   TAB_FILTER[kind] = val;
   closeTabDd(menuId, btnId);
   if(kind==='tunnel'){ renderTunnelPanel(); }
-  else if(kind==='type'){ renderTypePanel(); }
   else               { renderCompanyPanel(); }
   updateTabCounts();
 }
 
 function updateTabCounts(){
   var tc = document.getElementById('tunnelTabCount');
-  var ec = document.getElementById('typeTabCount');
   var cc = document.getElementById('companyTabCount');
   if(tc){
     var tData = TAB_FILTER.tunnel==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['터널명']===TAB_FILTER.tunnel;});
     tc.textContent = '총 '+tData.length+'건';
-  }
-  if(ec){
-    var eData = TAB_FILTER.type==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['공종']===TAB_FILTER.type;});
-    ec.textContent = '총 '+eData.length+'건';
   }
   if(cc){
     var cData = TAB_FILTER.company==='ALL' ? ALL_DATA : ALL_DATA.filter(function(r){return r['업체명']===TAB_FILTER.company;});
@@ -1834,34 +1861,6 @@ function renderCompanyPanel(){
   }).join('');
 }
 
-/* ── TYPE PANEL ── */
-function renderTypePanel(){
-  var allTypes = groupBy(ALL_DATA,'공종');
-  var el = document.getElementById('typePanels');
-  var sorted = Object.keys(allTypes).sort(function(a,b){return allTypes[b].length-allTypes[a].length;});
-  if(TAB_FILTER.type !== 'ALL'){
-    sorted = sorted.filter(function(k){ return k === TAB_FILTER.type; });
-  }
-  if(!sorted.length){ el.innerHTML='<div class="empty"><p>표시할 데이터가 없습니다</p></div>'; return; }
-  var cols = [
-    {render:function(r,b){return '<td><span class="badge '+b+'">'+esc(r['조치여부']||'-')+'</span></td>';}},
-    {render:function(r){return '<td class="td-nowrap">'+shortDate(r['날짜'])+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap"><strong>'+esc(r['터널명'])+'</strong></td>';}},
-    {render:function(r){return '<td class="td-nowrap">'+esc(r['위치'])+'</td>';}},
-    {render:function(r){return '<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>';}},
-    {render:function(r){return '<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
-    {render:function(r){return '<td class="col-remark">'+esc(r['비고']||'-')+'</td>';}},
-    {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
-  ];
-  var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>위치</th><th class="col-expand">하자내용</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
-  el.innerHTML = sorted.map(function(tp){
-    var rows = allTypes[tp];
-    return buildPanelCard(tp, '', rows, thead, buildPanelRows(rows, cols), false);
-  }).join('');
-}
-
 /* ── PHOTO URL 변환 ── */
 
 function makePhotoHtml(label, rawUrl){
@@ -1893,6 +1892,19 @@ function openDetail(idx){
   var s = r['조치여부'];
   var badge = s==='완료'?'badge-done':s==='진행중'?'badge-prog':'badge-poor';
   document.getElementById('detailTitle').innerHTML = esc(r['터널명'])+' · '+esc(r['공종']);
+
+  // 수정/삭제 버튼 (항상 표시, Notion 미연동 시 클릭하면 안내)
+  var actionsEl = document.getElementById('detailActions');
+  if(actionsEl){
+    actionsEl.innerHTML =
+      '<button class="detail-act-btn detail-edit-btn" onclick="openEditModal('+r._idx+')">'
+      +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>수정</button>'
+      +'<button class="detail-act-btn detail-del-btn" onclick="showDeleteConfirm('+r._idx+')">'
+      +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>삭제</button>';
+  }
+  // 푸터(삭제 확인 바) 초기화
+  var footer = document.getElementById('detailFooter');
+  if(footer) footer.innerHTML = '';
   var rows = [
     ['날짜',   esc(r['날짜']||'-')],
     ['터널명', esc(r['터널명']||'-')],
@@ -1901,15 +1913,18 @@ function openDetail(idx){
     ['하자내용', esc(r['하자내용']||'-')],
     ['조치여부', '<span class="badge '+badge+'">'+esc(s||'-')+'</span>'],
     ['조치일',  esc(r['조치일']||'-')],
+    ['조치내용', esc(r['조치내용']||'-')],
     ['업체명',  esc(r['업체명']||'-')],
     ['담당자',  esc(r['업체담당자']||'-')],
     ['전화번호', esc(r['전화번호']||'-')],
     ['비고',    esc(r['비고']||'-')],
     ['관리',    esc(r['업무담당']||'-')],
   ];
-  var infoHtml = rows.map(function(rv){
-    return '<div class="detail-row"><div class="detail-key">'+rv[0]+'</div><div class="detail-val">'+rv[1]+'</div></div>';
-  }).join('');
+  var infoHtml = '<div class="detail-info-wrap">'
+    + rows.map(function(rv){
+        return '<div class="detail-row"><div class="detail-key">'+rv[0]+'</div><div class="detail-val">'+rv[1]+'</div></div>';
+      }).join('')
+    + '</div>';
 
   var photoHtml = '';
   var p1 = r['하자사진_URL']||'';
@@ -1942,6 +1957,7 @@ function switchTab(n,el){
   var kpiBar = document.getElementById('kpiBar');
   if(kpiBar) kpiBar.style.display = n === 0 ? 'none' : '';
   updateKPI(n);
+  if(n===5 && !CONTACT_LOADED){ loadContactData(); }
 }
 
 /* ── SYNC BUTTON ── */
@@ -2015,8 +2031,109 @@ function uploadPhoto(input, key){
     });
 }
 
+/* ── 하자 수정 모달 ── */
+function openEditModal(idx){
+  var r = ALL_DATA.find(function(d){ return d._idx===idx; });
+  if(!r){ return; }
+  if(!CFG.workerUrl || !r._pageId){ alert('노션 연동 설정 후 사용 가능합니다.\n설정 버튼에서 Worker URL과 DB ID를 입력해주세요.'); return; }
+  EDIT_PAGE_ID = r._pageId;
+
+  // 터널 목록
+  var tunnelSel = document.getElementById('addTunnel');
+  var tunnels = ALL_DATA.length ? getUniqueValues('터널명') : ['남정5터널','남정6터널','남정7터널','청하터널','흥해터널'];
+  tunnelSel.innerHTML = '<option value="">선택</option>'
+    + tunnels.map(function(t){ return '<option value="'+esc(t)+'">'+esc(t)+'</option>'; }).join('');
+
+  // 기존 데이터 채우기
+  document.getElementById('addDate').value        = r['날짜']||'';
+  document.getElementById('addType').value        = r['공종']||'';
+  tunnelSel.value                                 = r['터널명']||'';
+  document.getElementById('addLoc').value         = r['위치']||'';
+  document.getElementById('addContent').value       = r['하자내용']||'';
+  document.getElementById('addStatus').value        = r['조치여부']||'진행중';
+  document.getElementById('addActionDate').value    = r['조치일']||'';
+  document.getElementById('addActionContent').value = r['조치내용']||'';
+  document.getElementById('addCompany').value       = r['업체명']||'';
+  document.getElementById('addContact').value     = r['업체담당자']||'';
+  document.getElementById('addPhone').value       = r['전화번호']||'';
+  document.getElementById('addRemark').value      = r['비고']||'';
+  document.getElementById('addManager').value     = r['업무담당']||'';
+
+  // 사진 처리
+  var p1 = r['하자사진_URL']||'', p2 = r['조치사진_URL']||'';
+  document.getElementById('addPhoto1').value = p1;
+  document.getElementById('addPhoto2').value = p2;
+  document.getElementById('addPhoto1File').value = '';
+  document.getElementById('addPhoto2File').value = '';
+  var s1=document.getElementById('photo1Status'), t1=document.getElementById('photo1Thumb');
+  var s2=document.getElementById('photo2Status'), t2=document.getElementById('photo2Thumb');
+  if(p1){ s1.textContent='기존 사진 있음'; s1.className='photo-upload-status ok'; t1.src=p1; t1.classList.add('show'); }
+  else  { s1.textContent='파일을 선택하세요'; s1.className='photo-upload-status'; t1.classList.remove('show'); }
+  if(p2){ s2.textContent='기존 사진 있음'; s2.className='photo-upload-status ok'; t2.src=p2; t2.classList.add('show'); }
+  else  { s2.textContent='파일을 선택하세요'; s2.className='photo-upload-status'; t2.classList.remove('show'); }
+
+  // 모달 타이틀·버튼 라벨 변경
+  var titleText = document.getElementById('addModalTitleText');
+  if(titleText) titleText.textContent = '하자 수정';
+  document.getElementById('addSubmitLabel').textContent = '수정';
+
+  closeDetail();
+  document.getElementById('addModal').classList.add('modal-open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('addContent').focus(); }, 100);
+}
+
+/* ── 삭제 확인 ── */
+function showDeleteConfirm(idx){
+  var r = ALL_DATA.find(function(d){ return d._idx===idx; });
+  if(!r || !CFG.workerUrl || !r._pageId){ alert('노션 연동 설정 후 사용 가능합니다.\n설정 버튼에서 Worker URL과 DB ID를 입력해주세요.'); return; }
+  var footer = document.getElementById('detailFooter');
+  if(!footer) return;
+  footer.innerHTML = '<div class="del-confirm-bar">'
+    +'<span style="font-size:13px;font-weight:700;color:var(--coral)">이 항목을 휴지통으로 이동할까요?</span>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button class="modal-cancel" onclick="hideDeleteConfirm()" style="font-size:12px;padding:6px 12px;min-height:32px">취소</button>'
+    +'<button class="detail-act-btn detail-del-btn" id="deleteExecBtn" onclick="deleteItem('+idx+')">삭제 확인</button>'
+    +'</div></div>';
+  footer.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function hideDeleteConfirm(){
+  var footer = document.getElementById('detailFooter');
+  if(footer) footer.innerHTML = '';
+}
+
+function deleteItem(idx){
+  var r = ALL_DATA.find(function(d){ return d._idx===idx; });
+  if(!r || !r._pageId) return;
+  var btn = document.getElementById('deleteExecBtn');
+  if(btn){ btn.disabled=true; btn.textContent='삭제 중...'; }
+  fetch(CFG.workerUrl+'/v1/pages/'+r._pageId, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ in_trash: true })
+  })
+  .then(function(res){
+    if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
+    return res.json();
+  })
+  .then(function(){
+    closeDetail();
+    loadData();
+  })
+  .catch(function(e){
+    if(btn){ btn.disabled=false; btn.textContent='삭제 확인'; }
+    alert('삭제 실패: '+e.message);
+    console.error(e);
+  });
+}
+
 /* ── 신규 하자 등록 모달 ── */
 function openAddModal(){
+  EDIT_PAGE_ID = null;
+  var titleText = document.getElementById('addModalTitleText');
+  if(titleText) titleText.textContent = '신규 하자 등록';
+  document.getElementById('addSubmitLabel').textContent = '등록';
   // 오늘 날짜 기본값
   var today = new Date();
   var ymd = today.getFullYear()+'-'+fmt(today.getMonth()+1)+'-'+fmt(today.getDate());
@@ -2026,6 +2143,7 @@ function openAddModal(){
   document.getElementById('addType').value = '';
   document.getElementById('addLoc').value = '';
   document.getElementById('addContent').value = '';
+  document.getElementById('addActionContent').value = '';
   document.getElementById('addCompany').value = '';
   document.getElementById('addContact').value = '';
   document.getElementById('addPhone').value = '';
@@ -2075,7 +2193,8 @@ function submitAddForm(){
   if(!CFG.workerUrl || !CFG.dbId) { alert('연동 설정(Worker URL, DB ID)을 먼저 입력해주세요.'); closeAddModal(); openCfgModal(); return; }
 
   var status    = document.getElementById('addStatus').value;
-  var actDate   = document.getElementById('addActionDate').value.trim();
+  var actDate      = document.getElementById('addActionDate').value.trim();
+  var actContent   = document.getElementById('addActionContent').value.trim();
   var company   = document.getElementById('addCompany').value.trim();
   var contact   = document.getElementById('addContact').value.trim();
   var phone     = document.getElementById('addPhone').value.trim();
@@ -2087,7 +2206,7 @@ function submitAddForm(){
   var btn = document.getElementById('addSubmitBtn');
   var lbl = document.getElementById('addSubmitLabel');
   btn.disabled = true;
-  lbl.textContent = '등록 중...';
+  lbl.textContent = EDIT_PAGE_ID ? '수정 중...' : '등록 중...';
 
   // NOTION_PROP_MAP 기반으로 실제 속성명 결정 (폴백: 한국어 키)
   function nk(internalKey){ return NOTION_PROP_MAP[internalKey] || internalKey; }
@@ -2116,6 +2235,9 @@ function submitAddForm(){
   // 조치일
   if(actDate) properties[nk('조치일')] = { date: { start: actDate } };
 
+  // 조치내용
+  if(actContent) properties[nk('조치내용')] = { rich_text: [{ text: { content: actContent } }] };
+
   // 업체명
   if(company) properties[nk('업체명')] = { rich_text: [{ text: { content: company } }] };
 
@@ -2137,15 +2259,18 @@ function submitAddForm(){
   // 조치사진 URL
   if(photo2) properties[nk('조치사진_URL')] = { url: photo2 };
 
-  var body = {
-    parent: { database_id: CFG.dbId },
-    properties: properties
-  };
+  var isEdit = !!EDIT_PAGE_ID;
+  var reqUrl = isEdit
+    ? (CFG.workerUrl + '/v1/pages/' + EDIT_PAGE_ID)
+    : (CFG.workerUrl + '/v1/pages');
+  var reqBody = isEdit
+    ? JSON.stringify({ properties: properties })
+    : JSON.stringify({ parent: { database_id: CFG.dbId }, properties: properties });
 
-  fetch(CFG.workerUrl + '/v1/pages', {
-    method: 'POST',
+  fetch(reqUrl, {
+    method: isEdit ? 'PATCH' : 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
+    body: reqBody
   })
   .then(function(r){
     if(!r.ok) return r.text().then(function(t){ throw new Error('HTTP '+r.status+': '+t); });
@@ -2153,16 +2278,259 @@ function submitAddForm(){
   })
   .then(function(){
     btn.disabled = false;
-    lbl.textContent = '등록';
+    lbl.textContent = isEdit ? '수정' : '등록';
     closeAddModal();
-    loadData(); // 등록 후 새로고침
+    loadData();
   })
   .catch(function(e){
     btn.disabled = false;
-    lbl.textContent = '등록';
-    alert('등록 실패: ' + e.message + '\n\nWorker가 POST /v1/pages 라우트를 지원하는지 확인하세요.');
+    lbl.textContent = isEdit ? '수정' : '등록';
+    alert((isEdit?'수정':'등록') + ' 실패: ' + e.message + '\n\nWorker가 해당 라우트를 지원하는지 확인하세요.');
     console.error(e);
   });
+}
+
+/* ── 업체연락처 탭 ── */
+var CONTACT_DATA = [];
+var CONTACT_LOADED = false;
+var CONTACT_FILTER = { group:'ALL', tunnel:'ALL' };
+var CONTACT_DB_ID = '5104d4ad640e4c69884d3d32dc2d4b11';
+
+var CONTACT_DEMO_DATA = [
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'D2U이앤씨',담당자:'박민규 대리',전화번호:'010-5176-5549',관련업무:'수신기',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'D2U이앤씨',담당자:'변창식 소장',전화번호:'010-5334-8119',관련업무:'피난유도등',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'동양이엔티',담당자:'이정우 차장',전화번호:'010-3307-0773',관련업무:'태양광 발전기',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'무선중계IBK',담당자:'김홍삼 이사',전화번호:'010-4231-1506',관련업무:'터널무선중계 시스템',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'명신전기',담당자:'노제훈 부장',전화번호:'010-2214-8873',관련업무:'전선 취부 보안등',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'보국발전기',담당자:'최원일 소장',전화번호:'010-3307-0773',관련업무:'차단기 히팅설비',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'하이맥스',담당자:'홍대건 과장',전화번호:'010-9522-3588',관련업무:'VCB 자동도로전광표시기 히팅설비 축전지',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'현대랩스',담당자:'임왕수 전무',전화번호:'010-8967-3748',관련업무:'공동구 HMI',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'현대산업',담당자:'김동민 소장',전화번호:'010-2715-6672',관련업무:'예비펌프',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'현대산업',담당자:'이민우 과장',전화번호:'010-8880-0475',관련업무:'공동구',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'현대산업',담당자:'천훈식 팀장',전화번호:'010-9511-3817',관련업무:'공동구',비고:''},
+  {관리구분:'안전관리자',터널명:'남정5터널',업체명:'㈜태양건설',담당자:'박봉수 소장',전화번호:'010-4517-9368',관련업무:'배관',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'(주)와튼',담당자:'이충희',전화번호:'010-2778-2434',관련업무:'축전지 BMS',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'(주)와튼',담당자:'정범모 과장',전화번호:'010-3436-4369',관련업무:'축전지 BMS',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'박민규 대리',전화번호:'010-5176-8119',관련업무:'수신기',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'변창식 소장',전화번호:'010-5334-8119',관련업무:'피난유도등',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'이정기 과장',전화번호:'010-2546-3215',관련업무:'광센서',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'최준혁 과장',전화번호:'010-8469-8520',관련업무:'수신기',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'DL이앤씨',담당자:'안진옥 소장',전화번호:'010-3524-7180',관련업무:'바닥',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'DL이앤씨',담당자:'안진옥 소장',전화번호:'010-6210-6526',관련업무:'배수펌프',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'DL이앤씨',담당자:'홍순범 부장',전화번호:'010-4786-4146',관련업무:'가드레일 점검로 전선통로',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'HP시스템',담당자:'박은경 대표',전화번호:'010-2082-9932',관련업무:'터널차단막',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'㈜에너솔라',담당자:'양승엽',전화번호:'010-4123-9250',관련업무:'태양광 발전기',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'㈜에너솔라',담당자:'양승엽',전화번호:'010-4123-9520',관련업무:'태양광 발전기',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'㈜이화',담당자:'이재환 과장',전화번호:'010-7220-4848',관련업무:'X게이트',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'㈜태양건설',담당자:'박봉수 소장',전화번호:'010-4517-9368',관련업무:'방수 큐비클',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'㈜태양건설',담당자:'정형용',전화번호:'010-7455-8894',관련업무:'비상출입 방화문',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'동양이엔티',담당자:'이정우 차장',전화번호:'010-3307-0773',관련업무:'전력자동제어',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'보국전기공업㈜',담당자:'최원일',전화번호:'010-8915-2119',관련업무:'ACB',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'서진엔지니어링',담당자:'성용성 소장',전화번호:'010-8829-4628',관련업무:'충압펌프',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'세인',담당자:'홍순범 부장',전화번호:'010-4501-4914',관련업무:'히팅케이블',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'신성정보기술',담당자:'박경민',전화번호:'010-6485-3386',관련업무:'CCTV',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'씨엠지테크',담당자:'박태식 소장',전화번호:'010-3524-7180',관련업무:'화장실 바닥 누수',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'에이원',담당자:'A/S 팀',전화번호:'010-9022-5817',관련업무:'축전지',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'에이원',담당자:'김승현 차장',전화번호:'010-8810-1710',관련업무:'축전지',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'오리엔트㈜',담당자:'양기호 소장',전화번호:'010-3532-4324',관련업무:'콘센트 직부등',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'일렉콤',담당자:'정석희 이사',전화번호:'010-2847-6858',관련업무:'큐비클 설비RTU 제트팬',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'코리아넷',담당자:'오종익',전화번호:'010-3874-5979',관련업무:'IP Wall',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'태갑종합건축',담당자:'조시현 소장',전화번호:'010-2879-6910',관련업무:'외벽 균열 미장 바닥',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'파코코리아',담당자:'김종원 차장',전화번호:'010-4543-3736',관련업무:'VICO',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'프라임솔루션',담당자:'황대영 이사',전화번호:'010-5241-1061',관련업무:'MCCB',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'한화',담당자:'정승규',전화번호:'010-7110-6424',관련업무:'환기설비',비고:''},
+  {관리구분:'안전관리자',터널명:'청하터널',업체명:'한화',담당자:'정승용부장',전화번호:'010-4808-5039',관련업무:'공동구 누수',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'(주)와튼',담당자:'정범모 과장',전화번호:'010-3436-4369',관련업무:'UPS',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'LK시스템',담당자:'남형택 부장',전화번호:'010-3621-9794',관련업무:'비상방송',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'LK시스템',담당자:'박종우',전화번호:'010-7342-5538',관련업무:'비상방송',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'동양이엔티',담당자:'박관수 이사',전화번호:'010-4604-1321',관련업무:'설비RTU',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'동양이엔티',담당자:'이정우 차장',전화번호:'010-3307-0773',관련업무:'자동도로전광표시기 정류기 태양광 발전기',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'보국전기공업㈜',담당자:'김기환',전화번호:'010-7246-4580',관련업무:'배관',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'서진엔지니어링',담당자:'성봉성 부장',전화번호:'010-2715-6672',관련업무:'배수펌프 히팅케이블 배관',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'아이에프텍',담당자:'맹대섭 이사',전화번호:'010-3266-4392',관련업무:'UPS',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'창천',담당자:'홍순권 대표',전화번호:'010-4145-2354',관련업무:'설비RTU 자동도로전광표시기',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'클라모스',담당자:'최종근 부장',전화번호:'010-9558-0921',관련업무:'IP Wall',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'태갑종합건축',담당자:'조시현 소장',전화번호:'010-2879-6910',관련업무:'사다리 배관',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'한화',담당자:'정승규',전화번호:'010-7110-6424',관련업무:'공동구',비고:''},
+  {관리구분:'안전관리자',터널명:'흥해터널',업체명:'한화',담당자:'정승용부장',전화번호:'010-4808-5039',관련업무:'누수',비고:''},
+  {관리구분:'점검팀',터널명:'강구2터널',업체명:'(주)와튼',담당자:'김진욱 대리',전화번호:'010-3080-8767',관련업무:'UPS',비고:''},
+  {관리구분:'점검팀',터널명:'강구3터널',업체명:'(주)와튼',담당자:'김진욱 대리',전화번호:'010-3080-8767',관련업무:'UPS',비고:''},
+  {관리구분:'점검팀',터널명:'남정1·2터널',업체명:'(주)와튼',담당자:'정범모 과장',전화번호:'010-3436-4369',관련업무:'축전지',비고:''},
+  {관리구분:'점검팀',터널명:'남정1·2터널',업체명:'남도전기',담당자:'변지섭 부장',전화번호:'010-4295-8885',관련업무:'피난구표시등 시선유도등',비고:''},
+  {관리구분:'점검팀',터널명:'남정1·2터널',업체명:'성신전기공업',담당자:'이성규 과장',전화번호:'010-4730-0240',관련업무:'UPS',비고:''},
+  {관리구분:'점검팀',터널명:'남정4터널',업체명:'성신전기공업',담당자:'이성규 과장',전화번호:'010-4730-0240',관련업무:'UPS',비고:''},
+  {관리구분:'점검팀',터널명:'남정5터널',업체명:'D2U이앤씨',담당자:'최준혁 과장',전화번호:'010-8469-8520',관련업무:'소화전',비고:''},
+  {관리구분:'점검팀',터널명:'남정5터널',업체명:'대성기업㈜',담당자:'오석준 대표',전화번호:'010-5494-0042',관련업무:'인버터',비고:''},
+  {관리구분:'점검팀',터널명:'남정5터널',업체명:'명신전기',담당자:'정승훈 차장',전화번호:'010-9223-8808',관련업무:'바닥',비고:''},
+  {관리구분:'점검팀',터널명:'남정6터널',업체명:'D2U이앤씨',담당자:'최준혁 과장',전화번호:'010-8469-8520',관련업무:'자동화재탐지설비 수신기 소화전 중계기 광센서',비고:''},
+  {관리구분:'점검팀',터널명:'남정6터널',업체명:'대성기업㈜',담당자:'오석준 대표',전화번호:'010-5494-0042',관련업무:'인버터',비고:''},
+  {관리구분:'점검팀',터널명:'남정7터널',업체명:'D2U이앤씨',담당자:'최준혁 과장',전화번호:'010-8469-8520',관련업무:'바닥',비고:''},
+  {관리구분:'점검팀',터널명:'남정8터널',업체명:'(주)와튼',담당자:'김진욱 대리',전화번호:'010-3080-8767',관련업무:'UPS',비고:''},
+  {관리구분:'점검팀',터널명:'남정8터널',업체명:'(주)와튼',담당자:'정범모 과장',전화번호:'010-3436-4369',관련업무:'축전지',비고:''},
+  {관리구분:'점검팀',터널명:'남정8터널',업체명:'명신전기',담당자:'정승훈 차장',전화번호:'010-9223-8808',관련업무:'표시등',비고:''},
+  {관리구분:'점검팀',터널명:'남정8터널',업체명:'한마음수배전반',담당자:'박현규 부장',전화번호:'010-9854-9554',관련업무:'UPS',비고:''},
+  {관리구분:'점검팀',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'김병훈 과장',전화번호:'010-4842-5426',관련업무:'발신기 경종 시각경보기 공동구',비고:''},
+  {관리구분:'점검팀',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'박민규 대리',전화번호:'010-5176-5549',관련업무:'수신기',비고:''},
+  {관리구분:'점검팀',터널명:'청하터널',업체명:'D2U이앤씨',담당자:'최준혁 과장',전화번호:'010-8469-8520',관련업무:'자동화재탐지설비 수신기 소화전 중계기 광센서',비고:''},
+  {관리구분:'점검팀',터널명:'청하터널',업체명:'HP시스템',담당자:'박은경 대표',전화번호:'010-2082-9932',관련업무:'터널진입차단설비(차단막)',비고:''},
+  {관리구분:'점검팀',터널명:'청하터널',업체명:'동화전기',담당자:'김명훈 팀장',전화번호:'010-4842-5426',관련업무:'소화전',비고:''},
+  {관리구분:'점검팀',터널명:'흥해터널',업체명:'D2U이앤씨',담당자:'김병훈 과장',전화번호:'010-4842-5426',관련업무:'소화전',비고:''}
+];
+
+function loadContactData(){
+  if(!CFG.workerUrl){
+    CONTACT_DATA = CONTACT_DEMO_DATA;
+    CONTACT_LOADED = true;
+    renderContactPanel();
+    return;
+  }
+  fetch(CFG.workerUrl+'/v1/databases/'+CONTACT_DB_ID+'/query', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ page_size:100, sorts:[{property:'관리구분',direction:'ascending'},{property:'터널명',direction:'ascending'}] })
+  })
+  .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+  .then(function(data){
+    var pages = data.results||[];
+    CONTACT_DATA = pages.map(parseContactPage).filter(function(r){return r.업체명;});
+    // has_more 처리
+    if(data.has_more && data.next_cursor){
+      return fetchContactNext(data.next_cursor);
+    }
+  })
+  .then(function(){
+    CONTACT_LOADED = true;
+    renderContactPanel();
+    if(CURRENT_TAB===5) updateKPI(5);
+  })
+  .catch(function(e){
+    console.error('업체연락처 로드 실패:', e);
+    CONTACT_DATA = CONTACT_DEMO_DATA;
+    CONTACT_LOADED = true;
+    renderContactPanel();
+  });
+}
+
+function fetchContactNext(cursor){
+  return fetch(CFG.workerUrl+'/v1/databases/'+CONTACT_DB_ID+'/query', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({ page_size:100, start_cursor:cursor })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    CONTACT_DATA = CONTACT_DATA.concat((data.results||[]).map(parseContactPage).filter(function(r){return r.업체명;}));
+    if(data.has_more && data.next_cursor) return fetchContactNext(data.next_cursor);
+  });
+}
+
+function parseContactPage(page){
+  var p = page.properties||{};
+  return {
+    관리구분: getPropText(p['관리구분'])||getPropText(p['관리'])||'',
+    터널명:   getPropText(p['터널명'])||'',
+    업체명:   getPropText(p['업체명'])||'',
+    담당자:   getPropText(p['담당자'])||'',
+    전화번호: getPropText(p['전화번호'])||'',
+    관련업무: getPropText(p['관련업무'])||'',
+    비고:     getPropText(p['비고'])||''
+  };
+}
+
+function filteredContacts(){
+  var q = (document.getElementById('contactSearchBox')||{value:''}).value.trim().toLowerCase();
+  return CONTACT_DATA.filter(function(r){
+    var gMatch = CONTACT_FILTER.group==='ALL' || r.관리구분===CONTACT_FILTER.group;
+    var tMatch = CONTACT_FILTER.tunnel==='ALL' || r.터널명===CONTACT_FILTER.tunnel;
+    var qMatch = !q
+      || (r.업체명||'').toLowerCase().includes(q)
+      || (r.담당자||'').toLowerCase().includes(q)
+      || (r.관련업무||'').toLowerCase().includes(q)
+      || (r.전화번호||'').includes(q)
+      || (r.터널명||'').toLowerCase().includes(q);
+    return gMatch && tMatch && qMatch;
+  });
+}
+
+function buildContactTunnelDd(){
+  var seen={}, tunnels=[];
+  CONTACT_DATA.forEach(function(r){ if(r.터널명&&!seen[r.터널명]){seen[r.터널명]=1;tunnels.push(r.터널명);} });
+  tunnels.sort();
+  var menu = document.getElementById('contactTunnelDdMenu');
+  if(!menu) return;
+  var opts = [{val:'ALL',label:'터널 전체'}].concat(tunnels.map(function(t){return{val:t,label:t};}));
+  menu.innerHTML = opts.map(function(o){
+    return '<div class="dd-opt'+(CONTACT_FILTER.tunnel===o.val?' sel':'')+'" data-val="'+o.val+'">'+o.label+'</div>';
+  }).join('');
+  if(!menu._cbound){
+    menu._cbound = true;
+    menu.addEventListener('click', function(e){
+      var opt = e.target.closest ? e.target.closest('.dd-opt') : e.target;
+      if(!opt||!opt.dataset||!opt.dataset.val) return;
+      var val = opt.dataset.val;
+      menu.querySelectorAll('.dd-opt').forEach(function(o){o.classList.remove('sel');});
+      opt.classList.add('sel');
+      document.getElementById('contactTunnelDdLabel').textContent = val==='ALL'?'터널 전체':val;
+      var btn=document.getElementById('contactTunnelDdBtn');
+      if(btn) btn.classList.toggle('active', val!=='ALL');
+      CONTACT_FILTER.tunnel = val;
+      closeDd('contactTunnelDdMenu','contactTunnelDdBtn');
+      renderContactTable();
+    });
+    document.addEventListener('click', function(e){
+      var wrap=document.getElementById('contactTunnelDdWrap');
+      if(wrap&&!wrap.contains(e.target)) closeDd('contactTunnelDdMenu','contactTunnelDdBtn');
+    });
+  }
+}
+
+function toggleContactTunnelDd(){ toggleDd('contactTunnelDdMenu','contactTunnelDdBtn'); }
+
+function selectContactGroup(val, el){
+  document.querySelectorAll('#contactGroupFilter .f-chip').forEach(function(c){c.classList.remove('on');});
+  if(el) el.classList.add('on');
+  CONTACT_FILTER.group = val;
+  renderContactTable();
+}
+
+function renderContactPanel(){
+  buildContactTunnelDd();
+  renderContactTable();
+  if(CURRENT_TAB===5) updateKPI(5);
+}
+
+function renderContactTable(){
+  var rows = filteredContacts();
+  var cnt = document.getElementById('contactCount');
+  if(cnt) cnt.textContent = '총 '+rows.length+'건';
+  var tbody = document.getElementById('contactBody');
+  if(!tbody) return;
+  if(!rows.length){
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--txt3)">검색 결과가 없습니다</td></tr>';
+    if(CURRENT_TAB===5) updateKPI(5);
+    return;
+  }
+  tbody.innerHTML = rows.map(function(r){
+    var gBadge = r.관리구분==='안전관리자'
+      ? '<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--sky50);color:var(--sky800);white-space:nowrap">안전관리자</span>'
+      : r.관리구분==='점검팀'
+      ? '<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--teal50);color:var(--teal600);white-space:nowrap">점검팀</span>'
+      : esc(r.관리구분);
+    var tel = r.전화번호||'-';
+    var telHtml = tel!=='-'
+      ? '<a href="tel:'+esc(tel)+'" style="color:var(--sky600);text-decoration:none;font-weight:600">'+esc(tel)+'</a>'
+      : '-';
+    return '<tr>'
+      +'<td class="td-nowrap">'+gBadge+'</td>'
+      +'<td class="td-nowrap"><strong>'+esc(r.터널명||'-')+'</strong></td>'
+      +'<td class="td-nowrap">'+esc(r.업체명||'-')+'</td>'
+      +'<td class="td-nowrap">'+esc(r.담당자||'-')+'</td>'
+      +'<td class="td-nowrap">'+telHtml+'</td>'
+      +'<td style="font-size:13px;color:var(--txt2);line-height:1.5">'+esc(r.관련업무||'-')+'</td>'
+      +'<td class="td-nowrap">'+esc(r.비고||'-')+'</td>'
+      +'</tr>';
+  }).join('');
+  if(CURRENT_TAB===5) updateKPI(5);
 }
 
 </script>
