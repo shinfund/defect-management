@@ -1572,7 +1572,7 @@ function renderList(){
   rows = rows.map(function(r){
     return { r:r, d:(r['날짜']||'').replace(/[.\/]/g,'-') };
   }).sort(function(a,b){
-    return a.d < b.d ? -1 : a.d > b.d ? 1 : 0;
+    return a.d < b.d ? 1 : a.d > b.d ? -1 : 0;
   }).map(function(o){ return o.r; });
 
   var visKeys = getVisibleCols();
