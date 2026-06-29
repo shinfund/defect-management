@@ -2499,19 +2499,26 @@ function loadContactData(){
   fetch(CFG.workerUrl+'/v1/databases/'+(CFG.contactDbId||CONTACT_DB_ID)+'/query', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({ page_size:100, sorts:[{property:'관리구분',direction:'ascending'},{property:'터널명',direction:'ascending'}] })
+    body:JSON.stringify({ page_size:100 })
   })
   .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
   .then(function(data){
     var pages = data.results||[];
     if(pages.length && !Object.keys(CONTACT_PROP_MAP).length) buildContactPropMap(pages[0]);
-    CONTACT_DATA = pages.map(parseContactPage).filter(function(r){return r.업체명;});
+    CONTACT_DATA = pages.map(parseContactPage).filter(function(r){return r.업체명||r._pageId;});
     // has_more 처리
     if(data.has_more && data.next_cursor){
       return fetchContactNext(data.next_cursor);
     }
   })
   .then(function(){
+    // 관리구분→터널명 순 클라이언트 정렬
+    CONTACT_DATA.sort(function(a,b){
+      var ga=(a.관리구분||''), gb=(b.관리구분||'');
+      if(ga!==gb) return ga<gb?-1:1;
+      var ta=(a.터널명||''), tb=(b.터널명||'');
+      return ta<tb?-1:ta>tb?1:0;
+    });
     CONTACT_DATA = CONTACT_DATA.map(function(r,i){r._idx=i+1;return r;});
     CONTACT_LOADED = true;
     renderContactPanel();
@@ -2533,22 +2540,29 @@ function fetchContactNext(cursor){
   })
   .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
   .then(function(data){
-    CONTACT_DATA = CONTACT_DATA.concat((data.results||[]).map(parseContactPage).filter(function(r){return r.업체명;}));
+    CONTACT_DATA = CONTACT_DATA.concat((data.results||[]).map(parseContactPage).filter(function(r){return r.업체명||r._pageId;}));
     if(data.has_more && data.next_cursor) return fetchContactNext(data.next_cursor);
   });
 }
 
 function parseContactPage(page){
   var p = page.properties||{};
+  var m = CONTACT_PROP_MAP;
+  function gprop(internalKey, extras){
+    var mapped = m[internalKey];
+    var names = (mapped ? [mapped] : []).concat(extras||[]).concat([internalKey]);
+    for(var i=0;i<names.length;i++) if(p[names[i]]) return getPropText(p[names[i]]);
+    return '';
+  }
   return {
     _pageId:  page.id||null,
-    관리구분: getPropText(p['관리구분'])||getPropText(p['관리'])||'',
-    터널명:   getPropText(p['터널명'])||'',
-    업체명:   getPropText(p['업체명'])||'',
-    담당자:   getPropText(p['담당자'])||'',
-    전화번호: getPropText(p['전화번호'])||'',
-    관련업무: getPropText(p['관련업무'])||'',
-    비고:     getPropText(p['비고'])||''
+    관리구분: gprop('관리구분', ['관리']),
+    터널명:   gprop('터널명',   ['터널']),
+    업체명:   gprop('업체명',   ['업체']),
+    담당자:   gprop('담당자',   ['담당']),
+    전화번호: gprop('전화번호', ['전화']),
+    관련업무: gprop('관련업무', ['업무']),
+    비고:     gprop('비고',     []),
   };
 }
 
