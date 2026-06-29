@@ -341,14 +341,14 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 </head>
 <body>
 
-<!-- 업체연락처 수정 모달 -->
+<!-- 업체연락처 수정/신규추가 모달 -->
 <div id="contactEditModal">
   <div class="modal-backdrop" onclick="closeContactEditModal(event)">
     <div class="modal-box" style="max-width:480px" onclick="event.stopPropagation()">
       <div class="detail-modal-hd">
         <h3 style="display:flex;align-items:center;gap:7px">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          업체연락처 수정
+          <span id="contactEditModalTitle">업체연락처 수정</span>
         </h3>
         <button class="detail-modal-close" onclick="closeContactEditModal()" aria-label="닫기">✕</button>
       </div>
@@ -361,7 +361,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       </div>
       <div class="modal-field">
         <label class="modal-label">터널명 <span class="modal-required">*</span></label>
-        <select id="ceTunnel" class="modal-select"></select>
+        <input id="ceTunnel" class="modal-input" type="text" placeholder="터널명 입력"/>
       </div>
       <div class="modal-field">
         <label class="modal-label">업체명 <span class="modal-required">*</span></label>
@@ -385,7 +385,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       </div>
       <div class="modal-btns">
         <button class="modal-cancel" onclick="closeContactEditModal()">취소</button>
-        <button class="modal-save" id="ceSubmitBtn" onclick="submitContactEdit()">저장</button>
+        <button class="modal-save" id="ceSubmitBtn" onclick="submitContactForm()"><span id="ceSubmitLabel">저장</span></button>
       </div>
     </div>
   </div>
@@ -600,7 +600,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       <div class="hdr-btns">
         <button class="hdr-btn" onclick="openAddModal()" aria-label="신규 하자 등록" style="background:rgba(255,255,255,.25);border-color:rgba(255,255,255,.6)">
           <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          등록
+          신규등록
         </button>
         <button class="hdr-btn" onclick="openCfgModal()" aria-label="연동 설정">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -788,6 +788,10 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       <div class="dd-menu" id="contactTunnelDdMenu"></div>
     </div>
     <input class="search-box" id="contactSearchBox" placeholder="🔍 업체명, 담당자, 관련업무 검색..." oninput="renderContactTable()">
+    <button class="hdr-btn" onclick="openContactAddModal()" style="background:var(--sky600);border-color:var(--sky600);color:#fff;flex-shrink:0;font-size:12px;padding:0 12px;height:34px;border-radius:8px;display:flex;align-items:center;gap:5px;border:none;cursor:pointer;font-weight:600">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      신규추가
+    </button>
   </div>
   <div class="filter-count" id="contactCount"></div>
   <div class="tbl-wrap">
@@ -2553,11 +2557,10 @@ function openContactDetail(idx){
 
   var actionsEl = document.getElementById('detailActions');
   if(actionsEl){
-    var hasPid = !!(r._pageId && CFG.workerUrl);
     actionsEl.innerHTML =
-      '<button class="detail-act-btn detail-edit-btn" onclick="openContactEditModal('+idx+')"'+(hasPid?'':' disabled title="노션 연동 후 사용 가능"')+'>'
+      '<button class="detail-act-btn detail-edit-btn" onclick="openContactEditModal('+idx+')">'
       +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>수정</button>'
-      +'<button class="detail-act-btn detail-del-btn" onclick="showContactDeleteConfirm('+idx+')"'+(hasPid?'':' disabled title="노션 연동 후 사용 가능"')+'>'
+      +'<button class="detail-act-btn detail-del-btn" onclick="showContactDeleteConfirm('+idx+')">'
       +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>삭제</button>';
   }
   var footer = document.getElementById('detailFooter');
@@ -2596,15 +2599,13 @@ function openContactEditModal(idx){
   if(!r) return;
   CONTACT_EDIT_IDX = idx;
 
-  // 터널 옵션: CONTACT_DATA에서 수집
-  var seen={}, tunnels=[];
-  CONTACT_DATA.forEach(function(c){ if(c.터널명&&!seen[c.터널명]){seen[c.터널명]=1;tunnels.push(c.터널명);} });
-  tunnels.sort();
-  var tSel = document.getElementById('ceTunnel');
-  tSel.innerHTML = tunnels.map(function(t){ return '<option value="'+esc(t)+'">'+esc(t)+'</option>'; }).join('');
+  var titleEl = document.getElementById('contactEditModalTitle');
+  if(titleEl) titleEl.textContent = '업체연락처 수정';
+  var lbl = document.getElementById('ceSubmitLabel');
+  if(lbl) lbl.textContent = '저장';
 
   document.getElementById('ceGrp').value    = r.관리구분||'안전관리자';
-  tSel.value                                = r.터널명||'';
+  document.getElementById('ceTunnel').value = r.터널명||'';
   document.getElementById('ceCo').value     = r.업체명||'';
   document.getElementById('cePerson').value = r.담당자||'';
   document.getElementById('ceTel').value    = r.전화번호||'';
@@ -2616,56 +2617,124 @@ function openContactEditModal(idx){
   document.body.style.overflow='hidden';
 }
 
+function openContactAddModal(){
+  CONTACT_EDIT_IDX = null;
+  var titleEl = document.getElementById('contactEditModalTitle');
+  if(titleEl) titleEl.textContent = '업체연락처 신규추가';
+  var lbl = document.getElementById('ceSubmitLabel');
+  if(lbl) lbl.textContent = '등록';
+
+  document.getElementById('ceGrp').value    = '안전관리자';
+  document.getElementById('ceTunnel').value = '';
+  document.getElementById('ceCo').value     = '';
+  document.getElementById('cePerson').value = '';
+  document.getElementById('ceTel').value    = '';
+  document.getElementById('ceWork').value   = '';
+  document.getElementById('ceRemark').value = '';
+
+  document.getElementById('contactEditModal').classList.add('modal-open');
+  document.body.style.overflow='hidden';
+}
+
 function closeContactEditModal(e){
   if(e && !e.target.classList.contains('modal-backdrop')) return;
   document.getElementById('contactEditModal').classList.remove('modal-open');
   document.body.style.overflow='';
 }
 
-function submitContactEdit(){
-  var r = CONTACT_DATA.find(function(d){ return d._idx===CONTACT_EDIT_IDX; });
-  if(!r || !r._pageId){ alert('노션 연동 설정 후 사용 가능합니다.'); return; }
+function submitContactForm(){
+  var isAdd = (CONTACT_EDIT_IDX === null);
 
   var co = document.getElementById('ceCo').value.trim();
   if(!co){ alert('업체명을 입력해주세요.'); document.getElementById('ceCo').focus(); return; }
+  var tunnel = document.getElementById('ceTunnel').value.trim();
+  if(!tunnel){ alert('터널명을 입력해주세요.'); document.getElementById('ceTunnel').focus(); return; }
 
   var btn = document.getElementById('ceSubmitBtn');
-  btn.disabled=true; btn.textContent='저장 중...';
+  var lbl = document.getElementById('ceSubmitLabel');
+  btn.disabled=true;
+  if(lbl) lbl.textContent = isAdd ? '등록 중...' : '저장 중...';
+
+  var grp    = document.getElementById('ceGrp').value;
+  var person = document.getElementById('cePerson').value.trim();
+  var tel    = document.getElementById('ceTel').value.trim();
+  var work   = document.getElementById('ceWork').value.trim();
+  var rem    = document.getElementById('ceRemark').value.trim();
 
   var properties = {};
-  // 업체명 → title (노션 DB에서 title 타입이 업체명일 가능성 높음)
-  properties['업체명'] = { title: [{ text: { content: co } }] };
-  properties['관리구분'] = { select: { name: document.getElementById('ceGrp').value } };
-  properties['터널명']   = { select: { name: document.getElementById('ceTunnel').value } };
-  var person = document.getElementById('cePerson').value.trim();
-  if(person) properties['담당자'] = { rich_text: [{ text: { content: person } }] };
-  var tel = document.getElementById('ceTel').value.trim();
-  if(tel) properties['전화번호'] = { phone_number: tel };
-  var work = document.getElementById('ceWork').value.trim();
-  if(work) properties['관련업무'] = { rich_text: [{ text: { content: work } }] };
-  var rem = document.getElementById('ceRemark').value.trim();
-  if(rem) properties['비고'] = { rich_text: [{ text: { content: rem } }] };
+  properties['업체명']   = { title: [{ text: { content: co } }] };
+  properties['관리구분'] = { select: { name: grp } };
+  properties['터널명']   = { select: { name: tunnel } };
+  if(person) properties['담당자']   = { rich_text: [{ text: { content: person } }] };
+  if(tel)    properties['전화번호'] = { phone_number: tel };
+  if(work)   properties['관련업무'] = { rich_text: [{ text: { content: work } }] };
+  if(rem)    properties['비고']     = { rich_text: [{ text: { content: rem } }] };
 
-  fetch(CFG.workerUrl+'/v1/pages/'+r._pageId, {
-    method:'PATCH',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({ properties: properties })
-  })
-  .then(function(res){
-    if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
-    return res.json();
-  })
-  .then(function(){
-    btn.disabled=false; btn.textContent='저장';
-    closeContactEditModal();
-    CONTACT_LOADED=false;
-    loadContactData();
-  })
-  .catch(function(e){
-    btn.disabled=false; btn.textContent='저장';
-    alert('수정 실패: '+e.message);
-    console.error(e);
-  });
+  function resetBtn(label){
+    btn.disabled=false;
+    if(lbl) lbl.textContent = label;
+  }
+
+  if(isAdd){
+    // 노션 미연동: 로컬에 추가
+    if(!CFG.workerUrl || !CFG.contactDbId){
+      var newIdx = CONTACT_DATA.length
+        ? Math.max.apply(null, CONTACT_DATA.map(function(d){ return d._idx; })) + 1
+        : 1;
+      CONTACT_DATA.push({ _idx:newIdx, _pageId:null,
+        관리구분:grp, 터널명:tunnel, 업체명:co,
+        담당자:person, 전화번호:tel, 관련업무:work, 비고:rem });
+      resetBtn('등록');
+      closeContactEditModal();
+      renderContactPanel();
+      return;
+    }
+    fetch(CFG.workerUrl+'/v1/pages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ parent:{ database_id: CFG.contactDbId }, properties: properties })
+    })
+    .then(function(res){
+      if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
+      return res.json();
+    })
+    .then(function(){
+      resetBtn('등록');
+      closeContactEditModal();
+      CONTACT_LOADED=false; loadContactData();
+    })
+    .catch(function(e){
+      resetBtn('등록');
+      alert('등록 실패: '+e.message);
+      console.error(e);
+    });
+  } else {
+    var r = CONTACT_DATA.find(function(d){ return d._idx===CONTACT_EDIT_IDX; });
+    if(!r || !r._pageId){
+      alert('노션 연동 설정 후 사용 가능합니다.');
+      resetBtn('저장');
+      return;
+    }
+    fetch(CFG.workerUrl+'/v1/pages/'+r._pageId, {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ properties: properties })
+    })
+    .then(function(res){
+      if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
+      return res.json();
+    })
+    .then(function(){
+      resetBtn('저장');
+      closeContactEditModal();
+      CONTACT_LOADED=false; loadContactData();
+    })
+    .catch(function(e){
+      resetBtn('저장');
+      alert('수정 실패: '+e.message);
+      console.error(e);
+    });
+  }
 }
 
 function showContactDeleteConfirm(idx){
