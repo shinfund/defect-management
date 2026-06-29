@@ -465,11 +465,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
         <input id="addActionDate" class="modal-input" type="date"/>
       </div>
 
-      <!-- 8.조치내용 -->
-      <div class="modal-field">
-        <label class="modal-label">조치내용</label>
-        <textarea id="addActionContent" class="modal-textarea" placeholder="조치 내용을 입력하세요"></textarea>
-      </div>
+
 
       <!-- 9.조치사진 -->
       <div class="modal-field">
@@ -830,7 +826,7 @@ var COL_DEFS = [
   { key:'하자내용',   label:'하자내용', width:'col-expand',  fixed:true  },
   { key:'하자사진_URL', label:'하자사진', width:'col-photo', fixed:false },
   { key:'조치일',     label:'조치일',   width:'col-date2',   fixed:false },
-  { key:'조치내용',   label:'조치내용', width:'col-expand',  fixed:false },
+
   { key:'조치사진_URL', label:'조치사진', width:'col-photo', fixed:false },
   { key:'업체명',     label:'업체',     width:'col-company', fixed:false },
   { key:'업체담당자', label:'업체담당', width:'col-contact', fixed:false },
@@ -1066,7 +1062,6 @@ function parseNotionPage(page, idx){
   result['하자내용']   = getField('하자내용',   ['하자내용','내용','content']);
   result['조치여부']   = getField('조치여부',   ['조치여부','상태','status'])||'진행중';
   result['조치일']     = getField('조치일',     ['조치일','완료일','act_date']);
-  result['조치내용']   = getField('조치내용',   ['조치내용','action_content']);
   result['업체명']     = getField('업체명',     ['업체명','업체','company']);
   result['업무담당']   = getField('업무담당',   ['관리','업무담당','manager']);
   result['업체담당자'] = getField('업체담당자', ['업체담당자','업체담당','contact']);
@@ -1203,7 +1198,6 @@ function buildNotionPropMap(props){
     { key:'하자내용',    kws:['하자내용','내용','content','하자'], types:['title','rich_text'] },
     { key:'조치여부',    kws:['조치여부','상태','status'], types:['select','checkbox'] },
     { key:'조치일',      kws:['조치일','완료일','act'],   types:['date'] },
-    { key:'조치내용',    kws:['조치내용','조치 내용','처리내용','처리 내용','action_content'], types:['rich_text','text','title'] },
     { key:'하자사진_URL',kws:['하자사진','하자 사진','photo1','사진1'], types:['files','url','rich_text'] },
     { key:'조치사진_URL',kws:['조치사진','조치 사진','photo2','사진2'], types:['files','url','rich_text'] },
     { key:'업체명',      kws:['업체명','업체 명','업체','company'], types:['rich_text','title','text'] },
@@ -2004,7 +1998,6 @@ function openDetail(idx){
     ['하자내용', esc(r['하자내용']||'-')],
     ['조치여부', '<span class="badge '+badge+'">'+esc(s||'-')+'</span>'],
     ['조치일',  esc(r['조치일']||'-')],
-    ['조치내용', esc(r['조치내용']||'-')],
     ['업체명',  esc(r['업체명']||'-')],
     ['담당자',  esc(r['업체담당자']||'-')],
     ['전화번호', esc(r['전화번호']||'-')],
@@ -2155,7 +2148,6 @@ function openEditModal(idx){
   document.getElementById('addContent').value       = r['하자내용']||'';
   document.getElementById('addStatus').value        = r['조치여부']||'진행중';
   document.getElementById('addActionDate').value    = r['조치일']||'';
-  document.getElementById('addActionContent').value = r['조치내용']||'';
   document.getElementById('addCompany').value       = r['업체명']||'';
   document.getElementById('addContact').value     = r['업체담당자']||'';
   document.getElementById('addPhone').value       = r['전화번호']||'';
@@ -2246,7 +2238,6 @@ function openAddModal(){
   document.getElementById('addType').value = '';
   document.getElementById('addLoc').value = '';
   document.getElementById('addContent').value = '';
-  document.getElementById('addActionContent').value = '';
   document.getElementById('addCompany').value = '';
   document.getElementById('addContact').value = '';
   document.getElementById('addPhone').value = '';
@@ -2307,7 +2298,6 @@ function submitAddForm(){
 
   var status    = document.getElementById('addStatus').value;
   var actDate      = document.getElementById('addActionDate').value.trim();
-  var actContent   = document.getElementById('addActionContent').value.trim();
   var company   = document.getElementById('addCompany').value.trim();
   var contact   = document.getElementById('addContact').value.trim();
   var phone     = document.getElementById('addPhone').value.trim();
@@ -2346,7 +2336,6 @@ function submitAddForm(){
   setProp('조치여부',{ select: { name: status } });
 
   if(actDate)    setProp('조치일',    { date: { start: actDate } });
-  if(actContent) setProp('조치내용',  { rich_text: [{ text: { content: actContent } }] });
   if(company)    setProp('업체명',    { rich_text: [{ text: { content: company } }] });
   if(contact)    setProp('업체담당자',{ rich_text: [{ text: { content: contact } }] });
   if(phone)      setProp('전화번호',  { phone_number: phone });
