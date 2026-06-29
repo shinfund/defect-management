@@ -99,6 +99,8 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 .col-company{width:88px;white-space:nowrap}
 .col-contact{width:76px;white-space:nowrap}
 .col-manager{width:72px;white-space:nowrap}
+.col-photo{width:56px;min-width:52px;text-align:center}
+@media(max-width:640px){.col-photo{display:none}}
 
 /* ── STATUS BADGE ── */
 .badge{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
@@ -276,6 +278,10 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
   .modal-box{border-radius:var(--r16) var(--r16) 0 0;max-width:100%}
 }
 
+/* ── CONTACT EDIT MODAL ── */
+#contactEditModal{visibility:hidden;opacity:0;pointer-events:none;transition:opacity .15s,visibility .15s}
+#contactEditModal.modal-open{visibility:visible;opacity:1;pointer-events:auto}
+
 /* ── ADD FORM MODAL ── */
 #addModal{visibility:hidden;opacity:0;pointer-events:none;transition:opacity .15s,visibility .15s}
 #addModal.modal-open{visibility:visible;opacity:1;pointer-events:auto}
@@ -334,6 +340,56 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 </style>
 </head>
 <body>
+
+<!-- 업체연락처 수정 모달 -->
+<div id="contactEditModal">
+  <div class="modal-backdrop" onclick="closeContactEditModal(event)">
+    <div class="modal-box" style="max-width:480px" onclick="event.stopPropagation()">
+      <div class="detail-modal-hd">
+        <h3 style="display:flex;align-items:center;gap:7px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          업체연락처 수정
+        </h3>
+        <button class="detail-modal-close" onclick="closeContactEditModal()" aria-label="닫기">✕</button>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">관리구분</label>
+        <select id="ceGrp" class="modal-select" style="max-width:200px">
+          <option value="안전관리자">안전관리자</option>
+          <option value="점검팀">점검팀</option>
+        </select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">터널명 <span class="modal-required">*</span></label>
+        <select id="ceTunnel" class="modal-select"></select>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">업체명 <span class="modal-required">*</span></label>
+        <input id="ceCo" class="modal-input" type="text" placeholder="업체명"/>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">담당자</label>
+        <input id="cePerson" class="modal-input" type="text" placeholder="이름·직급"/>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">전화번호</label>
+        <input id="ceTel" class="modal-input" type="tel" placeholder="010-0000-0000"/>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">관련업무</label>
+        <textarea id="ceWork" class="modal-textarea" placeholder="관련업무 내용"></textarea>
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">비고</label>
+        <input id="ceRemark" class="modal-input" type="text" placeholder="추가사항"/>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-cancel" onclick="closeContactEditModal()">취소</button>
+        <button class="modal-save" id="ceSubmitBtn" onclick="submitContactEdit()">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- 신규 하자 등록 모달 -->
 <div id="addModal">
@@ -676,6 +732,8 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
           <th class="col-type">공종</th>
           <th class="col-loc">위치</th>
           <th class="col-expand">하자내용</th>
+          <th class="col-photo">하자사진</th>
+          <th class="col-photo">조치사진</th>
           <th class="col-company">업체</th>
           <th class="col-contact">업체담당</th>
           <th class="col-contact">전화번호</th>
@@ -763,7 +821,6 @@ var TAB_FILTER = { tunnel:'ALL', company:'ALL' };
 var CURRENT_TAB = 0;
 
 // ── 열 정의 (노션 DB 컬럼 순서와 동일) ──
-// 사진 URL(하자사진_URL·조치사진_URL)은 COL_DEFS에 포함하지 않고 renderList·상세 모달에서 별도 처리
 var COL_DEFS = [
   { key:'조치여부',   label:'상태',     width:'col-status',  fixed:true  },
   { key:'날짜',       label:'날짜',     width:'col-date',    fixed:false },
@@ -771,8 +828,10 @@ var COL_DEFS = [
   { key:'공종',       label:'공종',     width:'col-type',    fixed:false },
   { key:'위치',       label:'위치',     width:'col-loc',     fixed:false },
   { key:'하자내용',   label:'하자내용', width:'col-expand',  fixed:true  },
+  { key:'하자사진_URL', label:'하자사진', width:'col-photo', fixed:false },
   { key:'조치일',     label:'조치일',   width:'col-date2',   fixed:false },
   { key:'조치내용',   label:'조치내용', width:'col-expand',  fixed:false },
+  { key:'조치사진_URL', label:'조치사진', width:'col-photo', fixed:false },
   { key:'업체명',     label:'업체',     width:'col-company', fixed:false },
   { key:'업체담당자', label:'업체담당', width:'col-contact', fixed:false },
   { key:'전화번호',   label:'전화번호', width:'col-contact', fixed:false },
@@ -939,6 +998,7 @@ document.addEventListener('keydown',function(e){
     document.getElementById('cfgModal').classList.remove('modal-open');
     document.getElementById('detailModal').classList.remove('modal-open');
     document.getElementById('addModal').classList.remove('modal-open');
+    document.getElementById('contactEditModal').classList.remove('modal-open');
     document.body.style.overflow='';
   }
 });
@@ -1559,7 +1619,7 @@ function renderUnprocPanel(){
   var tbody = document.getElementById('unprocBody');
   if(!tbody) return;
   if(!rows.length){
-    tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--teal600);font-weight:700">🎉 미처리 하자가 없습니다!</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="13" style="text-align:center;padding:40px;color:var(--teal600);font-weight:700">🎉 미처리 하자가 없습니다!</td></tr>';
     return;
   }
   tbody.innerHTML = rows.map(function(r){
@@ -1572,6 +1632,8 @@ function renderUnprocPanel(){
       +'<td class="td-nowrap">'+esc(r['공종']||'-')+'</td>'
       +'<td class="td-nowrap">'+esc(r['위치']||'-')+'</td>'
       +'<td><span class="td-content">'+esc(r['하자내용']||'-')+'</span></td>'
+      +'<td class="col-photo">'+makePhotoThumb(r['하자사진_URL']||'')+'</td>'
+      +'<td class="col-photo">'+makePhotoThumb(r['조치사진_URL']||'')+'</td>'
       +'<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>'
       +'<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>'
       +'<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>'
@@ -1580,6 +1642,17 @@ function renderUnprocPanel(){
       +'</tr>';
   }).join('');
   if(CURRENT_TAB===2) updateKPI(2);
+}
+
+/* ── 사진 썸네일 헬퍼 (테이블용) ── */
+function makePhotoThumb(url){
+  if(!url||!url.trim()) return '<span style="color:var(--txt3)">-</span>';
+  if(!/^https?:\/\//i.test(url.trim())) return '<span style="color:var(--txt3)">-</span>';
+  return '<a href="'+esc(url)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'
+    +'<img src="'+esc(url)+'" alt="사진"'
+    +' style="width:44px;height:44px;object-fit:cover;border-radius:4px;border:1px solid var(--border);vertical-align:middle;display:block;margin:0 auto"'
+    +' onerror="this.style.display=\'none\';this.parentNode.insertAdjacentHTML(\'afterend\',\'<span style=\\\'font-size:10px;color:var(--coral)\\\'>⚠</span>\')">'
+    +'</a>';
 }
 
 /* ── LIST HEADER 동적 생성 ── */
@@ -1622,6 +1695,7 @@ function renderList(){
       if(key==='터널명')   return '<td class="td-nowrap"><strong>'+esc(val)+'</strong></td>';
       if(key==='조치여부') return '<td><span class="badge '+badge+'">'+esc(s||'-')+'</span></td>';
       if(key==='하자내용') return '<td><span class="td-content">'+esc(val)+'</span></td>';
+      if(key==='하자사진_URL'||key==='조치사진_URL') return '<td class="col-photo">'+makePhotoThumb(val)+'</td>';
       return '<td class="'+cls+' td-nowrap">'+esc(val||'-')+'</td>';
     }).join('');
     return '<tr onclick="openDetail('+r._idx+')">'+cells+'</tr>';
@@ -1841,13 +1915,15 @@ function renderTunnelPanel(){
     {render:function(r){return '<td class="td-nowrap">'+esc(r['공종'])+'</td>';}},
     {render:function(r){return '<td class="td-nowrap">'+esc(r['위치'])+'</td>';}},
     {render:function(r){return '<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>';}},
+    {render:function(r){return '<td class="col-photo">'+makePhotoThumb(r['하자사진_URL']||'')+'</td>';}},
+    {render:function(r){return '<td class="col-photo">'+makePhotoThumb(r['조치사진_URL']||'')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap">'+esc(r['업체명']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
     {render:function(r){return '<td class="col-remark">'+esc(r['비고']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
   ];
-  var thead = '<th class="col-status">상태</th><th>날짜</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
+  var thead = '<th class="col-status">상태</th><th>날짜</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th class="col-photo">하자사진</th><th class="col-photo">조치사진</th><th>업체</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
   el.innerHTML = keys.map(function(t){
     var rows = allTunnels[t];
     return buildPanelCard(t, '', rows, thead, buildPanelRows(rows, cols), true);
@@ -1870,12 +1946,14 @@ function renderCompanyPanel(){
     {render:function(r){return '<td class="td-nowrap">'+esc(r['공종'])+'</td>';}},
     {render:function(r){return '<td class="td-nowrap">'+esc(r['위치'])+'</td>';}},
     {render:function(r){return '<td><span class="td-content">'+esc(r['하자내용'])+'</span></td>';}},
+    {render:function(r){return '<td class="col-photo">'+makePhotoThumb(r['하자사진_URL']||'')+'</td>';}},
+    {render:function(r){return '<td class="col-photo">'+makePhotoThumb(r['조치사진_URL']||'')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['업체담당자']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-contact">'+esc(r['전화번호']||'-')+'</td>';}},
     {render:function(r){return '<td class="col-remark">'+esc(r['비고']||'-')+'</td>';}},
     {render:function(r){return '<td class="td-nowrap col-manager">'+esc(r['업무담당']||'-')+'</td>';}}
   ];
-  var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
+  var thead = '<th class="col-status">상태</th><th>날짜</th><th>터널</th><th>공종</th><th>위치</th><th class="col-expand">하자내용</th><th class="col-photo">하자사진</th><th class="col-photo">조치사진</th><th class="col-contact">업체담당</th><th class="col-contact">전화번호</th><th class="col-remark">비고</th><th class="col-manager">관리</th>';
   el.innerHTML = sorted.map(function(cp){
     var rows = companies[cp];
     var contactRow = rows.find(function(r){ return r['업체담당자']||r['전화번호']; })||rows[0];
@@ -2410,7 +2488,7 @@ var CONTACT_DEMO_DATA = [
 
 function loadContactData(){
   if(!CFG.workerUrl){
-    CONTACT_DATA = CONTACT_DEMO_DATA;
+    CONTACT_DATA = CONTACT_DEMO_DATA.map(function(r,i){ return Object.assign({},r,{_idx:i+1,_pageId:null}); });
     CONTACT_LOADED = true;
     renderContactPanel();
     return;
@@ -2430,6 +2508,7 @@ function loadContactData(){
     }
   })
   .then(function(){
+    CONTACT_DATA = CONTACT_DATA.map(function(r,i){r._idx=i+1;return r;});
     CONTACT_LOADED = true;
     renderContactPanel();
     if(CURRENT_TAB===5) updateKPI(5);
@@ -2458,6 +2537,7 @@ function fetchContactNext(cursor){
 function parseContactPage(page){
   var p = page.properties||{};
   return {
+    _pageId:  page.id||null,
     관리구분: getPropText(p['관리구분'])||getPropText(p['관리'])||'',
     터널명:   getPropText(p['터널명'])||'',
     업체명:   getPropText(p['업체명'])||'',
@@ -2530,6 +2610,171 @@ function renderContactPanel(){
   if(CURRENT_TAB===5) updateKPI(5);
 }
 
+/* ── 업체연락처 상세 (detailModal 재사용) ── */
+var CONTACT_EDIT_IDX = null;
+
+function openContactDetail(idx){
+  var r = CONTACT_DATA.find(function(d){ return d._idx===idx; });
+  if(!r) return;
+  document.getElementById('detailTitle').textContent = (r.업체명||'-') + ' · ' + (r.담당자||'-');
+
+  var actionsEl = document.getElementById('detailActions');
+  if(actionsEl){
+    var hasPid = !!(r._pageId && CFG.workerUrl);
+    actionsEl.innerHTML =
+      '<button class="detail-act-btn detail-edit-btn" onclick="openContactEditModal('+idx+')"'+(hasPid?'':' disabled title="노션 연동 후 사용 가능"')+'>'
+      +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>수정</button>'
+      +'<button class="detail-act-btn detail-del-btn" onclick="showContactDeleteConfirm('+idx+')"'+(hasPid?'':' disabled title="노션 연동 후 사용 가능"')+'>'
+      +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>삭제</button>';
+  }
+  var footer = document.getElementById('detailFooter');
+  if(footer) footer.innerHTML = '';
+
+  var tel = r.전화번호||'';
+  var telHtml = tel ? '<a href="tel:'+esc(tel)+'" style="color:var(--sky600);font-weight:700;text-decoration:none">'+esc(tel)+'</a>' : '-';
+  var gBadge = r.관리구분==='안전관리자'
+    ? '<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--sky50);color:var(--sky800)">안전관리자</span>'
+    : r.관리구분==='점검팀'
+    ? '<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:10px;background:var(--teal50);color:var(--teal600)">점검팀</span>'
+    : esc(r.관리구분||'-');
+
+  var rows = [
+    ['관리구분', gBadge],
+    ['터널명',   esc(r.터널명||'-')],
+    ['업체명',   esc(r.업체명||'-')],
+    ['담당자',   esc(r.담당자||'-')],
+    ['전화번호', telHtml],
+    ['관련업무', esc(r.관련업무||'-')],
+    ['비고',     esc(r.비고||'-')],
+  ];
+  var infoHtml = '<div class="detail-info-wrap">'
+    + rows.map(function(rv){
+        return '<div class="detail-row"><div class="detail-key">'+rv[0]+'</div><div class="detail-val">'+rv[1]+'</div></div>';
+      }).join('')
+    + '</div>';
+
+  document.getElementById('detailBody').innerHTML = infoHtml;
+  document.getElementById('detailModal').classList.add('modal-open');
+  document.body.style.overflow='hidden';
+}
+
+function openContactEditModal(idx){
+  var r = CONTACT_DATA.find(function(d){ return d._idx===idx; });
+  if(!r) return;
+  CONTACT_EDIT_IDX = idx;
+
+  // 터널 옵션: CONTACT_DATA에서 수집
+  var seen={}, tunnels=[];
+  CONTACT_DATA.forEach(function(c){ if(c.터널명&&!seen[c.터널명]){seen[c.터널명]=1;tunnels.push(c.터널명);} });
+  tunnels.sort();
+  var tSel = document.getElementById('ceTunnel');
+  tSel.innerHTML = tunnels.map(function(t){ return '<option value="'+esc(t)+'">'+esc(t)+'</option>'; }).join('');
+
+  document.getElementById('ceGrp').value    = r.관리구분||'안전관리자';
+  tSel.value                                = r.터널명||'';
+  document.getElementById('ceCo').value     = r.업체명||'';
+  document.getElementById('cePerson').value = r.담당자||'';
+  document.getElementById('ceTel').value    = r.전화번호||'';
+  document.getElementById('ceWork').value   = r.관련업무||'';
+  document.getElementById('ceRemark').value = r.비고||'';
+
+  closeDetail();
+  document.getElementById('contactEditModal').classList.add('modal-open');
+  document.body.style.overflow='hidden';
+}
+
+function closeContactEditModal(e){
+  if(e && !e.target.classList.contains('modal-backdrop')) return;
+  document.getElementById('contactEditModal').classList.remove('modal-open');
+  document.body.style.overflow='';
+}
+
+function submitContactEdit(){
+  var r = CONTACT_DATA.find(function(d){ return d._idx===CONTACT_EDIT_IDX; });
+  if(!r || !r._pageId){ alert('노션 연동 설정 후 사용 가능합니다.'); return; }
+
+  var co = document.getElementById('ceCo').value.trim();
+  if(!co){ alert('업체명을 입력해주세요.'); document.getElementById('ceCo').focus(); return; }
+
+  var btn = document.getElementById('ceSubmitBtn');
+  btn.disabled=true; btn.textContent='저장 중...';
+
+  var properties = {};
+  // 업체명 → title (노션 DB에서 title 타입이 업체명일 가능성 높음)
+  properties['업체명'] = { title: [{ text: { content: co } }] };
+  properties['관리구분'] = { select: { name: document.getElementById('ceGrp').value } };
+  properties['터널명']   = { select: { name: document.getElementById('ceTunnel').value } };
+  var person = document.getElementById('cePerson').value.trim();
+  if(person) properties['담당자'] = { rich_text: [{ text: { content: person } }] };
+  var tel = document.getElementById('ceTel').value.trim();
+  if(tel) properties['전화번호'] = { phone_number: tel };
+  var work = document.getElementById('ceWork').value.trim();
+  if(work) properties['관련업무'] = { rich_text: [{ text: { content: work } }] };
+  var rem = document.getElementById('ceRemark').value.trim();
+  if(rem) properties['비고'] = { rich_text: [{ text: { content: rem } }] };
+
+  fetch(CFG.workerUrl+'/v1/pages/'+r._pageId, {
+    method:'PATCH',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ properties: properties })
+  })
+  .then(function(res){
+    if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
+    return res.json();
+  })
+  .then(function(){
+    btn.disabled=false; btn.textContent='저장';
+    closeContactEditModal();
+    CONTACT_LOADED=false;
+    loadContactData();
+  })
+  .catch(function(e){
+    btn.disabled=false; btn.textContent='저장';
+    alert('수정 실패: '+e.message);
+    console.error(e);
+  });
+}
+
+function showContactDeleteConfirm(idx){
+  var r = CONTACT_DATA.find(function(d){ return d._idx===idx; });
+  if(!r || !r._pageId || !CFG.workerUrl){ alert('노션 연동 설정 후 사용 가능합니다.'); return; }
+  var footer = document.getElementById('detailFooter');
+  if(!footer) return;
+  footer.innerHTML = '<div class="del-confirm-bar">'
+    +'<span style="font-size:13px;font-weight:700;color:var(--coral)">이 항목을 휴지통으로 이동할까요?</span>'
+    +'<div style="display:flex;gap:6px">'
+    +'<button class="modal-cancel" onclick="hideDeleteConfirm()" style="font-size:12px;padding:6px 12px;min-height:32px">취소</button>'
+    +'<button class="detail-act-btn detail-del-btn" id="cDeleteExecBtn" onclick="deleteContactItem('+idx+')">삭제 확인</button>'
+    +'</div></div>';
+  footer.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function deleteContactItem(idx){
+  var r = CONTACT_DATA.find(function(d){ return d._idx===idx; });
+  if(!r || !r._pageId) return;
+  var btn = document.getElementById('cDeleteExecBtn');
+  if(btn){ btn.disabled=true; btn.textContent='삭제 중...'; }
+  fetch(CFG.workerUrl+'/v1/pages/'+r._pageId, {
+    method:'PATCH',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ in_trash: true })
+  })
+  .then(function(res){
+    if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
+    return res.json();
+  })
+  .then(function(){
+    closeDetail();
+    CONTACT_LOADED=false;
+    loadContactData();
+  })
+  .catch(function(e){
+    if(btn){ btn.disabled=false; btn.textContent='삭제 확인'; }
+    alert('삭제 실패: '+e.message);
+    console.error(e);
+  });
+}
+
 function renderContactTable(){
   var rows = filteredContacts();
   var cnt = document.getElementById('contactCount');
@@ -2551,7 +2796,7 @@ function renderContactTable(){
     var telHtml = tel!=='-'
       ? '<a href="tel:'+esc(tel)+'" style="color:var(--sky600);text-decoration:none;font-weight:600">'+esc(tel)+'</a>'
       : '-';
-    return '<tr>'
+    return '<tr onclick="openContactDetail('+r._idx+')" style="cursor:pointer">'
       +'<td class="td-nowrap">'+gBadge+'</td>'
       +'<td class="td-nowrap"><strong>'+esc(r.터널명||'-')+'</strong></td>'
       +'<td class="td-nowrap">'+esc(r.업체명||'-')+'</td>'
