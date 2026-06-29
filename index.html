@@ -2414,6 +2414,42 @@ var CONTACT_DATA = [];
 var CONTACT_LOADED = false;
 var CONTACT_FILTER = { group:'ALL', tunnel:'ALL' };
 var CONTACT_DB_ID = ''; // CFG.contactDbId 에서 런타임 참조
+var CONTACT_PROP_MAP = {}; // 실제 Notion 속성명 매핑 (빌드 후 사용)
+
+function buildContactPropMap(page){
+  if(!page || !page.properties) return;
+  var keys = Object.keys(page.properties);
+  var matchers = [
+    { key:'관리구분', kws:['관리구분','관리','group','category','구분','관리 구분'] },
+    { key:'터널명',   kws:['터널명','터널','tunnel','터널 명'] },
+    { key:'업체명',   kws:['업체명','업체','company','업체 명'] },
+    { key:'담당자',   kws:['담당자','담당','person','contact','담당 자'] },
+    { key:'전화번호', kws:['전화번호','전화','tel','phone','전화 번호'] },
+    { key:'관련업무', kws:['관련업무','업무','work','task','관련 업무'] },
+    { key:'비고',     kws:['비고','remark','note','memo'] },
+  ];
+  matchers.forEach(function(m){
+    for(var i=0;i<m.kws.length;i++){
+      var kw = m.kws[i].toLowerCase();
+      var found = null;
+      for(var j=0;j<keys.length;j++){
+        if(keys[j].toLowerCase()===kw){ found=keys[j]; break; }
+      }
+      if(!found) for(var j=0;j<keys.length;j++){
+        if(keys[j].toLowerCase().includes(kw)){ found=keys[j]; break; }
+      }
+      if(found){ CONTACT_PROP_MAP[m.key]=found; break; }
+    }
+  });
+}
+
+function cpk(internalKey){
+  return Object.keys(CONTACT_PROP_MAP).length ? (CONTACT_PROP_MAP[internalKey]||null) : internalKey;
+}
+function setCProp(props, key, val){
+  var k = cpk(key);
+  if(k) props[k] = val;
+}
 
 var CONTACT_DEMO_DATA = [
   {관리구분:'안전관리자',터널명:'남정5터널', 업체명:'D2U이앤씨',      담당자:'박민규 대리',  전화번호:'010-2345-6712', 관련업무:'수신기',                       비고:''},
@@ -2468,6 +2504,7 @@ function loadContactData(){
   .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
   .then(function(data){
     var pages = data.results||[];
+    if(pages.length && !Object.keys(CONTACT_PROP_MAP).length) buildContactPropMap(pages[0]);
     CONTACT_DATA = pages.map(parseContactPage).filter(function(r){return r.업체명;});
     // has_more 처리
     if(data.has_more && data.next_cursor){
@@ -2700,13 +2737,13 @@ function submitContactForm(){
   var rem    = document.getElementById('ceRemark').value.trim();
 
   var properties = {};
-  properties['업체명']   = { title: [{ text: { content: co } }] };
-  properties['관리구분'] = { select: { name: grp } };
-  properties['터널명']   = { select: { name: tunnel } };
-  if(person) properties['담당자']   = { rich_text: [{ text: { content: person } }] };
-  if(tel)    properties['전화번호'] = { phone_number: tel };
-  if(work)   properties['관련업무'] = { rich_text: [{ text: { content: work } }] };
-  if(rem)    properties['비고']     = { rich_text: [{ text: { content: rem } }] };
+  setCProp(properties, '업체명',   { title: [{ text: { content: co } }] });
+  setCProp(properties, '관리구분', { select: { name: grp } });
+  setCProp(properties, '터널명',   { select: { name: tunnel } });
+  if(person) setCProp(properties, '담당자',   { rich_text: [{ text: { content: person } }] });
+  if(tel)    setCProp(properties, '전화번호', { phone_number: tel });
+  if(work)   setCProp(properties, '관련업무', { rich_text: [{ text: { content: work } }] });
+  if(rem)    setCProp(properties, '비고',     { rich_text: [{ text: { content: rem } }] });
 
   function resetBtn(label){
     btn.disabled=false;
@@ -2727,11 +2764,35 @@ function submitContactForm(){
       renderContactPanel();
       return;
     }
-    fetch(CFG.workerUrl+'/v1/pages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ parent:{ database_id: CFG.contactDbId }, properties: properties })
-    })
+    // map이 아직 비어있으면 DB에서 레코드 1건 probe 후 빌드
+    var doPost = function(){
+      // properties 재구성 (map 기준)
+      var p2 = {};
+      setCProp(p2, '업체명',   { title: [{ text: { content: co } }] });
+      setCProp(p2, '관리구분', { select: { name: grp } });
+      setCProp(p2, '터널명',   { select: { name: tunnel } });
+      if(person) setCProp(p2, '담당자',   { rich_text: [{ text: { content: person } }] });
+      if(tel)    setCProp(p2, '전화번호', { phone_number: tel });
+      if(work)   setCProp(p2, '관련업무', { rich_text: [{ text: { content: work } }] });
+      if(rem)    setCProp(p2, '비고',     { rich_text: [{ text: { content: rem } }] });
+      return fetch(CFG.workerUrl+'/v1/pages', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ parent:{ database_id: CFG.contactDbId }, properties: p2 })
+      });
+    };
+    var probeAndPost = function(){
+      if(Object.keys(CONTACT_PROP_MAP).length) return doPost();
+      return fetch(CFG.workerUrl+'/v1/databases/'+(CFG.contactDbId)+'/query', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ page_size:1 })
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(data){ if((data.results||[]).length) buildContactPropMap(data.results[0]); })
+      .then(doPost)
+      .catch(function(){ return doPost(); });
+    };
+    probeAndPost()
     .then(function(res){
       if(!res.ok) return res.text().then(function(t){ throw new Error('HTTP '+res.status+': '+t); });
       return res.json();
