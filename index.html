@@ -1133,7 +1133,11 @@ function loadData(){
   fetchNotion(CFG.workerUrl, CFG.dbId, {page_size:1})
     .then(function(probe){
       var pages = probe.results||[];
-      if(pages.length){ buildNotionPropMap(pages[0].properties||{}); }
+      if(pages.length){
+        buildNotionPropMap(pages[0].properties||{});
+        console.log('[하자앱] Notion 속성명 목록:', Object.keys(pages[0].properties||{}));
+        console.log('[하자앱] NOTION_PROP_MAP:', JSON.stringify(NOTION_PROP_MAP, null, 2));
+      }
 
       // 전체 데이터 조회
       var sortProp = (NOTION_PROP_MAP['날짜']||'날짜');
