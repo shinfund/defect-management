@@ -2031,11 +2031,22 @@ function openDetail(idx){
       }).join('')
     + '</div>';
 
-  var photoHtml = '';
   var p1 = r['하자사진_URL']||'';
   var p2 = r['조치사진_URL']||'';
-  if(p1) photoHtml += makePhotoHtml('하자사진', p1);
-  if(p2) photoHtml += makePhotoHtml('조치사진', p2);
+  function photoSection(label, url){
+    var inner = url && /^https?:\/\//i.test(url.trim())
+      ? '<div class="photo-wrap"><a href="'+esc(url)+'" target="_blank" rel="noopener">'
+        +'<img class="photo-img loading" src="'+esc(url)+'" alt="'+esc(label)+'"'
+        +' onload="this.classList.remove(\'loading\');this.classList.add(\'loaded\');var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+        +' onerror="this.style.display=\'none\';var e=this.parentNode.parentNode.querySelector(\'.photo-err\');if(e)e.style.display=\'block\';var s=this.parentNode.parentNode.querySelector(\'.photo-spinner\');if(s)s.remove()"'
+        +'></a>'
+        +'<div class="photo-spinner"></div>'
+        +'<div class="photo-err">이미지를 불러올 수 없습니다<br><a href="'+esc(url)+'" target="_blank">링크로 직접 열기 →</a></div>'
+        +'</div>'
+      : '<div style="padding:18px;text-align:center;font-size:12px;color:var(--txt3);background:var(--bg);border-radius:var(--r8);border:1.5px dashed var(--border)">사진 없음</div>';
+    return '<div class="photo-section"><div class="photo-label">'+esc(label)+'</div>'+inner+'</div>';
+  }
+  var photoHtml = photoSection('하자사진', p1) + photoSection('조치사진', p2);
 
   document.getElementById('detailBody').innerHTML = infoHtml + photoHtml;
   document.getElementById('detailModal').classList.add('modal-open');
