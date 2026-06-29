@@ -373,7 +373,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       </div>
       <div class="modal-field">
         <label class="modal-label">전화번호</label>
-        <input id="ceTel" class="modal-input" type="tel" placeholder="010-0000-0000"/>
+        <input id="ceTel" class="modal-input" type="tel" placeholder="010-0000-0000" oninput="formatPhone(this)"/>
       </div>
       <div class="modal-field">
         <label class="modal-label">관련업무</label>
@@ -510,7 +510,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
       <!-- 13.전화번호 -->
       <div class="modal-field">
         <label class="modal-label">전화번호</label>
-        <input id="addPhone" class="modal-input" type="text" placeholder="010-0000-0000"/>
+        <input id="addPhone" class="modal-input" type="tel" placeholder="010-0000-0000" oninput="formatPhone(this)"/>
       </div>
 
       <!-- 14.비고 -->
@@ -2278,6 +2278,13 @@ function closeAddModal(e){
   if(e && !e.target.classList.contains('modal-backdrop')) return;
   document.getElementById('addModal').classList.remove('modal-open');
   document.body.style.overflow = '';
+}
+
+function formatPhone(el){
+  var v = el.value.replace(/\D/g,'');
+  if(v.length<=3)      el.value = v;
+  else if(v.length<=7) el.value = v.slice(0,3)+'-'+v.slice(3);
+  else                 el.value = v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);
 }
 
 function submitAddForm(){
