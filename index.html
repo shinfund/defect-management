@@ -1126,6 +1126,7 @@ function parseNotionPage(page, idx){
 
 /* ── LOAD DATA (Notion) ── */
 function loadData(){
+  if(_retryTimer){ clearInterval(_retryTimer); _retryTimer=null; }
   if(!CFG.workerUrl||!CFG.dbId){ openCfgModal(); return; }
   setSync(true);
   var lu = document.getElementById('lastUpdate');
@@ -1184,6 +1185,10 @@ function loadData(){
       if(e.message.indexOf('400')>=0)       msg='⚠ HTTP 400 — Worker URL 또는 DB ID를 확인하세요';
       else if(e.message.indexOf('401')>=0||e.message.indexOf('403')>=0) msg='⚠ 인증 오류 — Notion API 키를 확인하세요';
       else if(e.message.indexOf('404')>=0)  msg='⚠ DB를 찾을 수 없습니다 — DB ID를 확인하세요';
+      else if(e.message.indexOf('503')>=0||e.message.indexOf('502')>=0||e.message.indexOf('504')>=0){
+        msg='⚠ 서버 일시 불가 — 30초 후 자동 재시도합니다';
+        startRetryCountdown(30);
+      }
       else if(e.message.indexOf('fetch')>=0||e.message.indexOf('network')>=0) msg='⚠ 네트워크 오류 — Worker URL을 확인하세요';
       if(lu){ lu.textContent=msg; lu.style.color='rgba(255,150,130,.9)'; }
       console.error(e);
@@ -2061,6 +2066,23 @@ function switchTab(n,el){
   updateKPI(n);
   if(n===5 && !CONTACT_LOADED){ loadContactData(); }
   if(n<5) renderCurrentTab();
+}
+
+/* ── 503 자동 재시도 카운트다운 ── */
+var _retryTimer = null;
+function startRetryCountdown(sec){
+  if(_retryTimer) clearInterval(_retryTimer);
+  var remaining = sec;
+  var lu = document.getElementById('lastUpdate');
+  _retryTimer = setInterval(function(){
+    remaining--;
+    if(lu) lu.textContent = '⚠ 서버 일시 불가 — ' + remaining + '초 후 자동 재시도';
+    if(remaining <= 0){
+      clearInterval(_retryTimer);
+      _retryTimer = null;
+      loadData();
+    }
+  }, 1000);
 }
 
 /* ── SYNC BUTTON ── */
