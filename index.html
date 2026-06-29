@@ -343,7 +343,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 
 <!-- 업체연락처 수정/신규추가 모달 -->
 <div id="contactEditModal">
-  <div class="modal-backdrop" onclick="closeContactEditModal(event)">
+  <div class="modal-backdrop">
     <div class="modal-box" style="max-width:480px" onclick="event.stopPropagation()">
       <div class="detail-modal-hd">
         <h3 style="display:flex;align-items:center;gap:7px">
@@ -396,7 +396,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 
 <!-- 신규 하자 등록 모달 -->
 <div id="addModal">
-  <div class="modal-backdrop" onclick="closeAddModal(event)">
+  <div class="modal-backdrop">
     <div class="modal-box add-modal-box" onclick="event.stopPropagation()">
       <div class="detail-modal-hd">
         <h3 style="display:flex;align-items:center;gap:7px">
@@ -542,7 +542,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 
 <!-- 설정 모달 -->
 <div id="cfgModal">
-  <div class="modal-backdrop" onclick="closeCfgModal(event)">
+  <div class="modal-backdrop">
     <div class="modal-box" style="max-width:480px" onclick="event.stopPropagation()">
       <div class="modal-title">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#378ADD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -573,7 +573,7 @@ td.col-remark{white-space:normal;overflow:hidden;display:-webkit-box;-webkit-lin
 
 <!-- 상세 모달 -->
 <div id="detailModal">
-  <div class="modal-backdrop" onclick="closeDetail(event)">
+  <div class="modal-backdrop">
     <div class="modal-box detail-modal-box" onclick="event.stopPropagation()">
       <div class="detail-modal-hd">
         <h3 id="detailTitle">하자 상세</h3>
@@ -954,8 +954,7 @@ function openCfgModal(){
   document.getElementById('cfgModal').classList.add('modal-open');
   document.body.style.overflow='hidden';
 }
-function closeCfgModal(e){
-  if(e && !e.target.classList.contains('modal-backdrop')) return;
+function closeCfgModal(){
   document.getElementById('cfgModal').classList.remove('modal-open');
   document.body.style.overflow='';
 }
@@ -2040,8 +2039,7 @@ function openDetail(idx){
   document.getElementById('detailModal').classList.add('modal-open');
   document.body.style.overflow='hidden';
 }
-function closeDetail(e){
-  if(e && e.type==='click' && !e.target.classList.contains('modal-backdrop')) return;
+function closeDetail(){
   document.getElementById('detailModal').classList.remove('modal-open');
   document.body.style.overflow='';
 }
@@ -2272,8 +2270,7 @@ function openAddModal(){
   setTimeout(function(){ document.getElementById('addDate').focus(); }, 100);
 }
 
-function closeAddModal(e){
-  if(e && !e.target.classList.contains('modal-backdrop')) return;
+function closeAddModal(){
   document.getElementById('addModal').classList.remove('modal-open');
   document.body.style.overflow = '';
 }
@@ -2735,8 +2732,7 @@ function openContactAddModal(){
   document.body.style.overflow='hidden';
 }
 
-function closeContactEditModal(e){
-  if(e && !e.target.classList.contains('modal-backdrop')) return;
+function closeContactEditModal(){
   document.getElementById('contactEditModal').classList.remove('modal-open');
   document.body.style.overflow='';
 }
