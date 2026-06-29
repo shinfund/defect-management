@@ -2350,8 +2350,8 @@ function submitAddForm(){
   // 업체담당자
   if(contact) properties[nk('업체담당자')] = { rich_text: [{ text: { content: contact } }] };
 
-  // 전화번호
-  if(phone) properties[nk('전화번호')] = { rich_text: [{ text: { content: phone } }] };
+  // 전화번호 (Notion phone_number 타입)
+  if(phone) properties[nk('전화번호')] = { phone_number: phone };
 
   // 비고
   if(remark) properties[nk('비고')] = { rich_text: [{ text: { content: remark } }] };
@@ -2359,11 +2359,11 @@ function submitAddForm(){
   // 업무담당
   if(manager) properties[nk('업무담당')] = { select: { name: manager } };
 
-  // 하자사진 URL
-  if(photo1) properties[nk('하자사진_URL')] = { url: photo1 };
+  // 하자사진 URL (Notion files 타입)
+  if(photo1) properties[nk('하자사진_URL')] = { files: [{ name: '하자사진', type: 'external', external: { url: photo1 } }] };
 
-  // 조치사진 URL
-  if(photo2) properties[nk('조치사진_URL')] = { url: photo2 };
+  // 조치사진 URL (Notion files 타입)
+  if(photo2) properties[nk('조치사진_URL')] = { files: [{ name: '조치사진', type: 'external', external: { url: photo2 } }] };
 
   var isEdit = !!EDIT_PAGE_ID;
   var reqUrl = isEdit
