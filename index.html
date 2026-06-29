@@ -1133,11 +1133,7 @@ function loadData(){
   fetchNotion(CFG.workerUrl, CFG.dbId, {page_size:1})
     .then(function(probe){
       var pages = probe.results||[];
-      if(pages.length){
-        buildNotionPropMap(pages[0].properties||{});
-        console.log('[하자앱] Notion 속성명 목록:', Object.keys(pages[0].properties||{}));
-        console.log('[하자앱] NOTION_PROP_MAP:', JSON.stringify(NOTION_PROP_MAP, null, 2));
-      }
+      if(pages.length){ buildNotionPropMap(pages[0].properties||{}); }
 
       // 전체 데이터 조회
       var sortProp = (NOTION_PROP_MAP['날짜']||'날짜');
@@ -1210,7 +1206,7 @@ function buildNotionPropMap(props){
     { key:'조치내용',    kws:['조치내용','조치 내용','처리내용','처리 내용','action_content'], types:['rich_text','text','title'] },
     { key:'하자사진_URL',kws:['하자사진','하자 사진','photo1','사진1'], types:['files','url','rich_text'] },
     { key:'조치사진_URL',kws:['조치사진','조치 사진','photo2','사진2'], types:['files','url','rich_text'] },
-    { key:'업체명',      kws:['업체명','업체','company'], types:['rich_text','title','text'] },
+    { key:'업체명',      kws:['업체명','업체 명','업체','company'], types:['rich_text','title','text'] },
     { key:'전화번호',    kws:['전화번호','전화','phone','연락'], types:['phone_number','rich_text','text'] },
     { key:'비고',        kws:['비고','remark','memo','메모'], types:['rich_text','text'] }
   ];
