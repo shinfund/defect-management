@@ -1203,9 +1203,9 @@ function buildNotionPropMap(props){
     { key:'하자내용',    kws:['하자내용','내용','content','하자'], types:['title','rich_text'] },
     { key:'조치여부',    kws:['조치여부','상태','status'], types:['select','checkbox'] },
     { key:'조치일',      kws:['조치일','완료일','act'],   types:['date'] },
-    { key:'조치내용',    kws:['조치내용','조치내용','action_content'], types:['rich_text','text','title'] },
-    { key:'하자사진_URL',kws:['하자사진','photo1','사진1','하자'], types:['files','url','rich_text'] },
-    { key:'조치사진_URL',kws:['조치사진','photo2','사진2','조치사'], types:['files','url','rich_text'] },
+    { key:'조치내용',    kws:['조치내용','조치 내용','처리내용','처리 내용','action_content'], types:['rich_text','text','title'] },
+    { key:'하자사진_URL',kws:['하자사진','하자 사진','photo1','사진1'], types:['files','url','rich_text'] },
+    { key:'조치사진_URL',kws:['조치사진','조치 사진','photo2','사진2'], types:['files','url','rich_text'] },
     { key:'업체명',      kws:['업체명','업체','company'], types:['rich_text','title','text'] },
     { key:'전화번호',    kws:['전화번호','전화','phone','연락'], types:['phone_number','rich_text','text'] },
     { key:'비고',        kws:['비고','remark','memo','메모'], types:['rich_text','text'] }
@@ -2321,56 +2321,39 @@ function submitAddForm(){
   btn.disabled = true;
   lbl.textContent = EDIT_PAGE_ID ? '수정 중...' : '등록 중...';
 
-  // NOTION_PROP_MAP 기반으로 실제 속성명 결정 (폴백: 한국어 키)
-  function nk(internalKey){ return NOTION_PROP_MAP[internalKey] || internalKey; }
+  // NOTION_PROP_MAP 기반으로 실제 속성명 결정
+  // 맵이 구성됐는데 키가 없으면 null → 해당 속성 전송 생략 (400 방지)
+  var mapReady = Object.keys(NOTION_PROP_MAP).length > 0;
+  function nk(internalKey){
+    if(mapReady) return NOTION_PROP_MAP[internalKey] || null;
+    return internalKey;
+  }
+  function setProp(key, val){
+    var k = nk(key);
+    if(k) properties[k] = val;
+  }
 
   var properties = {};
 
   // 하자내용 → title
-  var contentKey = nk('하자내용');
+  var contentKey = nk('하자내용') || '하자내용';
   properties[contentKey] = { title: [{ text: { content: content } }] };
 
-  // 날짜
-  properties[nk('날짜')] = { date: { start: date } };
+  setProp('날짜',    { date: { start: date } });
+  setProp('공종',    { multi_select: [{ name: type }] });
+  setProp('터널명',  { select: { name: tunnel } });
+  setProp('위치',    { rich_text: [{ text: { content: loc } }] });
+  setProp('조치여부',{ select: { name: status } });
 
-  // 공종 (노션에서 multi_select 타입)
-  properties[nk('공종')] = { multi_select: [{ name: type }] };
-
-  // 터널명
-  properties[nk('터널명')] = { select: { name: tunnel } };
-
-  // 위치
-  properties[nk('위치')] = { rich_text: [{ text: { content: loc } }] };
-
-  // 조치여부
-  properties[nk('조치여부')] = { select: { name: status } };
-
-  // 조치일
-  if(actDate) properties[nk('조치일')] = { date: { start: actDate } };
-
-  // 조치내용
-  if(actContent) properties[nk('조치내용')] = { rich_text: [{ text: { content: actContent } }] };
-
-  // 업체명
-  if(company) properties[nk('업체명')] = { rich_text: [{ text: { content: company } }] };
-
-  // 업체담당자
-  if(contact) properties[nk('업체담당자')] = { rich_text: [{ text: { content: contact } }] };
-
-  // 전화번호 (Notion phone_number 타입)
-  if(phone) properties[nk('전화번호')] = { phone_number: phone };
-
-  // 비고
-  if(remark) properties[nk('비고')] = { rich_text: [{ text: { content: remark } }] };
-
-  // 업무담당
-  if(manager) properties[nk('업무담당')] = { select: { name: manager } };
-
-  // 하자사진 URL (Notion files 타입)
-  if(photo1) properties[nk('하자사진_URL')] = { files: [{ name: '하자사진', type: 'external', external: { url: photo1 } }] };
-
-  // 조치사진 URL (Notion files 타입)
-  if(photo2) properties[nk('조치사진_URL')] = { files: [{ name: '조치사진', type: 'external', external: { url: photo2 } }] };
+  if(actDate)    setProp('조치일',    { date: { start: actDate } });
+  if(actContent) setProp('조치내용',  { rich_text: [{ text: { content: actContent } }] });
+  if(company)    setProp('업체명',    { rich_text: [{ text: { content: company } }] });
+  if(contact)    setProp('업체담당자',{ rich_text: [{ text: { content: contact } }] });
+  if(phone)      setProp('전화번호',  { phone_number: phone });
+  if(remark)     setProp('비고',      { rich_text: [{ text: { content: remark } }] });
+  if(manager)    setProp('업무담당',  { select: { name: manager } });
+  if(photo1)     setProp('하자사진_URL', { files: [{ name: '하자사진', type: 'external', external: { url: photo1 } }] });
+  if(photo2)     setProp('조치사진_URL', { files: [{ name: '조치사진', type: 'external', external: { url: photo2 } }] });
 
   var isEdit = !!EDIT_PAGE_ID;
   var reqUrl = isEdit
